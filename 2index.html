@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI의 이해: 2026 패러다임 리포트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Montserrat:wght@600;800&display=swap');
+
+        :root {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent: #64748b; 
+            --border: #cbd5e1;
+            --card-bg: #ffffff;
+            --clova-card-bg: #1e293b;
+            --clova-text: #f8fafc;
+        }
+
+        body.dark {
+            --bg-primary: #0a0a0c;
+            --bg-secondary: #16161a;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #94a3b8;
+            --border: #2d2d33;
+            --card-bg: #1c1c21;
+            --clova-card-bg: #000000;
+            --clova-text: #ffffff;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+
+        /* Navigation */
+        nav {
+            background: rgba(var(--bg-secondary), 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 1100;
+            transition: width 0.1s ease;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal Styles (Universal for Image & Video) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 2100;
+            background: rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Improved History Section Styles */
+        section { padding: 100px 24px; }
+
+        .history-timeline {
+            border-left: 2px solid var(--accent);
+            margin-left: 10px;
+            padding-left: 40px;
+            position: relative;
+        }
+
+        .history-item {
+            position: relative;
+            margin-bottom: 4rem; 
+        }
+
+        .history-item::before {
+            content: '';
+            position: absolute;
+            left: -51px; 
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border: 4px solid var(--bg-primary);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .history-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .history-content-box {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .sovereign-panel {
+            background-color: var(--clova-card-bg);
+            color: var(--clova-text);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            border: 1px solid var(--accent);
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="dark">
+    <div id="progress-bar"></div>
+
+    <!-- Image Modal -->
+    <div id="img-modal-overlay" class="modal-overlay">
+        <button class="close-modal" onclick="closeModal('img-modal-overlay')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content" style="aspect-ratio: auto; background: transparent;">
+            <img src="unnamed.jpg" alt="AI 발전 과정 인포그래픽" style="max-width: 100%; max-height: 90vh; border-radius: 8px;">
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal-overlay" class="modal-overlay">
+        <button class="close-modal" onclick="closeModal('video-modal-overlay')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content">
+            <!-- 유튜브 샘플 영상 (AI 관련 영상) -->
+            <iframe id="video-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <nav>
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-circle-nodes text-2xl text-[var(--accent)]"></i>
+                <span class="font-montserrat font-extrabold text-xl tracking-tighter uppercase">AI Paradigm 2026</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest opacity-70">
+                <a href="#intro" class="hover:text-[var(--accent)]">Home</a>
+                <a href="#history" class="hover:text-[var(--accent)]">History</a>
+                <a href="#tech" class="hover:text-[var(--accent)]">Tech</a>
+                <a href="#sovereign" class="hover:text-[var(--accent)]">Sovereign</a>
+            </div>
+            <button class="theme-toggle" id="theme-btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="intro" class="min-h-screen flex items-center justify-center text-center">
+        <div class="max-w-5xl px-4">
+            <h2 class="font-montserrat text-sm font-bold tracking-[0.4em] mb-6 text-[var(--accent)] uppercase">Future Intelligence Report</h2>
+            <h1 class="text-5xl md:text-7xl font-montserrat font-extrabold mb-10 leading-[1.1]">
+                인공지능의 심층 이해:<br>
+                <span class="opacity-50 text-3xl md:text-5xl">기술적 진화에서 제도적 안착까지</span>
+            </h1>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <button onclick="document.getElementById('history').scrollIntoView({behavior: 'smooth'})" class="px-8 py-4 bg-[var(--accent)] text-white rounded-full font-bold hover:opacity-90 transition-all shadow-lg">내용 탐색하기</button>
+                
+                <!-- 슬라이드 다운로드 버튼 -->
+                <a href="2026_AI_Architecture_and_Governance.pdf" download="2026_AI_Architecture_and_Governance.pdf" class="px-8 py-4 border-2 border-[var(--accent)] text-[var(--accent)] rounded-full font-bold hover:bg-[var(--accent)] hover:text-white transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i>
+                    슬라이드 다운로드
+                </a>
+
+                <!-- 동영상 재생 버튼 추가 -->
+                <button id="play-video-btn" class="px-8 py-4 bg-red-600 text-white rounded-full font-bold hover:bg-red-700 transition-all flex items-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-play"></i>
+                    동영상 재생하기
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Refined History Section -->
+    <section id="history" class="max-w-7xl mx-auto py-24">
+        <div class="grid lg:grid-cols-5 gap-16 items-start">
+            <div class="lg:col-span-3">
+                <h2 class="text-4xl font-bold mb-10">인공지능의 발전 과정</h2>
+                <div class="history-timeline">
+                    <div class="history-item">
+                        <div class="history-content-box">
+                            <span class="text-[var(--accent)] font-bold text-sm mb-2 block tracking-widest uppercase">1950s - 1980s</span>
+                            <h4 class="font-bold text-xl mb-3 text-[var(--text-main)]">초기 탐색 및 규칙 기반 시대</h4>
+                            <p class="text-sm text-[var(--text-muted)] leading-relaxed">
+                                인간의 논리적 사고를 기호로 체계화하려던 시기입니다. 전문가 시스템과 체스 프로그램 같은 초기 AI 연구가 주를 이루었으며, 명확한 규칙 안에서의 해결에 집중했습니다.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-content-box">
+                            <span class="text-[var(--accent)] font-bold text-sm mb-2 block tracking-widest uppercase">1990s - 2010s</span>
+                            <h4 class="font-bold text-xl mb-3 text-[var(--text-main)]">머신러닝과 통계적 도약</h4>
+                            <p class="text-sm text-[var(--text-muted)] leading-relaxed">
+                                대규모 데이터와 컴퓨팅 자원의 결합으로 데이터에서 패턴을 찾아내는 머신러닝이 주류가 되었습니다. 이후 딥러닝 알고리즘의 발전으로 이미지 인식 및 번역에서 혁신이 일어났습니다.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-content-box">
+                            <span class="text-[var(--accent)] font-bold text-sm mb-2 block tracking-widest uppercase">2020s - Present</span>
+                            <h4 class="font-bold text-xl mb-3 text-[var(--text-main)]">생성형 AI 및 자율 에이전트</h4>
+                            <p class="text-sm text-[var(--text-muted)] leading-relaxed">
+                                트랜스포머 아키텍처 기반의 초거대 언어 모델(LLM)이 등장했습니다. 이제 AI는 수동적인 답변을 넘어 스스로 계획을 세우고 실행하는 에이전틱 AI 단계로 진화하고 있습니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 lg:sticky lg:top-32">
+                <div class="card bg-slate-100 dark:bg-slate-900/50 p-10 border-dashed border-2 border-[var(--border)] text-center">
+                    <div class="w-20 h-20 bg-[var(--accent)]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fa-solid fa-map text-4xl text-[var(--accent)]"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">한눈에 보는 로드맵</h3>
+                    <p class="text-sm text-[var(--text-muted)] mb-8 leading-relaxed">
+                        AI의 탄생부터 현재의 초지능적 진화까지<br>
+                        모든 흐름을 담은 시각 자료를 확인하세요.
+                    </p>
+                    <button id="open-infographic" class="w-full py-4 bg-[var(--text-main)] text-[var(--bg-secondary)] rounded-xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-lg">
+                        <i class="fa-solid fa-expand"></i>
+                        인포그래픽으로 보기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Section -->
+    <section id="tech" class="max-w-7xl mx-auto border-t border-[var(--border)]">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">기술적 위계와 아키텍처</h2>
+            <div class="w-20 h-1 bg-[var(--accent)] mx-auto"></div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-20">
+            <div class="card">
+                <i class="fa-solid fa-microchip text-3xl mb-6 text-[var(--accent)]"></i>
+                <h3 class="text-xl font-bold mb-3">Machine Learning</h3>
+                <p class="text-[var(--text-muted)] text-sm">데이터를 통해 학습하고 스스로 성능을 향상시키는 통계적 접근 방식입니다.</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-brain text-3xl mb-6 text-[var(--accent)]"></i>
+                <h3 class="text-xl font-bold mb-3">Deep Learning</h3>
+                <p class="text-[var(--text-muted)] text-sm">신경망 구조를 통해 비정형 데이터의 특징을 스스로 추출하는 고도화된 기술입니다.</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-diagram-project text-3xl mb-6 text-[var(--accent)]"></i>
+                <h3 class="text-xl font-bold mb-3">Transformer</h3>
+                <p class="text-[var(--text-muted)] text-sm">어텐션 메커니즘으로 문맥을 파악하는 현대 LLM의 근간 아키텍처입니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sovereign AI Section -->
+    <section id="sovereign" class="max-w-7xl mx-auto pb-32">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">소버린 지능 & 거버넌스</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-10">
+            <div class="sovereign-panel">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-star text-slate-900 text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-white">HyperCLOVA X</h3>
+                </div>
+                <p class="text-slate-300 mb-8 leading-relaxed">
+                    글로벌 빅테크 모델과 경쟁하는 한국의 독자적 파운데이션 모델입니다. 한국어와 한국 문화의 미세한 뉘앙스를 가장 잘 이해합니다.
+                </p>
+                <div class="bg-slate-800/50 p-5 rounded-xl border border-slate-700">
+                    <ul class="m-0 p-0 list-none text-slate-200 text-sm space-y-4">
+                        <li class="flex gap-3"><i class="fa-solid fa-circle-check text-green-500 mt-1"></i> <span><strong>한국어 특화:</strong> 타사 대비 압도적인 한국어 학습 데이터량 보유</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-circle-check text-green-500 mt-1"></i> <span><strong>문화적 맥락:</strong> 국내 정서 및 사회 제도를 완벽히 반영한 결과물 생성</span></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-circle-check text-green-500 mt-1"></i> <span><strong>데이터 주권:</strong> 민감한 정보를 안전하게 관리하는 Sovereign Cloud 제공</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-6">
+                <div class="card flex-1">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-gavel text-[var(--accent)]"></i> EU AI Act (2025)
+                    </h3>
+                    <p class="text-sm text-[var(--text-muted)] leading-relaxed">전 세계적인 AI 규제의 표준이 될 법안입니다. 모델의 위험 수준에 따른 단계별 의무와 투명성 리포트 제출이 핵심입니다.</p>
+                </div>
+                <div class="card flex-1">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-landmark text-[var(--accent)]"></i> 한국 AI 기본법 (2026)
+                    </h3>
+                    <p class="text-sm text-[var(--text-muted)] leading-relaxed">고영향 AI에 대한 표시 의무 및 이용자 안전 장치를 마련하여 신뢰할 수 있는 산업 생태계 구축을 목표로 합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-[var(--border)] text-center text-[var(--text-muted)] text-sm">
+        <p class="font-bold mb-2 uppercase tracking-widest">AI Paradigm 2026 Report</p>
+        <p>&copy; 2026 Interactive Guide. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const body = document.body;
+        const themeBtn = document.getElementById('theme-btn');
+        const themeIcon = themeBtn.querySelector('i');
+
+        // Theme Toggle
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            themeIcon.className = body.classList.contains('dark') ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        });
+
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progress-bar').style.width = (winScroll / height * 100) + '%';
+        });
+
+        // Modal Control Function
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // If it's the video modal, stop the video
+            if(modalId === 'video-modal-overlay') {
+                document.getElementById('video-iframe').src = "";
+            }
+        }
+
+        // Infographic Modal
+        document.getElementById('open-infographic').addEventListener('click', () => openModal('img-modal-overlay'));
+
+        // Video Modal
+        const videoUrl = "https://www.youtube.com/embed/6m6S6jL9yK8?autoplay=1"; // 샘플 AI 영상 링크
+        document.getElementById('play-video-btn').addEventListener('click', () => {
+            document.getElementById('video-iframe').src = videoUrl;
+            openModal('video-modal-overlay');
+        });
+
+        // Close on overlay click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeModal(event.target.id);
+            }
+        }
+    </script>
+</body>
+</html>
