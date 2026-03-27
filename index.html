@@ -6,6 +6,7 @@
     <title>AI 리터러시의 이해 | 최유안 포트폴리오</title>
     
     <!-- Fonts: Pretendard -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.tailwindcss.com" />
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <!-- AOS Animation Library -->
@@ -305,9 +306,8 @@
             { 
                 id: '01', 
                 title: 'AI의 이해', 
-                desc: '노트북 LM을 활용하여 AI의 정의, 역사적 흐름 및 생성형 AI의 메커니즘을 심도 있게 분석했습니다.', 
-                tools: ['NotebookLM', 'Research'], 
-                url: './02/index.html',
+                desc: 'AI의 정의, 역사적 흐름 및 생성형 AI의 메커니즘을 심도 있게 분석하여 리터러시 역량의 기초를 다졌습니다.', 
+                tools: ['Fundamental', 'Research'], 
                 detail: `
                     <strong>1. 인공지능(AI)이란?</strong><br/>
                     인간의 지능적 행동(학습, 추론, 지각 등)을 컴퓨터 소프트웨어로 구현한 기술입니다.<br/><br/>
@@ -318,7 +318,22 @@
                 `, 
                 color: 'from-purple-500 to-pink-500' 
             },
-            { id: '02', title: '공공 데이터 수집과 가공', desc: '사회복지 데이터를 수집하고 Pandas로 전처리를 수행했습니다.', tools: ['Python', 'Pandas'], detail: '지역별 노인 복지 시설 격차 데이터를 가공하여 인사이트 도출.', color: 'from-blue-500 to-cyan-500' },
+            { 
+                id: '02', 
+                title: '데이터 스토리텔링', 
+                desc: 'Gemini 스토리북: 공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력 있는 리포트 작성하여 스토리북으로 만들기', 
+                tools: ['Gemini', 'Storybook', 'Data'], 
+                detail: `
+                    <strong>1. 프로젝트 목표</strong><br/>
+                    복지 사각지대 데이터를 Gemini를 활용해 분석하고, 단순한 수치를 넘어선 감동적인 스토리텔링 리포트를 구성했습니다.<br/><br/>
+                    <strong>2. 핵심 과정</strong><br/>
+                    • 데이터 추출: 공공 API를 활용한 지역별 복지 지표 수집<br/>
+                    • AI 분석: Gemini Pro를 이용한 데이터 패턴 해석 및 페르소나 생성<br/>
+                    • 시각화: 스토리북 형식의 시각 인터페이스 설계
+                `, 
+                color: 'from-blue-500 to-cyan-500',
+                link: './02/index.html'
+            },
             { id: '03', title: 'AI 기반 데이터 시각화', desc: '데이터 인사이트를 도출하기 위해 시각화 도구를 활용했습니다.', tools: ['Seaborn', 'Tableau'], detail: '인구 밀도 대비 복지 수요를 직관적으로 파악하는 대시보드 제작.', color: 'from-teal-500 to-emerald-500' },
             { id: '04', title: '텍스트 마이닝 분석', desc: '뉴스 기사 크롤링과 워드클라우드로 여론을 분석했습니다.', tools: ['BS4', 'KoNLPy'], detail: '복지 사각지대 관련 뉴스 키워드 분석을 통한 사회적 이슈 파악.', color: 'from-orange-500 to-amber-500' },
             { id: '05', title: 'AI 윤리와 책임', desc: 'AI 활용 시 발생하는 편향성과 개인정보 보호 이슈를 탐구했습니다.', tools: ['Ethics', 'Case Study'], detail: '사회복지 서비스 자동화 시 발생 가능한 알고리즘 편향 사례 연구.', color: 'from-red-500 to-rose-500' },
@@ -336,7 +351,6 @@
             card.setAttribute('data-aos', 'fade-up');
             card.setAttribute('data-aos-delay', index * 50);
             
-            // Fixed: All cards now trigger openModal instead of navigating
             card.onclick = (e) => {
                 openModal(item);
             };
@@ -363,6 +377,13 @@
         const modalContent = document.getElementById('modal-content');
 
         function openModal(item) {
+            // "AI의 이해" (id: '01') 및 "데이터 스토리텔링" (id: '02') 처리
+            const isTargetProject = (item.id === '01' || item.id === '02');
+            const buttonLabel = item.id === '01' ? 'Go to Assignment Page' : (item.id === '02' ? '결과보기' : 'Return to Archive');
+            const buttonAction = isTargetProject 
+                ? `window.location.href='./${item.id}/index.html'` 
+                : "closeModal()";
+
             modalContent.innerHTML = `
                 <div class="mb-4 text-purple-500 font-mono text-xs tracking-widest uppercase">Assignment Detail</div>
                 <h2 class="text-4xl font-black mb-8 leading-tight">${item.title}</h2>
@@ -379,7 +400,9 @@
                     </section>
                 </div>
                 <div class="mt-16 pt-8 border-t border-gray-500/10 text-center">
-                    <button onclick="closeModal()" class="px-10 py-4 glass hover:bg-gray-500/5 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase">Return to Archive</button>
+                    <button onclick="${buttonAction}" class="px-10 py-4 glass hover:bg-gray-500/5 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase">
+                        ${buttonLabel}
+                    </button>
                 </div>
             `;
             modalBackdrop.classList.remove('hidden');
