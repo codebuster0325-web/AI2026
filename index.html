@@ -316,7 +316,8 @@
                     <strong>3. 생성형 AI란?</strong><br/>
                     데이터 패턴을 학습해 새로운 콘텐츠를 창작하는 인공지능입니다.
                 `, 
-                color: 'from-purple-500 to-pink-500' 
+                color: 'from-purple-500 to-pink-500',
+                link: './02/index.html'
             },
             { 
                 id: '02', 
@@ -351,8 +352,15 @@
             card.setAttribute('data-aos', 'fade-up');
             card.setAttribute('data-aos-delay', index * 50);
             
+            // 카드 자체 클릭 시: AI의 이해(01)는 바로 이동하도록 설정 (혹은 모달 호출 유지)
             card.onclick = (e) => {
-                openModal(item);
+                if (item.id === '01') {
+                    // 바로 이동하거나 모달을 열 수 있습니다. 
+                    // 사용자가 "+"나 "버튼"을 명시했으므로 모달 내 버튼 처리를 강화합니다.
+                    openModal(item);
+                } else {
+                    openModal(item);
+                }
             };
 
             card.innerHTML = `
@@ -366,8 +374,13 @@
                 </div>
                 <h4 class="text-2xl font-black mb-4 group-hover:translate-x-1 transition-transform duration-300">${item.title}</h4>
                 <p class="opacity-60 text-sm leading-relaxed mb-8 line-clamp-2 font-light">${item.desc}</p>
-                <div class="flex flex-wrap gap-2">
-                    ${item.tools.map(tool => `<span class="px-3 py-1 bg-gray-500/5 border border-gray-500/10 rounded-lg text-[10px] opacity-70 uppercase font-medium">${tool}</span>`).join('')}
+                <div class="flex justify-between items-center mt-auto">
+                    <div class="flex flex-wrap gap-2">
+                        ${item.tools.map(tool => `<span class="px-3 py-1 bg-gray-500/5 border border-gray-500/10 rounded-lg text-[10px] opacity-70 uppercase font-medium">${tool}</span>`).join('')}
+                    </div>
+                    <div class="text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-125">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </div>
                 </div>
             `;
             gridContainer.appendChild(card);
@@ -379,9 +392,18 @@
         function openModal(item) {
             // "AI의 이해" (id: '01') 및 "데이터 스토리텔링" (id: '02') 처리
             const isTargetProject = (item.id === '01' || item.id === '02');
-            const buttonLabel = item.id === '01' ? 'Go to Assignment Page' : (item.id === '02' ? '결과보기' : 'Return to Archive');
+            
+            // 버튼 라벨 설정
+            let buttonLabel = 'Return to Archive';
+            if (item.id === '01') buttonLabel = '결과물보기';
+            else if (item.id === '02') buttonLabel = '결과보기';
+
+            // 버튼 액션 설정 (01번도 02/index.html로 이동)
+            let targetPath = '';
+            if (item.id === '01' || item.id === '02') targetPath = './02/index.html';
+
             const buttonAction = isTargetProject 
-                ? `window.location.href='./${item.id}/index.html'` 
+                ? `window.location.href='${targetPath}'` 
                 : "closeModal()";
 
             modalContent.innerHTML = `
@@ -400,7 +422,7 @@
                     </section>
                 </div>
                 <div class="mt-16 pt-8 border-t border-gray-500/10 text-center">
-                    <button onclick="${buttonAction}" class="px-10 py-4 glass hover:bg-gray-500/5 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase">
+                    <button onclick="${buttonAction}" class="px-10 py-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 glass hover:bg-gray-500/10 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-purple-500/30">
                         ${buttonLabel}
                     </button>
                 </div>
