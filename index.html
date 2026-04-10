@@ -27,7 +27,6 @@
                         dark: '#050508',
                     },
                     animation: {
-                        'slow-spin': 'spin 15s linear infinite',
                         'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
@@ -36,133 +35,47 @@
     </script>
 
     <style>
-        /* Base Theme Styles */
-        body {
-            transition: background-color 0.5s ease, color 0.5s ease;
-        }
-        
-        body.dark {
-            background-color: #050508;
-            color: #e2e8f0;
-        }
-        
-        body:not(.dark) {
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
+        body { transition: background-color 0.5s ease, color 0.5s ease; }
+        body.dark { background-color: #050508; color: #e2e8f0; }
+        body:not(.dark) { background-color: #f8fafc; color: #0f172a; }
 
-        /* Glassmorphism Effect */
         .glass {
             transition: background 0.5s ease, border 0.5s ease;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
 
-        .dark .glass {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        .dark .glass { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); }
+        body:not(.dark) .glass { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05); }
 
-        body:not(.dark) .glass {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-        }
+        .glass-card { position: relative; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .glass-card:hover { transform: translateY(-12px) scale(1.02); }
 
-        /* Card Hover Effect */
-        .glass-card {
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        /* Glow Effects */
+        .card-glow-0 { --glow-color: #a855f7; } .card-glow-1 { --glow-color: #3b82f6; }
+        .card-glow-2 { --glow-color: #2dd4bf; } .card-glow-3 { --glow-color: #f59e0b; }
+        .card-glow-4 { --glow-color: #ef4444; } .card-glow-5 { --glow-color: #ec4899; }
+        .card-glow-6 { --glow-color: #8b5cf6; } .card-glow-7 { --glow-color: #10b981; }
+        .card-glow-8 { --glow-color: #6366f1; } .card-glow-9 { --glow-color: #f43f5e; }
 
-        .glass-card:hover {
-            transform: translateY(-12px) scale(1.02);
-        }
+        .glass-card:hover { border-color: var(--glow-color) !important; box-shadow: 0 0 25px -5px var(--glow-color); }
 
-        /* Individual Card Glow Colors */
-        .card-glow-0 { --glow-color: #a855f7; }
-        .card-glow-1 { --glow-color: #3b82f6; }
-        .card-glow-2 { --glow-color: #2dd4bf; }
-        .card-glow-3 { --glow-color: #f59e0b; }
-        .card-glow-4 { --glow-color: #ef4444; }
-        .card-glow-5 { --glow-color: #ec4899; }
-        .card-glow-6 { --glow-color: #8b5cf6; }
-        .card-glow-7 { --glow-color: #10b981; }
-        .card-glow-8 { --glow-color: #6366f1; }
-        .card-glow-9 { --glow-color: #f43f5e; }
+        .bg-blob { position: fixed; width: 600px; height: 600px; filter: blur(140px); z-index: -1; opacity: 0.15; pointer-events: none; }
+        .text-gradient { background: linear-gradient(90deg, #a855f7, #3b82f6, #2dd4bf); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-        .glass-card:hover {
-            border-color: var(--glow-color) !important;
-            box-shadow: 0 0 25px -5px var(--glow-color);
-        }
+        .theme-toggle-btn { position: relative; width: 56px; height: 28px; border-radius: 20px; background: #e2e8f0; display: flex; align-items: center; padding: 4px; cursor: pointer; transition: background 0.3s ease; }
+        .dark .theme-toggle-btn { background: #334155; }
+        .toggle-circle { width: 20px; height: 20px; background: white; border-radius: 50%; transition: transform 0.3s ease; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .dark .toggle-circle { transform: translateX(28px); background: #0f172a; }
 
-        /* Background Blobs */
-        .bg-blob {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            filter: blur(140px);
-            z-index: -1;
-            opacity: 0.15;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-        
-        body:not(.dark) .bg-blob {
-            opacity: 0.1;
-        }
-
-        .text-gradient {
-            background: linear-gradient(90deg, #a855f7, #3b82f6, #2dd4bf);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Toggle Switch */
-        .theme-toggle-btn {
-            position: relative;
-            width: 56px;
-            height: 28px;
-            border-radius: 20px;
-            background: #e2e8f0;
-            display: flex;
-            align-items: center;
-            padding: 4px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .dark .theme-toggle-btn {
-            background: #334155;
-        }
-
-        .toggle-circle {
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .dark .toggle-circle {
-            transform: translateX(28px);
-            background: #0f172a;
-        }
+        #image-modal { z-index: 100; }
     </style>
 </head>
 <body class="antialiased font-sans dark" id="body-tag">
 
-    <!-- Background Decoration -->
     <div class="bg-blob top-[-15%] left-[-10%] bg-purple-600 animate-pulse-slow"></div>
     <div class="bg-blob bottom-[-15%] right-[-10%] bg-blue-600 animate-pulse-slow" style="animation-delay: 2s"></div>
 
-    <!-- Header -->
     <header class="fixed top-0 w-full z-50 glass border-b">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
             <div class="flex items-center space-x-2">
@@ -195,11 +108,6 @@
                 생성형 AI와 데이터 분석 도구를 활용해 현실 문제를 이해하고,<br class="hidden md:block"/>
                 데이터를 의미 있는 스토리와 콘텐츠로 표현하는 여정입니다.
             </p>
-            <div class="mt-12">
-                <a href="#portfolio" class="inline-block px-10 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold rounded-full shadow-lg hover:shadow-purple-500/20 transition-all transform hover:scale-105">
-                    과제 아카이브 탐색
-                </a>
-            </div>
         </div>
     </section>
 
@@ -207,7 +115,7 @@
     <section id="portfolio" class="py-32 px-6 max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-4">
             <div data-aos="fade-right">
-                <h3 class="text-4xl font-black mb-3">Portfolio Archive</h3>
+                <h3 class="text-4xl font-black mb-3 text-gradient">Portfolio Archive</h3>
                 <p class="opacity-50 text-lg font-light">총 10개의 과제 속에 담긴 성장의 기록</p>
             </div>
             <div class="px-4 py-2 glass rounded-full text-purple-500 text-xs font-mono tracking-widest" data-aos="fade-left">
@@ -216,11 +124,11 @@
         </div>
 
         <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Cards generated by JS -->
+            <!-- Cards rendered by JS -->
         </div>
     </section>
 
-    <!-- Author Section -->
+    <!-- Author Section (Restored) -->
     <section id="about" class="py-32 px-6">
         <div class="max-w-5xl mx-auto">
             <div class="glass p-8 md:p-16 rounded-[3rem] flex flex-col md:flex-row items-center gap-16" data-aos="zoom-in">
@@ -249,28 +157,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-wrap justify-center md:justify-start gap-3">
-                        <span class="px-5 py-2 glass rounded-full text-xs font-semibold">#AI_Literacy</span>
-                        <span class="px-5 py-2 glass rounded-full text-xs font-semibold">#Social_Welfare</span>
-                        <span class="px-5 py-2 glass rounded-full text-xs font-semibold">#PNU_2026</span>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="py-16 px-6 border-t border-gray-500/10 text-center">
-        <div class="max-w-7xl mx-auto space-y-4">
-            <div class="text-gradient font-bold text-xl uppercase tracking-tighter">AI Literacy 2026</div>
-            <p class="opacity-50 text-sm">Email: yuan.choi@example.com</p>
-            <p class="text-xs opacity-30 tracking-widest font-mono italic">&copy; 2026 Choi Yu-an. All rights reserved.</p>
-        </div>
+        <p class="text-xs opacity-30 tracking-widest font-mono italic">&copy; 2026 Choi Yu-an. All rights reserved.</p>
     </footer>
 
-    <!-- Modal Backdrop -->
-    <div id="modal-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-xl z-[60] hidden flex items-center justify-center p-4">
-        <div class="glass max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-[2.5rem] p-10 relative shadow-2xl border-purple-500/20">
+    <!-- Content Modal -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-xl z-[60] hidden flex items-center justify-center p-4" onclick="handleBackdropClick(event)">
+        <div class="glass max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-[2.5rem] p-10 relative shadow-2xl">
             <button onclick="closeModal()" class="absolute top-8 right-8 opacity-50 hover:opacity-100 transition-all transform hover:rotate-90">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -278,161 +176,91 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Image Full Popup Modal -->
+    <div id="image-modal" class="fixed inset-0 bg-black/95 hidden flex items-center justify-center p-4 cursor-zoom-out" onclick="closeImageModal()">
+        <button class="absolute top-8 right-8 text-white opacity-70 hover:opacity-100">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <img id="popup-img" src="" alt="Full View" class="max-w-full max-h-full rounded-lg shadow-2xl object-contain">
+    </div>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true, easing: 'ease-out-expo' });
+        AOS.init({ duration: 1000, once: true });
 
         function toggleTheme() {
             const body = document.getElementById('body-tag');
             const icon = document.getElementById('theme-icon');
-            if (body.classList.contains('dark')) {
-                body.classList.remove('dark');
-                icon.textContent = '☀️';
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.classList.add('dark');
-                icon.textContent = '🌙';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        if (localStorage.getItem('theme') === 'light') {
-            document.getElementById('body-tag').classList.remove('dark');
-            document.getElementById('theme-icon').textContent = '☀️';
+            body.classList.toggle('dark');
+            icon.textContent = body.classList.contains('dark') ? '🌙' : '☀️';
         }
 
         const assignments = [
-            { 
-                id: '01', 
-                title: 'AI의 이해', 
-                desc: 'AI의 정의, 역사적 흐름 및 생성형 AI의 메커니즘을 심도 있게 분석하여 리터러시 역량의 기초를 다졌습니다.', 
-                tools: ['Fundamental', 'Research'], 
-                detail: `
-                    <strong>1. 인공지능(AI)이란?</strong><br/>
-                    인간의 지능적 행동(학습, 추론, 지각 등)을 컴퓨터 소프트웨어로 구현한 기술입니다.<br/><br/>
-                    <strong>2. AI의 발전 역사</strong><br/>
-                    • 1950s: 태동기<br/>• 1980s: 전문가 시스템<br/>• 2010s: 딥러닝 혁명<br/>• 2020s: 생성형 AI 시대<br/><br/>
-                    <strong>3. 생성형 AI란?</strong><br/>
-                    데이터 패턴을 학습해 새로운 콘텐츠를 창작하는 인공지능입니다.
-                `, 
-                color: 'from-purple-500 to-pink-500',
-                link: './02/index.html'
-            },
-            { 
-                id: '02', 
-                title: '데이터 스토리텔링', 
-                desc: '공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력 있는 리포트 작성하여 스토리북으로 만들기', 
-                tools: ['Gemini', 'Storybook', 'Data'], 
-                detail: `
-                    공공 데이터를 분석하여 인사이트를 도출하고, 이를 바탕으로 시각적으로 설득력 있는 리포트를 작성하여 스토리북 형태로 제작하였습니다.
-                `, 
-                color: 'from-blue-500 to-cyan-500',
-                link: './03/index.html'
-            },
-            { 
-                id: '03', 
-                title: '웹기술의 이해', 
-                desc: '현대 웹을 구성하는 핵심 기술과 브라우저의 동작 원리를 학습하고 실습했습니다.', 
-                tools: ['HTML5', 'Tailwind', 'JS'], 
-                detail: `
-                    <strong>1. 프론트엔드 기초</strong><br/>
-                    웹 페이지의 구조(HTML)와 디자인(CSS), 그리고 인터랙션(JS)을 구현하는 기술을 익혔습니다.<br/><br/>
-                    <strong>2. 반응형 웹 디자인</strong><br/>
-                    Tailwind CSS와 같은 현대적인 프레임워크를 활용하여 모바일과 데스크톱 모두에서 최적화된 화면을 구성하는 방법을 실습했습니다.<br/><br/>
-                    <strong>3. 브라우저 렌더링</strong><br/>
-                    사용자가 URL을 입력했을 때 화면이 그려지는 렌더링 파이프라인 과정을 이해하였습니다.
-                `, 
-                color: 'from-teal-500 to-emerald-500' 
-            },
-            { id: '04', title: '텍스트 마이닝 분석', desc: '뉴스 기사 크롤링과 워드클라우드로 여론을 분석했습니다.', tools: ['BS4', 'KoNLPy'], detail: '복지 사각지대 관련 뉴스 키워드 분석을 통한 사회적 이슈 파악.', color: 'from-orange-500 to-amber-500' },
-            { id: '05', title: 'AI 윤리와 책임', desc: 'AI 활용 시 발생하는 편향성과 개인정보 보호 이슈를 탐구했습니다.', tools: ['Ethics', 'Case Study'], detail: '사회복지 서비스 자동화 시 발생 가능한 알고리즘 편향 사례 연구.', color: 'from-red-500 to-rose-500' },
-            { id: '06', title: '문제 해결 시나리오 기획', desc: '사회복지 현장의 페인 포인트를 정의하고 AI 모델을 설계했습니다.', tools: ['Planning', 'Figma'], detail: '고독사 예방을 위한 AI 음성 모니터링 사용자 여정 기획.', color: 'from-indigo-500 to-blue-500' },
-            { id: '07', title: '이미지 생성 AI 활용', desc: '캠페인을 위한 감각적인 포스터 이미지를 AI로 제작했습니다.', tools: ['Midjourney', 'DALL-E'], detail: '복지 가치를 담은 추상적 키워드의 비주얼화 프로세스 경험.', color: 'from-pink-500 to-purple-500' },
-            { id: '08', title: '데이터 기반 스토리텔링', desc: '수치를 감성적인 내러티브로 전환하여 콘텐츠를 제작했습니다.', tools: ['Storyline', 'Canva'], detail: '데이터 속 실재하는 사람들의 이야기를 발굴해 전달력 강화.', color: 'from-yellow-400 to-orange-500' },
-            { id: '09', title: 'AI 자동화 워크플로우', desc: '데이터 수집부터 알림까지의 자동화 파이프라인을 구축했습니다.', tools: ['Zapier', 'Notion'], detail: '사각지대 의심 가구 데이터 연동 및 긴급 대응 자동화 시연.', color: 'from-green-500 to-teal-500' },
-            { id: '10', title: '최종 융합 프로젝트', desc: '모든 역량을 집약하여 지역사회 복지 혁신안을 발표했습니다.', tools: ['Final', 'Pitching'], detail: '지자체 데이터 기반 정책 제언 및 AI 구현 프로토타입 발표.', color: 'from-blue-600 to-indigo-700' }
+            { id: '01', title: 'AI의 이해', desc: 'AI의 정의, 역사 및 생성형 AI의 메커니즘을 분석했습니다.', detail: '인공지능의 태동기부터 현재의 LLM 시대까지의 흐름을 정리하였습니다.', color: 'from-purple-500 to-pink-500', link: './02/index.html', tools: ['Gemini', 'Research'] },
+            { id: '02', title: '데이터 스토리텔링', desc: '공공 데이터를 분석하여 시각적 리포트와 스토리북을 제작했습니다.', detail: '사회복지 데이터를 기반으로 인사이트를 도출하고 내러티브를 구성했습니다.', color: 'from-blue-500 to-cyan-500', link: './03/index.html', tools: ['Storybook', 'Data'] },
+            { id: '03', title: '웹기술의 이해', desc: '웹의 동작 원리와 프론트엔드 핵심 기술을 학습했습니다.', detail: 'HTML, CSS, JavaScript의 상호작용과 브라우저 렌더링 과정을 실습했습니다.', color: 'from-teal-500 to-emerald-500', tools: ['HTML5', 'Tailwind', 'JS'] },
+            { id: '04', title: '텍스트 마이닝 분석', desc: '뉴스 기사 크롤링과 워드클라우드로 여론을 분석했습니다.', detail: '복지 사각지대 관련 뉴스 키워드를 분석하여 사회적 이슈를 파악했습니다.', color: 'from-orange-500 to-amber-500', tools: ['BS4', 'Python'] },
+            { id: '05', title: 'AI 윤리와 책임', desc: 'AI 활용 시 발생하는 편향성과 개인정보 이슈를 탐구했습니다.', detail: '알고리즘의 공정성과 사회복지 현장에서의 윤리적 가이드라인을 연구했습니다.', color: 'from-red-500 to-rose-500', tools: ['Ethics', 'Case Study'] },
+            { id: '06', title: '문제 해결 시나리오', desc: '사회복지 현장의 페인 포인트를 정의하고 AI 모델을 설계했습니다.', detail: '고독사 예방을 위한 스마트 모니터링 시스템의 유저 저니를 기획했습니다.', color: 'from-indigo-500 to-blue-500', tools: ['Figma', 'Strategy'] },
+            { id: '07', title: '이미지 생성 AI 활용', desc: '캠페인을 위한 감각적인 포스터 이미지를 AI로 제작했습니다.', detail: 'DALL-E와 Midjourney를 활용한 비주얼 브랜딩 프로세스를 경험했습니다.', color: 'from-pink-500 to-purple-500', tools: ['DALL-E', 'Midjourney'] },
+            { id: '08', title: '데이터 기반 내러티브', desc: '수치를 감성적인 내러티브로 전환하여 콘텐츠를 제작했습니다.', detail: '차가운 통계 데이터에 온기를 불어넣는 스토리텔링 기법을 적용했습니다.', color: 'from-yellow-400 to-orange-500', tools: ['Canva', 'Storyline'] },
+            { id: '09', title: 'AI 자동화 워크플로우', desc: '데이터 수집부터 알림까지의 자동화 파이프라인을 구축했습니다.', detail: 'Zapier와 Notion을 연동하여 업무 효율을 높이는 시스템을 설계했습니다.', color: 'from-green-500 to-teal-500', tools: ['Zapier', 'Notion'] },
+            { id: '10', title: '최종 융합 프로젝트', desc: '모든 역량을 집약하여 지역사회 복지 혁신안을 발표했습니다.', detail: 'AI 기술을 활용한 지역 거주 취약계층 맞춤형 서비스 프로토타입입니다.', color: 'from-blue-600 to-indigo-700', tools: ['Final Project', 'Pitch'] }
         ];
 
-        const gridContainer = document.getElementById('project-grid');
+        const grid = document.getElementById('project-grid');
         assignments.forEach((item, index) => {
             const card = document.createElement('div');
-            card.className = `glass glass-card p-8 rounded-[2rem] card-glow-${index} group cursor-pointer`;
+            card.className = `glass glass-card p-8 rounded-[2rem] card-glow-${index % 10} group cursor-pointer`;
             card.setAttribute('data-aos', 'fade-up');
-            card.setAttribute('data-aos-delay', index * 50);
-            
-            card.onclick = (e) => {
-                openModal(item);
-            };
-
+            card.setAttribute('data-aos-delay', (index % 3) * 100);
+            card.onclick = () => openModal(item);
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-8">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white font-bold shadow-lg group-hover:scale-110 transition-transform duration-500">
-                        ${item.id}
-                    </div>
-                    <div class="px-3 py-1 glass rounded-full text-[10px] font-mono opacity-50 group-hover:opacity-100 transition-opacity uppercase">
-                        TASK_DONE
-                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform duration-500">${item.id}</div>
+                    <div class="px-3 py-1 glass rounded-full text-[10px] font-mono opacity-50 uppercase">Task_Done</div>
                 </div>
                 <h4 class="text-2xl font-black mb-4 group-hover:translate-x-1 transition-transform duration-300">${item.title}</h4>
                 <p class="opacity-60 text-sm leading-relaxed mb-8 line-clamp-2 font-light">${item.desc}</p>
                 <div class="flex justify-between items-center mt-auto">
                     <div class="flex flex-wrap gap-2">
-                        ${item.tools.map(tool => `<span class="px-3 py-1 bg-gray-500/5 border border-gray-500/10 rounded-lg text-[10px] opacity-70 uppercase font-medium">${tool}</span>`).join('')}
+                        ${item.tools.map(tool => `<span class="px-2 py-1 bg-gray-500/5 border border-gray-500/10 rounded-lg text-[10px] opacity-70 uppercase font-medium">${tool}</span>`).join('')}
                     </div>
                     <div class="text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-125">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     </div>
                 </div>
             `;
-            gridContainer.appendChild(card);
+            grid.appendChild(card);
         });
 
-        const modalBackdrop = document.getElementById('modal-backdrop');
-        const modalContent = document.getElementById('modal-content');
-
         function openModal(item) {
-            let footerContent = '';
-            
-            if (item.id === '01') {
-                footerContent = `
-                    <button onclick="window.location.href='./02/index.html'" class="px-10 py-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 glass hover:bg-gray-500/10 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-purple-500/30">
-                        결과물보기
-                    </button>
-                `;
-            } else if (item.id === '02') {
-                footerContent = `
-                    <button onclick="window.location.href='./03/index.html'" class="px-10 py-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 glass hover:bg-gray-500/10 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-purple-500/30">
-                        결과보기
-                    </button>
-                `;
-            } else if (item.id === '03') {
-                footerContent = `
+            let footer = '';
+            if (item.id === '03') {
+                footer = `
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button onclick="window.location.href='./04/web.mp4'" class="px-6 py-4 glass hover:bg-red-500/10 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase border border-red-500/30 flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path></svg>
-                            동영상 보기
+                        <button onclick="window.location.href='./04/web.mp4'" class="px-6 py-4 glass hover:bg-red-500/10 rounded-2xl font-bold text-xs border border-red-500/30 flex items-center gap-2">
+                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path></svg>
+                             동영상 보기
                         </button>
-                        <button onclick="window.location.href='./04/web.png'" class="px-6 py-4 glass hover:bg-blue-500/10 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase border border-blue-500/30 flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"></path></svg>
+                        <button onclick="openImageModal('./04/web.png')" class="px-6 py-4 glass hover:bg-blue-500/10 rounded-2xl font-bold text-xs border border-blue-500/30 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
                             인포그래픽 보기
                         </button>
-                        <button onclick="window.location.href='./04/web.pdf'" class="px-6 py-4 glass hover:bg-emerald-500/10 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase border border-emerald-500/30 flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>
-                            슬라이드 자료 보기
+                        <button onclick="downloadFile('./04/web.pdf', 'web_tech_slide.pdf')" class="px-6 py-4 glass hover:bg-emerald-500/10 rounded-2xl font-bold text-xs border border-emerald-500/30 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            슬라이드 다운로드
                         </button>
                     </div>
                 `;
+            } else if (item.link) {
+                footer = `<button onclick="window.location.href='${item.link}'" class="px-10 py-4 glass rounded-2xl font-bold text-sm border border-purple-500/30 hover:bg-purple-500/10 transition-colors uppercase tracking-widest">결과물 확인하기</button>`;
             } else {
-                footerContent = `
-                    <button onclick="closeModal()" class="px-10 py-4 bg-gray-500/10 glass hover:bg-gray-500/20 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-white/10">
-                        Return to Archive
-                    </button>
-                `;
+                footer = `<button onclick="closeModal()" class="px-10 py-4 glass rounded-2xl font-bold text-sm border border-white/10">닫기</button>`;
             }
 
-            modalContent.innerHTML = `
-                <div class="mb-4 text-purple-500 font-mono text-xs tracking-widest uppercase">Assignment Detail</div>
+            document.getElementById('modal-content').innerHTML = `
+                <div class="mb-4 text-purple-500 font-mono text-xs tracking-widest uppercase">Assignment ${item.id} Detail</div>
                 <h2 class="text-4xl font-black mb-8 leading-tight">${item.title}</h2>
                 <div class="space-y-10">
                     <section>
@@ -442,24 +270,46 @@
                     <section>
                         <h5 class="text-xs font-black opacity-30 uppercase tracking-widest mb-4">Deep Dive Analysis</h5>
                         <div class="glass p-6 rounded-2xl opacity-90 font-light border-gray-500/10 leading-relaxed text-sm md:text-base">
-                            ${item.detail || '상세 데이터 분석 내용이 준비 중입니다.'}
+                            ${item.detail}
                         </div>
                     </section>
                 </div>
                 <div class="mt-16 pt-8 border-t border-gray-500/10 text-center">
-                    ${footerContent}
+                    ${footer}
                 </div>
             `;
-            modalBackdrop.classList.remove('hidden');
+            document.getElementById('modal-backdrop').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            modalBackdrop.classList.add('hidden');
+            document.getElementById('modal-backdrop').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
-        modalBackdrop.onclick = (e) => { if (e.target === modalBackdrop) closeModal(); };
+        function handleBackdropClick(e) {
+            if (e.target === document.getElementById('modal-backdrop')) closeModal();
+        }
+
+        function downloadFile(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function openImageModal(src) {
+            const modal = document.getElementById('image-modal');
+            const img = document.getElementById('popup-img');
+            img.src = src;
+            modal.classList.remove('hidden');
+        }
+
+        function closeImageModal() {
+            document.getElementById('image-modal').classList.add('hidden');
+        }
     </script>
 </body>
 </html>
