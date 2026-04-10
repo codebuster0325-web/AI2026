@@ -330,7 +330,21 @@
                 color: 'from-blue-500 to-cyan-500',
                 link: './03/index.html'
             },
-            { id: '03', title: 'AI 기반 데이터 시각화', desc: '데이터 인사이트를 도출하기 위해 시각화 도구를 활용했습니다.', tools: ['Seaborn', 'Tableau'], detail: '인구 밀도 대비 복지 수요를 직관적으로 파악하는 대시보드 제작.', color: 'from-teal-500 to-emerald-500' },
+            { 
+                id: '03', 
+                title: '웹기술의 이해', 
+                desc: '현대 웹을 구성하는 핵심 기술과 브라우저의 동작 원리를 학습하고 실습했습니다.', 
+                tools: ['HTML5', 'Tailwind', 'JS'], 
+                detail: `
+                    <strong>1. 프론트엔드 기초</strong><br/>
+                    웹 페이지의 구조(HTML)와 디자인(CSS), 그리고 인터랙션(JS)을 구현하는 기술을 익혔습니다.<br/><br/>
+                    <strong>2. 반응형 웹 디자인</strong><br/>
+                    Tailwind CSS와 같은 현대적인 프레임워크를 활용하여 모바일과 데스크톱 모두에서 최적화된 화면을 구성하는 방법을 실습했습니다.<br/><br/>
+                    <strong>3. 브라우저 렌더링</strong><br/>
+                    사용자가 URL을 입력했을 때 화면이 그려지는 렌더링 파이프라인 과정을 이해하였습니다.
+                `, 
+                color: 'from-teal-500 to-emerald-500' 
+            },
             { id: '04', title: '텍스트 마이닝 분석', desc: '뉴스 기사 크롤링과 워드클라우드로 여론을 분석했습니다.', tools: ['BS4', 'KoNLPy'], detail: '복지 사각지대 관련 뉴스 키워드 분석을 통한 사회적 이슈 파악.', color: 'from-orange-500 to-amber-500' },
             { id: '05', title: 'AI 윤리와 책임', desc: 'AI 활용 시 발생하는 편향성과 개인정보 보호 이슈를 탐구했습니다.', tools: ['Ethics', 'Case Study'], detail: '사회복지 서비스 자동화 시 발생 가능한 알고리즘 편향 사례 연구.', color: 'from-red-500 to-rose-500' },
             { id: '06', title: '문제 해결 시나리오 기획', desc: '사회복지 현장의 페인 포인트를 정의하고 AI 모델을 설계했습니다.', tools: ['Planning', 'Figma'], detail: '고독사 예방을 위한 AI 음성 모니터링 사용자 여정 기획.', color: 'from-indigo-500 to-blue-500' },
@@ -378,19 +392,44 @@
         const modalContent = document.getElementById('modal-content');
 
         function openModal(item) {
-            let buttonLabel = 'Return to Archive';
-            let targetPath = item.link || '#';
-
+            let footerContent = '';
+            
             if (item.id === '01') {
-                buttonLabel = '결과물보기';
+                footerContent = `
+                    <button onclick="window.location.href='./02/index.html'" class="px-10 py-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 glass hover:bg-gray-500/10 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-purple-500/30">
+                        결과물보기
+                    </button>
+                `;
             } else if (item.id === '02') {
-                buttonLabel = '결과보기';
-                targetPath = './03/index.html'; // Explicitly set for Assignment 02
+                footerContent = `
+                    <button onclick="window.location.href='./03/index.html'" class="px-10 py-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 glass hover:bg-gray-500/10 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-purple-500/30">
+                        결과보기
+                    </button>
+                `;
+            } else if (item.id === '03') {
+                footerContent = `
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="console.log('Video clicked')" class="px-6 py-4 glass hover:bg-red-500/10 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase border border-red-500/30 flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path></svg>
+                            동영상 보기
+                        </button>
+                        <button onclick="window.location.href='./04/web.png'" class="px-6 py-4 glass hover:bg-blue-500/10 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase border border-blue-500/30 flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"></path></svg>
+                            인포그래픽 보기
+                        </button>
+                        <button onclick="console.log('Slide clicked')" class="px-6 py-4 glass hover:bg-emerald-500/10 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase border border-emerald-500/30 flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>
+                            슬라이드 자료 보기
+                        </button>
+                    </div>
+                `;
+            } else {
+                footerContent = `
+                    <button onclick="closeModal()" class="px-10 py-4 bg-gray-500/10 glass hover:bg-gray-500/20 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-white/10">
+                        Return to Archive
+                    </button>
+                `;
             }
-
-            const buttonAction = (item.id === '01' || item.id === '02') 
-                ? `window.location.href='${targetPath}'`
-                : "closeModal()";
 
             modalContent.innerHTML = `
                 <div class="mb-4 text-purple-500 font-mono text-xs tracking-widest uppercase">Assignment Detail</div>
@@ -408,9 +447,7 @@
                     </section>
                 </div>
                 <div class="mt-16 pt-8 border-t border-gray-500/10 text-center">
-                    <button onclick="${buttonAction}" class="px-10 py-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 glass hover:bg-gray-500/10 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-purple-500/30">
-                        ${buttonLabel}
-                    </button>
+                    ${footerContent}
                 </div>
             `;
             modalBackdrop.classList.remove('hidden');
