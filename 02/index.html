@@ -203,16 +203,22 @@
     <!-- Nav -->
     <nav>
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
+            <!-- 로고 영역: 클릭 시 ../index.html로 이동 -->
+            <a href="../index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
                 <i class="fa-solid fa-circle-nodes text-2xl text-[var(--accent)]"></i>
                 <span class="font-montserrat font-extrabold text-xl tracking-tighter uppercase">AI Paradigm 2026</span>
-            </div>
+            </a>
+            
             <div class="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest opacity-70">
-                <a href="#intro" class="hover:text-[var(--accent)]">Home</a>
+                <!-- 홈 버튼 추가 -->
+                <a href="../index.html" class="hover:text-[var(--accent)] flex items-center gap-1">
+                    <i class="fa-solid fa-house text-[10px]"></i> HOME
+                </a>
                 <a href="#history" class="hover:text-[var(--accent)]">History</a>
                 <a href="#tech" class="hover:text-[var(--accent)]">Tech</a>
                 <a href="#sovereign" class="hover:text-[var(--accent)]">Sovereign</a>
             </div>
+            
             <button class="theme-toggle" id="theme-btn">
                 <i class="fa-solid fa-moon"></i>
             </button>
@@ -250,7 +256,6 @@
                 <h2 class="text-4xl font-bold mb-4">인공지능의 발전 과정</h2>
                 <p class="text-[var(--text-muted)] max-w-2xl">1950년대 앨런 튜링의 제안부터 현재의 자율 에이전트까지, AI의 핵심 연대기를 탐구합니다.</p>
             </div>
-            <!-- 요청하신 인포그래픽 버튼 추가 -->
             <button onclick="openModal('history-modal')" class="btn-infographic px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-md">
                 <i class="fa-solid fa-image"></i>
                 인포그래픽으로 보기
