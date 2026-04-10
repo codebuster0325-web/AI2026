@@ -325,12 +325,7 @@
                 desc: '공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력 있는 리포트 작성하여 스토리북으로 만들기', 
                 tools: ['Gemini', 'Storybook', 'Data'], 
                 detail: `
-                    <strong>1. 프로젝트 목표</strong><br/>
-                    복지 사각지대 데이터를 Gemini를 활용해 분석하고, 단순한 수치를 넘어선 감동적인 스토리텔링 리포트를 구성했습니다.<br/><br/>
-                    <strong>2. 핵심 과정</strong><br/>
-                    • 데이터 추출: 공공 API를 활용한 지역별 복지 지표 수집<br/>
-                    • AI 분석: Gemini Pro를 이용한 데이터 패턴 해석 및 페르소나 생성<br/>
-                    • 시각화: 스토리북 형식의 시각 인터페이스 설계
+                    공공 데이터를 분석하여 인사이트를 도출하고, 이를 바탕으로 시각적으로 설득력 있는 리포트를 작성하여 스토리북 형태로 제작하였습니다.
                 `, 
                 color: 'from-blue-500 to-cyan-500',
                 link: './03/index.html'
@@ -383,8 +378,6 @@
         const modalContent = document.getElementById('modal-content');
 
         function openModal(item) {
-            const isTargetProject = (item.id === '01' || item.id === '02');
-            
             let buttonLabel = 'Return to Archive';
             let targetPath = item.link || '#';
 
@@ -392,11 +385,11 @@
                 buttonLabel = '결과물보기';
             } else if (item.id === '02') {
                 buttonLabel = '결과보기';
+                targetPath = './03/index.html'; // Explicitly set for Assignment 02
             }
 
-            const isExternal = targetPath.startsWith('http');
-            const buttonAction = isTargetProject 
-                ? (isExternal ? `window.open('${targetPath}', '_blank')` : `window.location.href='${targetPath}'`)
+            const buttonAction = (item.id === '01' || item.id === '02') 
+                ? `window.location.href='${targetPath}'`
                 : "closeModal()";
 
             modalContent.innerHTML = `
