@@ -1,7 +1,4 @@
 <!-- Palette: Neon Cyberpunk (Background: Slate 900, Accents: Cyan 400, Rose 500, Yellow 500) -->
-<!-- Plan: 1. Header with Home Button. 2. Core Metrics (Big numbers & Donut chart). 3. Trend Analysis (Mixed Bar/Line chart). 4. Regional Polarization (Bar & Horizontal Bar charts). 5. Strategic Recommendations (HTML/CSS Cards). -->
-<!-- Visual Choices: Home Button (Navigation), Big Numbers (Inform), Donut Chart (Compare proportions), Mixed Bar/Line (Change over time), Vertical Bar (Compare growth rates), Horizontal Bar (Rankings). All implemented via Chart.js and standard HTML. Confirmed NO SVG used. -->
-<!-- EXPLICIT CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in this output. -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -22,35 +19,20 @@
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 100%;
-            margin-left: auto;
-            margin-right: auto;
             height: 300px;
-            max-height: 400px;
         }
 
         @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
+            .chart-container { height: 350px; }
         }
         
         .stat-card {
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 1px solid #334155;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .text-gradient-cyan {
-            background: linear-gradient(to right, #22d3ee, #0ea5e9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .stat-card:hover { transform: translateY(-5px); }
 
         .text-gradient-rose {
             background: linear-gradient(to right, #fb7185, #e11d48);
@@ -58,80 +40,96 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .text-gradient-yellow {
-            background: linear-gradient(to right, #fde047, #ca8a04);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .home-btn {
+        .nav-btn {
             transition: all 0.3s ease;
             backdrop-filter: blur(8px);
         }
         
-        .home-btn:hover {
-            background-color: #22d3ee;
-            color: #0f172a;
-            box-shadow: 0 0 15px rgba(34, 211, 238, 0.6);
+        .nav-btn-home:hover { background-color: #22d3ee; color: #0f172a; box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); }
+        .nav-btn-video:hover { background-color: #fde047; color: #0f172a; box-shadow: 0 0 15px rgba(253, 224, 71, 0.6); }
+        .nav-btn-story:hover { background-color: #fb7185; color: #ffffff; box-shadow: 0 0 15px rgba(251, 113, 133, 0.6); }
+
+        /* Video Modal Styles */
+        #videoModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
 <body class="antialiased pb-20">
 
-    <!-- Navigation Bar with Home Button -->
-    <nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-slate-900/60 backdrop-blur-md border-b border-slate-800">
-        <a href="../index.html" class="home-btn flex items-center px-4 py-2 rounded-full border border-cyan-400 text-cyan-400 font-bold text-sm uppercase tracking-tighter">
-            <span class="mr-2">🏠</span> HOME
-        </a>
-        <div class="hidden md:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.0</div>
+    <!-- Video Modal -->
+    <div id="videoModal" onclick="closeVideo()">
+        <div class="relative w-full max-w-4xl p-4" onclick="event.stopPropagation()">
+            <button onclick="closeVideo()" class="absolute -top-10 right-4 text-white text-3xl font-bold">&times; 닫기</button>
+            <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-slate-700">
+                <video id="mainVideo" controls class="w-full h-full">
+                    <source src="./mv2.mp4" type="video/mp4">
+                    브라우저가 동영상을 지원하지 않습니다.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex flex-wrap gap-3 justify-between items-center bg-slate-900/60 backdrop-blur-md border-b border-slate-800">
+        <div class="flex flex-wrap gap-2">
+            <a href="../index.html" class="nav-btn nav-btn-home flex items-center px-4 py-2 rounded-full border border-cyan-400 text-cyan-400 font-bold text-xs uppercase">
+                <span class="mr-2">🏠</span> HOME
+            </a>
+            <button onclick="openVideo()" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
+                <span class="mr-2">🎬</span> 영상보기
+            </button>
+            <a href="./img/storybook.pdf" download class="nav-btn nav-btn-story flex items-center px-4 py-2 rounded-full border border-rose-400 text-rose-400 font-bold text-xs uppercase">
+                <span class="mr-2">📁</span> 스토리보드 다운로드
+            </a>
+        </div>
+        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.2</div>
     </nav>
 
     <header class="pt-32 pb-16 px-6 text-center border-b border-slate-800">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-cyan-400 font-bold tracking-wider mb-2 text-sm md:text-base uppercase">Data Visualization Report</h2>
+            <h2 class="text-cyan-400 font-bold tracking-wider mb-2 text-sm uppercase">Data Visualization Report</h2>
             <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">부산광역시 인구동향 및<br><span class="text-gradient-rose">고령화 심층 분석</span></h1>
             <p class="text-slate-400 text-lg md:text-xl font-light">2020 - 2024: 작아지는 도시, 늙어가는 중심</p>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 mt-16 space-y-24">
-
         <!-- 1. Key Statistics -->
         <section>
             <div class="max-w-3xl mx-auto text-center mb-12">
                 <h3 class="text-3xl font-bold mb-4">1. 백만 고령자 시대의 개막</h3>
-                <p class="text-slate-300 text-lg leading-relaxed">지난 5년간 부산의 전체 인구는 지속적으로 감소했지만, 60세 이상 고령 인구는 가파르게 상승하여 사상 처음으로 100만 명을 돌파했습니다. 이제 부산 시민 3명 중 1명은 고령자입니다.</p>
+                <p class="text-slate-300 text-lg leading-relaxed">부산의 60세 이상 고령 인구는 가파르게 상승하여 사상 처음으로 100만 명을 돌파했습니다.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="stat-card rounded-2xl p-8 text-center flex flex-col justify-center">
+                <div class="stat-card rounded-2xl p-8 text-center">
                     <p class="text-slate-400 font-medium mb-2">2024년 총 인구수</p>
-                    <p class="text-4xl md:text-5xl font-black text-white mb-2">3,257,256<span class="text-xl font-normal text-slate-500"> 명</span></p>
-                    <p class="text-rose-500 font-bold">▼ 2.74% (5년 전 대비)</p>
+                    <p class="text-4xl font-black text-white">3,257,256<span class="text-xl font-normal text-slate-500"> 명</span></p>
                 </div>
-                <div class="stat-card rounded-2xl p-8 text-center flex flex-col justify-center">
-                    <p class="text-slate-400 font-medium mb-2">2024년 60세 이상 인구</p>
-                    <p class="text-4xl md:text-5xl font-black text-gradient-rose mb-2">1,020,554<span class="text-xl font-normal text-slate-500"> 명</span></p>
-                    <p class="text-cyan-400 font-bold">▲ 14.38% (5년 전 대비)</p>
+                <div class="stat-card rounded-2xl p-8 text-center">
+                    <p class="text-slate-400 font-medium mb-2">2024년 고령 인구</p>
+                    <p class="text-4xl font-black text-gradient-rose">1,020,554<span class="text-xl font-normal text-slate-500"> 명</span></p>
                 </div>
-                <div class="stat-card rounded-2xl p-8 text-center flex flex-col justify-center">
-                    <p class="text-slate-400 font-medium mb-2">2024년 고령화 비중</p>
-                    <p class="text-4xl md:text-5xl font-black text-gradient-yellow mb-2">31.3<span class="text-xl font-normal text-slate-500"> %</span></p>
-                    <p class="text-cyan-400 font-bold">▲ 4.7%p 증가</p>
+                <div class="stat-card rounded-2xl p-8 text-center">
+                    <p class="text-slate-400 font-medium mb-2">고령화 비중</p>
+                    <p class="text-4xl font-black text-yellow-400">31.3<span class="text-xl font-normal text-slate-500"> %</span></p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-slate-800/50 rounded-3xl p-8 border border-slate-700">
-                <div class="order-2 lg:order-1">
+            <div class="bg-slate-800/50 rounded-3xl p-8 border border-slate-700 flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
                     <h4 class="text-2xl font-bold mb-4">인구 구조의 근본적 재편</h4>
-                    <p class="text-slate-300 mb-4 leading-relaxed">2024년 현재, 60세 이상 인구가 전체 인구의 약 3분의 1을 차지하고 있습니다. 이는 단순한 숫자의 증가를 넘어, 도시의 경제, 복지, 인프라 수요가 근본적으로 변화하고 있음을 의미합니다.</p>
-                    <ul class="space-y-3 mt-6 text-slate-300">
-                        <li class="flex items-center"><span class="text-rose-500 text-2xl mr-3">■</span> 60세 이상: 1,020,554명 (31.3%)</li>
-                        <li class="flex items-center"><span class="text-cyan-400 text-2xl mr-3">■</span> 60세 미만: 2,236,702명 (68.7%)</li>
-                    </ul>
+                    <p class="text-slate-300 leading-relaxed text-sm md:text-base">현재 60세 이상 인구가 전체의 약 3분의 1을 차지하고 있습니다. 이는 단순한 숫자의 증가를 넘어 도시의 미래 동력 변화를 시사합니다.</p>
                 </div>
-                <div class="order-1 lg:order-2 w-full">
-                    <div class="chart-container w-full max-w-md mx-auto h-[350px]">
+                <div class="lg:w-1/2 w-full">
+                    <div class="chart-container">
                         <canvas id="demographicDonut"></canvas>
                     </div>
                 </div>
@@ -142,171 +140,77 @@
         <section>
             <div class="max-w-3xl mx-auto text-center mb-12">
                 <h3 class="text-3xl font-bold mb-4">2. 심화되는 데드크로스 현상</h3>
-                <p class="text-slate-300 text-lg leading-relaxed">총 인구는 매년 약 2.3만 명씩 감소하는 반면, 고령 인구는 꾸준히 우상향하고 있습니다. 인구 감소와 고령화의 역설이 수치로 명확히 드러납니다.</p>
+                <p class="text-slate-300 text-lg">총 인구 감소와 고령 인구의 가파른 증가 추세 비교</p>
             </div>
-
-            <div class="bg-slate-800/50 rounded-3xl p-6 md:p-10 border border-slate-700 w-full">
-                <div class="chart-container w-full h-[400px]">
+            <div class="bg-slate-800/50 rounded-3xl p-6 border border-slate-700">
+                <div class="chart-container h-[400px]">
                     <canvas id="trendMixedChart"></canvas>
                 </div>
             </div>
         </section>
-
-        <!-- 3. Regional Data -->
-        <section>
-            <div class="max-w-3xl mx-auto text-center mb-12">
-                <h3 class="text-3xl font-bold mb-4">3. 지역별 극심한 양극화</h3>
-                <p class="text-slate-300 text-lg leading-relaxed">모든 지역이 똑같이 늙어가는 것은 아닙니다. 원도심은 인구 유출과 고령화가 겹쳐 초고령화에 진입했고, 신규 주거단지들은 가장 빠른 속도로 고령 인구가 늘어나고 있습니다.</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-slate-800/50 rounded-3xl p-6 border border-slate-700">
-                    <h4 class="text-xl font-bold mb-2 text-center">고령화 비중 양극화 (2024년)</h4>
-                    <p class="text-sm text-slate-400 text-center mb-6">원도심의 초고령화 vs 신도시의 상대적 젊음</p>
-                    <div class="chart-container w-full h-[300px]">
-                        <canvas id="agingRatioBar"></canvas>
-                    </div>
-                    <div class="mt-6 text-sm text-slate-300">
-                        <p class="mb-2"><strong class="text-rose-400">원도심의 위기:</strong> 영도구는 고령화 비중이 40.1%에 달해, 10명 중 4명이 노인인 심각한 상황입니다.</p>
-                        <p><strong class="text-cyan-400">신도시의 현황:</strong> 강서구는 19.5%로 가장 낮지만, 향후 증가 속도에 대비해야 합니다.</p>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800/50 rounded-3xl p-6 border border-slate-700">
-                    <h4 class="text-xl font-bold mb-2 text-center">5년간 고령 인구 증가율 Top 5</h4>
-                    <p class="text-sm text-slate-400 text-center mb-6">주거 밀집지와 강서구의 고령화 가속</p>
-                    <div class="chart-container w-full h-[300px]">
-                        <canvas id="elderlyGrowthBar"></canvas>
-                    </div>
-                    <div class="mt-6 text-sm text-slate-300">
-                        <p class="mb-2"><strong class="text-yellow-400">성장과 고령화의 공존:</strong> 강서구는 총인구가 증가(+6.6%)한 유일한 지역임과 동시에 고령 인구 증가 속도(+22.0%)도 1위입니다.</p>
-                        <p><strong class="text-slate-200">주거지 밀집지역:</strong> 북구, 기장군, 사상구 등은 베이비부머 세대의 고령기 진입으로 부산 평균(+14.4%)을 훌쩍 뛰어넘었습니다.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. Recommendations -->
-        <section>
-            <div class="max-w-3xl mx-auto text-center mb-12">
-                <h3 class="text-3xl font-bold mb-4 text-cyan-400">4. 결론 및 정책 제언</h3>
-                <p class="text-slate-300 text-lg leading-relaxed">지역별 편차와 가속화되는 고령화에 대응하기 위해, 획일적인 정책이 아닌 지역 특성에 맞는 맞춤형 인구 및 복지 전략이 시급합니다.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-slate-800 border-t-4 border-rose-500 rounded-xl p-8 shadow-lg">
-                    <div class="text-5xl mb-4">🏘️</div>
-                    <h4 class="text-xl font-bold mb-4 text-white">Aging in Place 전략</h4>
-                    <h5 class="text-sm font-semibold text-rose-400 mb-2">대상: 원도심 (영도, 중구, 동구)</h5>
-                    <p class="text-slate-400 text-sm leading-relaxed">대규모 인프라 재건축보다는, 고령자가 살던 곳에서 계속 거주할 수 있도록 기존 주거 환경의 고령 친화적 개보수와 통합 돌봄 서비스의 지역 거점화가 최우선되어야 합니다.</p>
-                </div>
-
-                <div class="bg-slate-800 border-t-4 border-yellow-400 rounded-xl p-8 shadow-lg">
-                    <div class="text-5xl mb-4">🏃</div>
-                    <h4 class="text-xl font-bold mb-4 text-white">Active Senior 인프라</h4>
-                    <h5 class="text-sm font-semibold text-yellow-400 mb-2">대상: 주거 밀집지 (북구, 사상구 등)</h5>
-                    <p class="text-slate-400 text-sm leading-relaxed">고령 인구가 급증하는 지역은 은퇴 후에도 경제적, 사회적 활동 의지가 높은 '액티브 시니어'를 타겟으로 한 양질의 노인 일자리 및 평생 교육 프로그램 확충이 필요합니다.</p>
-                </div>
-
-                <div class="bg-slate-800 border-t-4 border-cyan-400 rounded-xl p-8 shadow-lg">
-                    <div class="text-5xl mb-4">🤝</div>
-                    <h4 class="text-xl font-bold mb-4 text-white">세대 통합 인구 정책</h4>
-                    <h5 class="text-sm font-semibold text-cyan-400 mb-2">대상: 부산시 전역 (강서구 모델 참고)</h5>
-                    <p class="text-slate-400 text-sm leading-relaxed">전체 인구의 31%를 차지하는 고령층 부양 부담을 완화하기 위해, 강서구의 인구 유입 성공 사례를 분석하여 청년층이 머무를 수 있는 강력한 일자리 및 정주여건 개선 정책이 동반되어야 합니다.</p>
-                </div>
-            </div>
-        </section>
-
     </main>
 
     <footer class="mt-24 py-8 border-t border-slate-800 text-center text-slate-500 text-sm">
         <p>Source: 통계청 인구총조사 (2020-2024)</p>
-        <p class="mt-2">부산광역시 인구동향 및 고령화 심층 분석 대시보드</p>
     </footer>
 
     <script>
+        // Modal Control
+        const modal = document.getElementById('videoModal');
+        const video = document.getElementById('mainVideo');
+
+        function openVideo() {
+            modal.style.display = 'flex';
+            video.play();
+        }
+
+        function closeVideo() {
+            modal.style.display = 'none';
+            video.pause();
+            video.currentTime = 0;
+        }
+
+        // Charts Initialization
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
 
-        function wrapLabel(label) {
-            if(label.length <= 16) return label;
-            let words = label.split(' ');
-            let lines = [];
-            let currentLine = words[0] || "";
-            for(let i=1; i<words.length; i++) {
-                if(currentLine.length + words[i].length + 1 <= 16) {
-                    currentLine += ' ' + words[i];
-                } else {
-                    lines.push(currentLine);
-                    currentLine = words[i];
-                }
-            }
-            if(currentLine) lines.push(currentLine);
-            return lines;
-        }
-
-        const tooltipConfig = {
-            callbacks: {
-                title: function(tooltipItems) {
-                    const item = tooltipItems[0];
-                    let label = item.chart.data.labels[item.dataIndex];
-                    if (Array.isArray(label)) {
-                        return label.join(' ');
-                    } else {
-                        return label;
-                    }
-                }
-            }
-        };
-
-        const donutLabels = ['60세 이상 고령 인구', '60세 미만 인구'].map(wrapLabel);
+        // Donut Chart
         new Chart(document.getElementById('demographicDonut'), {
             type: 'doughnut',
             data: {
-                labels: donutLabels,
+                labels: ['60세 이상', '60세 미만'],
                 datasets: [{
                     data: [1020554, 2236702],
                     backgroundColor: ['#e11d48', '#0ea5e9'],
-                    borderWidth: 0,
-                    hoverOffset: 4
+                    borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom', labels: { padding: 20, color: '#f8fafc', font: { size: 14 } } },
-                    tooltip: tooltipConfig
-                },
-                cutout: '70%'
+                cutout: '70%',
+                plugins: { legend: { position: 'bottom' } }
             }
         });
 
-        const trendLabels = ['2020년', '2024년'].map(wrapLabel);
+        // Mixed Chart
         new Chart(document.getElementById('trendMixedChart'), {
             type: 'bar',
             data: {
-                labels: trendLabels,
+                labels: ['2020년', '2024년'],
                 datasets: [
                     {
                         type: 'line',
-                        label: '60세 이상 인구 (명)',
+                        label: '고령 인구',
                         data: [892277, 1020554],
                         borderColor: '#fb7185',
-                        backgroundColor: 'rgba(251, 113, 133, 0.1)',
-                        borderWidth: 3,
-                        pointBackgroundColor: '#e11d48',
-                        pointRadius: 6,
-                        fill: true,
-                        yAxisID: 'y1'
+                        yAxisID: 'y1',
+                        fill: false
                     },
                     {
-                        type: 'bar',
-                        label: '총 인구 (명)',
+                        label: '총 인구',
                         data: [3349016, 3257256],
                         backgroundColor: '#0ea5e9',
-                        borderRadius: 6,
-                        barPercentage: 0.5,
                         yAxisID: 'y'
                     }
                 ]
@@ -314,88 +218,9 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: {
-                    legend: { position: 'top', labels: { color: '#f8fafc' } },
-                    tooltip: tooltipConfig
-                },
                 scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: 'left',
-                        min: 3000000,
-                        max: 3500000,
-                        grid: { color: '#334155' },
-                        ticks: { callback: function(value) { return value.toLocaleString(); } }
-                    },
-                    y1: {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        min: 800000,
-                        max: 1100000,
-                        grid: { drawOnChartArea: false },
-                        ticks: { callback: function(value) { return value.toLocaleString(); } }
-                    }
-                }
-            }
-        });
-
-        const ratioLabels = ['영도구', '중구', '동구', '기장군', '강서구'].map(wrapLabel);
-        new Chart(document.getElementById('agingRatioBar'), {
-            type: 'bar',
-            data: {
-                labels: ratioLabels,
-                datasets: [{
-                    label: '고령화 비중 (%)',
-                    data: [40.1, 37.9, 37.0, 24.9, 19.5],
-                    backgroundColor: [
-                        '#e11d48', '#fb7185', '#f43f5e', 
-                        '#22d3ee', '#0ea5e9'  
-                    ],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: tooltipConfig
-                },
-                scales: {
-                    x: { grid: { color: '#334155' }, max: 50 },
-                    y: { grid: { display: false }, ticks: { color: '#f8fafc' } }
-                }
-            }
-        });
-
-        const growthLabels = ['강서구', '북구', '기장군', '사상구', '영도구'].map(wrapLabel);
-        new Chart(document.getElementById('elderlyGrowthBar'), {
-            type: 'bar',
-            data: {
-                labels: growthLabels,
-                datasets: [{
-                    label: '5년간 고령 인구 증가율 (%)',
-                    data: [22.0, 21.9, 20.6, 18.6, 7.5],
-                    backgroundColor: [
-                        '#eab308', '#22d3ee', '#22d3ee', '#22d3ee', '#94a3b8'
-                    ],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: tooltipConfig
-                },
-                scales: {
-                    y: { grid: { color: '#334155' } },
-                    x: { grid: { display: false }, ticks: { color: '#f8fafc' } }
+                    y: { position: 'left', min: 3000000 },
+                    y1: { position: 'right', min: 800000 }
                 }
             }
         });
