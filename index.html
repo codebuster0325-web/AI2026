@@ -317,12 +317,12 @@
                     데이터 패턴을 학습해 새로운 콘텐츠를 창작하는 인공지능입니다.
                 `, 
                 color: 'from-purple-500 to-pink-500',
-                link: './02/index.html' // AI의 이해 카드 결과물 링크
+                link: './02/index.html'
             },
             { 
                 id: '02', 
                 title: '데이터 스토리텔링', 
-                desc: 'Gemini 스토리북: 공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력 있는 리포트 작성하여 스토리북으로 만들기', 
+                desc: '공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력 있는 리포트 작성하여 스토리북으로 만들기', 
                 tools: ['Gemini', 'Storybook', 'Data'], 
                 detail: `
                     <strong>1. 프로젝트 목표</strong><br/>
@@ -333,7 +333,7 @@
                     • 시각화: 스토리북 형식의 시각 인터페이스 설계
                 `, 
                 color: 'from-blue-500 to-cyan-500',
-                link: 'https://gemini.google.com/share/4f193c0b00d0' // Gemini 공유 링크로 변경
+                link: './03/index.html'
             },
             { id: '03', title: 'AI 기반 데이터 시각화', desc: '데이터 인사이트를 도출하기 위해 시각화 도구를 활용했습니다.', tools: ['Seaborn', 'Tableau'], detail: '인구 밀도 대비 복지 수요를 직관적으로 파악하는 대시보드 제작.', color: 'from-teal-500 to-emerald-500' },
             { id: '04', title: '텍스트 마이닝 분석', desc: '뉴스 기사 크롤링과 워드클라우드로 여론을 분석했습니다.', tools: ['BS4', 'KoNLPy'], detail: '복지 사각지대 관련 뉴스 키워드 분석을 통한 사회적 이슈 파악.', color: 'from-orange-500 to-amber-500' },
@@ -352,7 +352,6 @@
             card.setAttribute('data-aos', 'fade-up');
             card.setAttribute('data-aos-delay', index * 50);
             
-            // 카드 클릭 시 모달 열기
             card.onclick = (e) => {
                 openModal(item);
             };
@@ -386,7 +385,6 @@
         function openModal(item) {
             const isTargetProject = (item.id === '01' || item.id === '02');
             
-            // 버튼 라벨 및 타겟 URL 설정
             let buttonLabel = 'Return to Archive';
             let targetPath = item.link || '#';
 
@@ -396,5 +394,42 @@
                 buttonLabel = '결과보기';
             }
 
-            // 버튼 액션: 외부 링크면 새 창에서 열고, 아니면 현재 창에서 이동
-            const isExternal = targetPath.startsWith
+            const isExternal = targetPath.startsWith('http');
+            const buttonAction = isTargetProject 
+                ? (isExternal ? `window.open('${targetPath}', '_blank')` : `window.location.href='${targetPath}'`)
+                : "closeModal()";
+
+            modalContent.innerHTML = `
+                <div class="mb-4 text-purple-500 font-mono text-xs tracking-widest uppercase">Assignment Detail</div>
+                <h2 class="text-4xl font-black mb-8 leading-tight">${item.title}</h2>
+                <div class="space-y-10">
+                    <section>
+                        <h5 class="text-xs font-black opacity-30 uppercase tracking-widest mb-4">Project Overview</h5>
+                        <p class="opacity-80 text-lg leading-relaxed font-light">${item.desc}</p>
+                    </section>
+                    <section>
+                        <h5 class="text-xs font-black opacity-30 uppercase tracking-widest mb-4">Deep Dive Analysis</h5>
+                        <div class="glass p-6 rounded-2xl opacity-90 font-light border-gray-500/10 leading-relaxed text-sm md:text-base">
+                            ${item.detail || '상세 데이터 분석 내용이 준비 중입니다.'}
+                        </div>
+                    </section>
+                </div>
+                <div class="mt-16 pt-8 border-t border-gray-500/10 text-center">
+                    <button onclick="${buttonAction}" class="px-10 py-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 glass hover:bg-gray-500/10 rounded-2xl transition-all font-bold text-sm tracking-widest uppercase border border-purple-500/30">
+                        ${buttonLabel}
+                    </button>
+                </div>
+            `;
+            modalBackdrop.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        modalBackdrop.onclick = (e) => { if (e.target === modalBackdrop) closeModal(); };
+    </script>
+</body>
+</html>
