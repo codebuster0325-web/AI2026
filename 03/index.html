@@ -80,15 +80,15 @@
             <a href="../index.html" class="nav-btn nav-btn-home flex items-center px-4 py-2 rounded-full border border-cyan-400 text-cyan-400 font-bold text-xs uppercase">
                 <span class="mr-2">🏠</span> HOME
             </a>
-            <!-- 클릭 시 playVideo() 함수 실행 -->
-            <button onclick="playVideo()" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
+            <!-- 클릭 시 오직 nana.mp4 재생만 수행 -->
+            <button onclick="playNanaVideo()" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
                 <span class="mr-2">🎬</span> 영상 보기
             </button>
             <a href="./img/storybook.pdf" download class="nav-btn nav-btn-story flex items-center px-4 py-2 rounded-full border border-rose-400 text-rose-400 font-bold text-xs uppercase">
                 <span class="mr-2">📁</span> 스토리보드 다운로드
             </a>
         </div>
-        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.6.1</div>
+        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.6.2</div>
     </nav>
 
     <header class="pt-32 pb-16 px-6 text-center border-b border-slate-800">
@@ -105,14 +105,14 @@
         <section id="video-section" class="scroll-mt-32">
             <div class="max-w-4xl mx-auto">
                 <div class="video-wrapper rounded-3xl group">
-                    <video id="mainVideo" controls preload="auto" playsinline>
+                    <video id="nanaVideo" controls preload="auto" playsinline>
                         <source src="./03/nana.mp4" type="video/mp4">
-                        사용 중인 브라우저에서 동영상을 재생할 수 없습니다. 파일 경로(./03/nana.mp4)를 확인해 주세요.
+                        사용 중인 브라우저에서 동영상을 재생할 수 없습니다.
                     </video>
                 </div>
                 <div class="mt-4 flex justify-between items-center px-2">
-                    <p class="text-slate-500 text-xs font-mono">현재 실행 파일: nana.mp4</p>
-                    <span class="text-yellow-500 text-xs font-bold tracking-tighter italic">"버튼을 누르면 영상이 즉시 재생됩니다"</span>
+                    <p class="text-slate-500 text-xs font-mono">Target: nana.mp4</p>
+                    <span class="text-yellow-500 text-xs font-bold tracking-tighter italic">"상단 버튼 클릭 시 이 영상이 실행됩니다"</span>
                 </div>
             </div>
         </section>
@@ -171,24 +171,19 @@
     </footer>
 
     <script>
-        // 비디오 재생 함수
-        function playVideo() {
-            const video = document.getElementById('mainVideo');
-            const section = document.getElementById('video-section');
-            
-            // 영상 위치로 스크롤
-            section.scrollIntoView({ behavior: 'smooth' });
-            
-            // 영상 재생 (브라우저 정책상 사용자 인터랙션이 필요하므로 버튼 클릭 시 실행됨)
-            video.play().catch(error => {
-                console.log("자동 재생이 차단되었습니다. 수동으로 재생 버튼을 눌러주세요.", error);
-            });
+        // 오직 nana.mp4를 실행하는 함수
+        function playNanaVideo() {
+            const video = document.getElementById('nanaVideo');
+            if (video) {
+                // 영상 위치로 이동 후 재생
+                document.getElementById('video-section').scrollIntoView({ behavior: 'smooth' });
+                video.play().catch(e => console.error("재생 실패:", e));
+            }
         }
 
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
 
-        // Donut Chart
         new Chart(document.getElementById('demographicDonut'), {
             type: 'doughnut',
             data: {
@@ -204,13 +199,10 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 cutout: '75%',
-                plugins: { 
-                    legend: { position: 'bottom', labels: { padding: 20 } }
-                }
+                plugins: { legend: { position: 'bottom' } }
             }
         });
 
-        // Trend Mixed Chart
         new Chart(document.getElementById('trendMixedChart'), {
             type: 'bar',
             data: {
@@ -222,7 +214,6 @@
                         data: [892277, 934024, 965387, 997993, 1020554],
                         borderColor: '#fb7185',
                         borderWidth: 3,
-                        pointBackgroundColor: '#fb7185',
                         yAxisID: 'y1',
                         fill: false,
                         tension: 0.4
@@ -240,21 +231,8 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y: { 
-                        position: 'left', 
-                        min: 3000000,
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                        ticks: { callback: v => (v / 10000).toLocaleString() + '만' }
-                    },
-                    y1: { 
-                        position: 'right', 
-                        min: 800000,
-                        grid: { display: false },
-                        ticks: { callback: v => (v / 10000).toLocaleString() + '만' }
-                    }
-                },
-                plugins: {
-                    legend: { position: 'top' }
+                    y: { position: 'left', min: 3000000, ticks: { callback: v => (v / 10000).toLocaleString() + '만' } },
+                    y1: { position: 'right', min: 800000, ticks: { callback: v => (v / 10000).toLocaleString() + '만' } }
                 }
             }
         });
