@@ -55,7 +55,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             align-items: center;
             justify-content: center;
         }
@@ -66,10 +66,10 @@
     <!-- Video Modal -->
     <div id="videoModal" onclick="closeVideo()">
         <div class="relative w-full max-w-4xl p-4" onclick="event.stopPropagation()">
-            <button onclick="closeVideo()" class="absolute -top-10 right-4 text-white text-3xl font-bold transition-colors hover:text-rose-400">&times; 닫기</button>
-            <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-slate-700">
+            <button onclick="closeVideo()" class="absolute -top-12 right-4 text-white text-4xl font-bold hover:text-rose-400">&times; 닫기</button>
+            <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10">
                 <video id="mainVideo" controls class="w-full h-full">
-                    <source id="videoSource" src="./03/img/video.mp4" type="video/mp4">
+                    <source src="./03/img/video.mp4" type="video/mp4">
                     브라우저가 동영상을 지원하지 않습니다.
                 </video>
             </div>
@@ -82,6 +82,7 @@
             <a href="../index.html" class="nav-btn nav-btn-home flex items-center px-4 py-2 rounded-full border border-cyan-400 text-cyan-400 font-bold text-xs uppercase">
                 <span class="mr-2">🏠</span> HOME
             </a>
+            <!-- 영상보기 버튼 -->
             <button onclick="openVideo()" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
                 <span class="mr-2">🎬</span> 영상보기
             </button>
@@ -89,7 +90,7 @@
                 <span class="mr-2">📁</span> 스토리보드 다운로드
             </a>
         </div>
-        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.3</div>
+        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.4</div>
     </nav>
 
     <header class="pt-32 pb-16 px-6 text-center border-b border-slate-800">
@@ -158,35 +159,18 @@
         // Modal Control
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('mainVideo');
-        let playPromise = null;
 
         function openVideo() {
             modal.style.display = 'flex';
-            // play()가 반환하는 promise를 저장하여 제어 (AbortError 방지)
-            playPromise = video.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("자동 재생이 차단되었거나 재생이 취소되었습니다:", error);
-                });
-            }
+            // 비디오 로드 후 재생
+            video.load();
+            video.play().catch(e => console.log("재생 오류 방지:", e));
         }
 
         function closeVideo() {
-            // play() promise가 완료된 후에만 pause()가 실행되도록 처리
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    video.pause();
-                    video.currentTime = 0;
-                    modal.style.display = 'none';
-                }).catch(error => {
-                    video.pause();
-                    modal.style.display = 'none';
-                });
-            } else {
-                video.pause();
-                modal.style.display = 'none';
-            }
+            video.pause();
+            video.currentTime = 0;
+            modal.style.display = 'none';
         }
 
         // Charts Initialization
