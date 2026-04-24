@@ -48,6 +48,13 @@
         .nav-btn-home:hover { background-color: #22d3ee; color: #0f172a; box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); }
         .nav-btn-video:hover { background-color: #fde047; color: #0f172a; box-shadow: 0 0 15px rgba(253, 224, 71, 0.6); }
         .nav-btn-story:hover { background-color: #fb7185; color: #ffffff; box-shadow: 0 0 15px rgba(251, 113, 133, 0.6); }
+
+        /* 비디오 섹션 스타일 */
+        .video-wrapper {
+            background: #1e293b;
+            border: 2px solid #334155;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
 <body class="antialiased pb-20">
@@ -58,16 +65,15 @@
             <a href="../index.html" class="nav-btn nav-btn-home flex items-center px-4 py-2 rounded-full border border-cyan-400 text-cyan-400 font-bold text-xs uppercase">
                 <span class="mr-2">🏠</span> HOME
             </a>
-            <!-- 영상 다운로드 버튼 (경로: ./03/video.mp4) -->
-            <!-- 깃허브 업로드 시 반드시 '03' 폴더 안에 압축이 풀린 'video.mp4' 파일이 실물로 존재해야 합니다. -->
-            <a href="./03/video.mp4" download="busan_population_video.mp4" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
-                <span class="mr-2">🎬</span> 영상 다운로드
+            <!-- 영상 바로보기 앵커 (페이지 내 이동) -->
+            <a href="#video-section" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
+                <span class="mr-2">🎬</span> 영상 보기
             </a>
             <a href="./img/storybook.pdf" download class="nav-btn nav-btn-story flex items-center px-4 py-2 rounded-full border border-rose-400 text-rose-400 font-bold text-xs uppercase">
                 <span class="mr-2">📁</span> 스토리보드 다운로드
             </a>
         </div>
-        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.5.4</div>
+        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.5.7</div>
     </nav>
 
     <header class="pt-32 pb-16 px-6 text-center border-b border-slate-800">
@@ -79,6 +85,21 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 mt-16 space-y-24">
+        
+        <!-- 0. Video Section (재생 영역) -->
+        <section id="video-section" class="scroll-mt-32">
+            <div class="max-w-4xl mx-auto">
+                <div class="video-wrapper rounded-3xl overflow-hidden relative group">
+                    <video controls class="w-full h-full aspect-video bg-black">
+                        <source src="./03/jj(1).mp4" type="video/mp4">
+                        브라우저가 비디오 태그를 지원하지 않습니다.
+                    </video>
+                </div>
+                <p class="mt-4 text-center text-slate-500 text-sm">※ 영상 파일 경로: ./03/jj(1).mp4</p>
+            </div>
+        </section>
+
+        <!-- 1. Key Statistics -->
         <section>
             <div class="max-w-3xl mx-auto text-center mb-12">
                 <h3 class="text-3xl font-bold mb-4">1. 백만 고령자 시대의 개막</h3>
@@ -113,6 +134,7 @@
             </div>
         </section>
 
+        <!-- 2. Trend Analysis -->
         <section>
             <div class="max-w-3xl mx-auto text-center mb-12">
                 <h3 class="text-3xl font-bold mb-4">2. 심화되는 데드크로스 현상</h3>
