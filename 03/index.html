@@ -58,8 +58,8 @@
             <a href="../index.html" class="nav-btn nav-btn-home flex items-center px-4 py-2 rounded-full border border-cyan-400 text-cyan-400 font-bold text-xs uppercase">
                 <span class="mr-2">🏠</span> HOME
             </a>
-            <!-- 영상 다운로드 버튼 (경로 재확인: ./03/video.mp4) -->
-            <!-- 깃허브 업로드 시 반드시 '03' 폴더 안에 'video.mp4' 파일이 있어야 합니다. -->
+            <!-- 영상 다운로드 버튼 (경로: ./03/video.mp4) -->
+            <!-- 깃허브 업로드 시 반드시 '03' 폴더 안에 압축이 풀린 'video.mp4' 파일이 실물로 존재해야 합니다. -->
             <a href="./03/video.mp4" download="busan_population_video.mp4" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
                 <span class="mr-2">🎬</span> 영상 다운로드
             </a>
@@ -67,7 +67,7 @@
                 <span class="mr-2">📁</span> 스토리보드 다운로드
             </a>
         </div>
-        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.5.2</div>
+        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v1.5.4</div>
     </nav>
 
     <header class="pt-32 pb-16 px-6 text-center border-b border-slate-800">
@@ -79,7 +79,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 mt-16 space-y-24">
-        <!-- 1. Key Statistics -->
         <section>
             <div class="max-w-3xl mx-auto text-center mb-12">
                 <h3 class="text-3xl font-bold mb-4">1. 백만 고령자 시대의 개막</h3>
@@ -114,7 +113,6 @@
             </div>
         </section>
 
-        <!-- 2. Trend Analysis -->
         <section>
             <div class="max-w-3xl mx-auto text-center mb-12">
                 <h3 class="text-3xl font-bold mb-4">2. 심화되는 데드크로스 현상</h3>
@@ -133,11 +131,9 @@
     </footer>
 
     <script>
-        // Charts Initialization
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
 
-        // Donut Chart
         new Chart(document.getElementById('demographicDonut'), {
             type: 'doughnut',
             data: {
@@ -156,7 +152,6 @@
             }
         });
 
-        // Mixed Chart
         new Chart(document.getElementById('trendMixedChart'), {
             type: 'bar',
             data: {
