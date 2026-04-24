@@ -85,8 +85,6 @@
             font-size: 32px;
             cursor: pointer;
             z-index: 10001;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-            font-family: sans-serif;
             transition: transform 0.2s ease;
         }
         
@@ -98,13 +96,11 @@
 </head>
 <body class="antialiased pb-20">
 
-    <!-- Navigation Bar -->
     <nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex flex-wrap gap-3 justify-between items-center bg-slate-900/60 backdrop-blur-md border-b border-slate-800">
         <div class="flex flex-wrap gap-2">
             <a href="../index.html" class="nav-btn nav-btn-home flex items-center px-4 py-2 rounded-full border border-cyan-400 text-cyan-400 font-bold text-xs uppercase">
                 <span class="mr-2">🏠</span> HOME
             </a>
-            <!-- 클릭 시 모달 열기 및 ../nana.mp4 실행 -->
             <button onclick="openVideoPopup()" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
                 <span class="mr-2">🎬</span> 영상 보기
             </button>
@@ -112,17 +108,14 @@
                 <span class="mr-2">📁</span> 스토리보드 다운로드
             </a>
         </div>
-        <div class="hidden lg:block text-slate-500 text-xs font-mono">BUSAN DATA PROJECT v2.1.0</div>
     </nav>
 
     <!-- Video Popup Modal -->
     <div id="videoModal" onclick="closeVideoPopup()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-modal-btn" onclick="closeVideoPopup()">&times;</span>
-            <!-- 경로를 ../nana.mp4로 정정 -->
             <video id="nanaVideo" controls playsinline class="w-full h-full bg-black">
                 <source src="../nana.mp4" type="video/mp4">
-                브라우저가 동영상을 재생할 수 없습니다. ../nana.mp4 파일을 확인해 주세요.
             </video>
         </div>
     </div>
@@ -136,7 +129,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 mt-16 space-y-24">
-        <!-- 1. Key Statistics -->
         <section>
             <div class="max-w-3xl mx-auto text-center mb-12">
                 <h3 class="text-3xl font-bold mb-4">1. 백만 고령자 시대의 개막</h3>
@@ -171,7 +163,6 @@
             </div>
         </section>
 
-        <!-- 2. Trend Analysis -->
         <section>
             <div class="max-w-3xl mx-auto text-center mb-12">
                 <h3 class="text-3xl font-bold mb-4">2. 심화되는 데드크로스 현상</h3>
@@ -193,30 +184,21 @@
         const videoModal = document.getElementById('videoModal');
         const nanaVideo = document.getElementById('nanaVideo');
 
-        // 영상 팝업 열기 함수
         function openVideoPopup() {
             videoModal.style.display = 'flex';
-            nanaVideo.load();
-            nanaVideo.play().catch(err => {
-                console.log("재생 정책으로 인해 자동 재생이 제한될 수 있습니다.", err);
-            });
+            nanaVideo.play().catch(err => console.log("Playback error:", err));
         }
 
-        // 영상 팝업 닫기 함수
         function closeVideoPopup() {
             videoModal.style.display = 'none';
             nanaVideo.pause();
             nanaVideo.currentTime = 0;
         }
 
-        // ESC 키로 팝업 닫기
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && videoModal.style.display === 'flex') {
-                closeVideoPopup();
-            }
+            if (e.key === 'Escape' && videoModal.style.display === 'flex') closeVideoPopup();
         });
 
-        // Chart.js Configuration
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
 
@@ -227,8 +209,7 @@
                 datasets: [{
                     data: [1020554, 2236702],
                     backgroundColor: ['#e11d48', '#0ea5e9'],
-                    borderWidth: 0,
-                    hoverOffset: 15
+                    borderWidth: 0
                 }]
             },
             options: {
@@ -250,7 +231,6 @@
                         data: [892277, 934024, 965387, 997993, 1020554],
                         borderColor: '#fb7185',
                         borderWidth: 3,
-                        pointBackgroundColor: '#fb7185',
                         yAxisID: 'y1',
                         fill: false,
                         tension: 0.4
