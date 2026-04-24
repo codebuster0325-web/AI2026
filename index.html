@@ -128,7 +128,7 @@
         </div>
     </section>
 
-    <!-- Author Section (Restored) -->
+    <!-- Author Section -->
     <section id="about" class="py-32 px-6">
         <div class="max-w-5xl mx-auto">
             <div class="glass p-8 md:p-16 rounded-[3rem] flex flex-col md:flex-row items-center gap-16" data-aos="zoom-in">
@@ -199,7 +199,7 @@
             { id: '01', title: 'AI의 이해', desc: 'AI의 정의, 역사 및 생성형 AI의 메커니즘을 분석했습니다.', detail: '인공지능의 태동기부터 현재의 LLM 시대까지의 흐름을 정리하였습니다.', color: 'from-purple-500 to-pink-500', link: './02/index.html', tools: ['Gemini', 'Research'] },
             { id: '02', title: '데이터 스토리텔링', desc: '공공 데이터를 분석하여 시각적 리포트와 스토리북을 제작했습니다.', detail: '사회복지 데이터를 기반으로 인사이트를 도출하고 내러티브를 구성했습니다.', color: 'from-blue-500 to-cyan-500', link: './03/index.html', tools: ['Storybook', 'Data'] },
             { id: '03', title: '웹기술의 이해', desc: '웹의 동작 원리와 프론트엔드 핵심 기술을 학습했습니다.', detail: 'HTML, CSS, JavaScript의 상호작용과 브라우저 렌더링 과정을 실습했습니다.', color: 'from-teal-500 to-emerald-500', tools: ['HTML5', 'Tailwind', 'JS'] },
-            { id: '04', title: '텍스트 마이닝 분석', desc: '뉴스 기사 크롤링과 워드클라우드로 여론을 분석했습니다.', detail: '복지 사각지대 관련 뉴스 키워드를 분석하여 사회적 이슈를 파악했습니다.', color: 'from-orange-500 to-amber-500', tools: ['BS4', 'Python'] },
+            { id: '04', title: '중간고사', desc: '중간고사 과제입니다.', detail: '중간고사 관련 상세 내용은 결과물을 통해 확인하실 수 있습니다.', color: 'from-orange-500 to-amber-500', link: 'https://codebuster0325-web.github.io/yuan/', tools: ['Exam', 'Project'] },
             { id: '05', title: 'AI 윤리와 책임', desc: 'AI 활용 시 발생하는 편향성과 개인정보 이슈를 탐구했습니다.', detail: '알고리즘의 공정성과 사회복지 현장에서의 윤리적 가이드라인을 연구했습니다.', color: 'from-red-500 to-rose-500', tools: ['Ethics', 'Case Study'] },
             { id: '06', title: '문제 해결 시나리오', desc: '사회복지 현장의 페인 포인트를 정의하고 AI 모델을 설계했습니다.', detail: '고독사 예방을 위한 스마트 모니터링 시스템의 유저 저니를 기획했습니다.', color: 'from-indigo-500 to-blue-500', tools: ['Figma', 'Strategy'] },
             { id: '07', title: '이미지 생성 AI 활용', desc: '캠페인을 위한 감각적인 포스터 이미지를 AI로 제작했습니다.', detail: 'DALL-E와 Midjourney를 활용한 비주얼 브랜딩 프로세스를 경험했습니다.', color: 'from-pink-500 to-purple-500', tools: ['DALL-E', 'Midjourney'] },
@@ -254,7 +254,11 @@
                     </div>
                 `;
             } else if (item.link) {
-                footer = `<button onclick="window.location.href='${item.link}'" class="px-10 py-4 glass rounded-2xl font-bold text-sm border border-purple-500/30 hover:bg-purple-500/10 transition-colors uppercase tracking-widest">결과물 확인하기</button>`;
+                // Check if it's an external link or local file
+                const isExternal = item.link.startsWith('http');
+                const action = isExternal ? `window.open('${item.link}', '_blank')` : `window.location.href='${item.link}'`;
+                
+                footer = `<button onclick="${action}" class="px-10 py-4 glass rounded-2xl font-bold text-sm border border-purple-500/30 hover:bg-purple-500/10 transition-colors uppercase tracking-widest">결과물 확인하기</button>`;
             } else {
                 footer = `<button onclick="closeModal()" class="px-10 py-4 glass rounded-2xl font-bold text-sm border border-white/10">닫기</button>`;
             }
