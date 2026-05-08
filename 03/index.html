@@ -1,56 +1,67 @@
-<!-- Palette: Neon Cyberpunk (Background: Slate 900, Accents: Cyan 400, Rose 500, Yellow 500) -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>부산광역시 인구동향 및 고령화 심층 분석 (2020-2024)</title>
+    <title>부산광역시 인구동향 분석 (2020-2024)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap');
         
         body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Modern Glassmorphism & Shadow */
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .chart-container {
             position: relative;
             width: 100%;
-            height: 300px;
+            height: 320px;
         }
 
-        @media (min-width: 768px) {
-            .chart-container { height: 350px; }
-        }
-        
-        .stat-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid #334155;
-            transition: transform 0.3s ease;
-        }
-
-        .stat-card:hover { transform: translateY(-5px); }
-
-        .text-gradient-rose {
-            background: linear-gradient(to right, #fb7185, #e11d48);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
+        /* Custom Navigation */
         .nav-btn {
-            transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
-            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
         }
-        
-        .nav-btn-home:hover { background-color: #22d3ee; color: #0f172a; box-shadow: 0 0 15px rgba(34, 211, 238, 0.6); }
-        .nav-btn-video:hover { background-color: #fde047; color: #0f172a; box-shadow: 0 0 15px rgba(253, 224, 71, 0.6); }
-        .nav-btn-story:hover { background-color: #fb7185; color: #ffffff; box-shadow: 0 0 15px rgba(251, 113, 133, 0.6); }
 
-        /* 비디오 모달 스타일 */
+        .nav-link-primary {
+            background-color: #0f172a;
+            color: white;
+        }
+
+        .nav-link-primary:hover {
+            background-color: #334155;
+        }
+
+        .nav-link-outline {
+            border: 1px solid #e2e8f0;
+            color: #475569;
+        }
+
+        .nav-link-outline:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
+
+        /* Video Modal */
         #videoModal {
             display: none;
             position: fixed;
@@ -58,126 +69,181 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
+            background-color: rgba(15, 23, 42, 0.9);
             z-index: 9999;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(8px);
         }
 
         .modal-content {
             position: relative;
-            width: 95%;
-            max-width: 1100px;
+            width: 90%;
+            max-width: 1000px;
             aspect-ratio: 16 / 9;
             background: #000;
-            border-radius: 1.5rem;
+            border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 0 60px rgba(34, 211, 238, 0.4);
-            border: 1px solid #475569;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .close-modal-btn {
             position: absolute;
-            top: 20px;
-            right: 25px;
-            color: #fff;
-            font-size: 32px;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: white;
+            font-size: 2rem;
+            line-height: 1;
             cursor: pointer;
             z-index: 10001;
-            transition: transform 0.2s ease;
+            background: rgba(255,255,255,0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
-        
-        .close-modal-btn:hover {
-            transform: scale(1.2);
-            color: #fb7185;
-        }
+
+        /* Accent Colors */
+        .text-accent-blue { color: #2563eb; }
+        .bg-accent-blue { background-color: #2563eb; }
     </style>
 </head>
-<body class="antialiased pb-20">
+<body class="antialiased">
 
-    <nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex flex-wrap gap-3 justify-between items-center bg-slate-900/60 backdrop-blur-md border-b border-slate-800">
-        <div class="flex flex-wrap gap-2">
-            <a href="../index.html" class="nav-btn nav-btn-home flex items-center px-4 py-2 rounded-full border border-cyan-400 text-cyan-400 font-bold text-xs uppercase">
-                <span class="mr-2">🏠</span> HOME
-            </a>
-            <button onclick="openVideoPopup()" class="nav-btn nav-btn-video flex items-center px-4 py-2 rounded-full border border-yellow-400 text-yellow-400 font-bold text-xs uppercase">
-                <span class="mr-2">🎬</span> 영상 보기
-            </button>
-            <a href="./img/storybook.pdf" download class="nav-btn nav-btn-story flex items-center px-4 py-2 rounded-full border border-rose-400 text-rose-400 font-bold text-xs uppercase">
-                <span class="mr-2">📁</span> 스토리보드 다운로드
-            </a>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-accent-blue rounded-lg flex items-center justify-center text-white font-bold">B</div>
+                <span class="font-bold text-slate-900 tracking-tight">BUSAN DATA</span>
+            </div>
+            <div class="flex flex-wrap gap-2 md:gap-3">
+                <a href="../index.html" class="nav-btn px-4 py-2 text-sm text-slate-600 hover:text-slate-900">홈으로</a>
+                <!-- 스토리보드 다운로드 버튼 복구 -->
+                <a href="./img/storybook.pdf" download class="nav-btn nav-link-outline px-4 py-2 rounded-lg text-sm flex items-center">
+                    <span class="mr-1.5">📁</span> 스토리보드
+                </a>
+                <button onclick="openVideoPopup()" class="nav-btn nav-link-primary px-5 py-2 rounded-lg text-sm flex items-center">
+                    <span class="mr-1.5">🎬</span> 영상 보기
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- Video Popup Modal -->
+    <!-- Video Modal -->
     <div id="videoModal" onclick="closeVideoPopup()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-modal-btn" onclick="closeVideoPopup()">&times;</span>
-            <video id="nanaVideo" controls playsinline class="w-full h-full bg-black">
+            <video id="nanaVideo" controls playsinline class="w-full h-full">
                 <source src="../nana.mp4" type="video/mp4">
             </video>
         </div>
     </div>
 
-    <header class="pt-32 pb-16 px-6 text-center border-b border-slate-800">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-cyan-400 font-bold tracking-wider mb-2 text-sm uppercase">Data Visualization Report</h2>
-            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight">부산광역시 인구동향 및<br><span class="text-gradient-rose">고령화 심층 분석</span></h1>
-            <p class="text-slate-400 text-lg md:text-xl font-light">2020 - 2024: 작아지는 도시, 늙어가는 중심</p>
+    <!-- Header Section -->
+    <header class="pt-40 pb-20 px-6 bg-white border-b border-slate-100">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="inline-block px-3 py-1 bg-blue-50 text-accent-blue text-xs font-bold rounded-full mb-4 uppercase tracking-widest">Statistical Report 2024</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">부산광역시 인구동향 및<br><span class="text-accent-blue">고령화 심층 분석 보고서</span></h1>
+            <p class="text-slate-500 text-lg font-medium leading-relaxed max-w-2xl mx-auto">
+                2020년부터 2024년까지의 통계 데이터를 기반으로 한 <br class="hidden md:block"> 인구 구조 변화 및 고령화 속도 분석 결과입니다.
+            </p>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 mt-16 space-y-24">
+    <main class="max-w-7xl mx-auto px-6 py-20 space-y-32">
+        
+        <!-- Summary Stats -->
         <section>
-            <div class="max-w-3xl mx-auto text-center mb-12">
-                <h3 class="text-3xl font-bold mb-4">1. 백만 고령자 시대의 개막</h3>
-                <p class="text-slate-300 text-lg leading-relaxed">부산의 60세 이상 고령 인구는 가파르게 상승하여 사상 처음으로 100만 명을 돌파했습니다.</p>
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-1.5 h-8 bg-accent-blue rounded-full"></div>
+                <h2 class="text-2xl font-bold text-slate-900">주요 인구 지표 요약</h2>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="stat-card rounded-2xl p-8 text-center">
-                    <p class="text-slate-400 font-medium mb-2">2024년 총 인구수</p>
-                    <p class="text-4xl font-black text-white">3,257,256<span class="text-xl font-normal text-slate-500"> 명</span></p>
-                </div>
-                <div class="stat-card rounded-2xl p-8 text-center">
-                    <p class="text-slate-400 font-medium mb-2">2024년 고령 인구</p>
-                    <p class="text-4xl font-black text-gradient-rose">1,020,554<span class="text-xl font-normal text-slate-500"> 명</span></p>
-                </div>
-                <div class="stat-card rounded-2xl p-8 text-center">
-                    <p class="text-slate-400 font-medium mb-2">고령화 비중</p>
-                    <p class="text-4xl font-black text-yellow-400">31.3<span class="text-xl font-normal text-slate-500"> %</span></p>
-                </div>
-            </div>
-
-            <div class="bg-slate-800/50 rounded-3xl p-8 border border-slate-700 flex flex-col lg:flex-row items-center gap-12">
-                <div class="lg:w-1/2">
-                    <h4 class="text-2xl font-bold mb-4">인구 구조의 근본적 재편</h4>
-                    <p class="text-slate-300 leading-relaxed text-sm md:text-base">현재 60세 이상 인구가 전체의 약 3분의 1을 차지하고 있습니다. 이는 단순한 숫자의 증가를 넘어 도시의 미래 동력 변화를 시사합니다.</p>
-                </div>
-                <div class="lg:w-1/2 w-full">
-                    <div class="chart-container">
-                        <canvas id="demographicDonut"></canvas>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="stat-card p-8">
+                    <div class="flex justify-between items-start mb-4">
+                        <p class="text-sm font-bold text-slate-400 uppercase tracking-wider">총 인구수 (2024)</p>
+                        <span class="text-blue-500 bg-blue-50 p-2 rounded-lg text-xs">▼ 2.74%</span>
                     </div>
+                    <h3 class="text-3xl font-extrabold text-slate-900">3,257,256 <span class="text-lg font-medium text-slate-400">명</span></h3>
+                </div>
+                
+                <div class="stat-card p-8 border-l-4 border-l-blue-600">
+                    <div class="flex justify-between items-start mb-4">
+                        <p class="text-sm font-bold text-slate-400 uppercase tracking-wider">고령 인구 (60+)</p>
+                        <span class="text-rose-500 bg-rose-50 p-2 rounded-lg text-xs">▲ 14.38%</span>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-slate-900">1,020,554 <span class="text-lg font-medium text-slate-400">명</span></h3>
+                </div>
+
+                <div class="stat-card p-8">
+                    <div class="flex justify-between items-start mb-4">
+                        <p class="text-sm font-bold text-slate-400 uppercase tracking-wider">고령화 비중</p>
+                        <span class="text-slate-500 bg-slate-50 p-2 rounded-lg text-xs">Critical</span>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-slate-900">31.3 <span class="text-lg font-medium text-slate-400">%</span></h3>
                 </div>
             </div>
         </section>
 
-        <section>
-            <div class="max-w-3xl mx-auto text-center mb-12">
-                <h3 class="text-3xl font-bold mb-4">2. 심화되는 데드크로스 현상</h3>
-                <p class="text-slate-300 text-lg">총 인구 감소와 고령 인구의 가파른 증가 추세 비교</p>
+        <!-- Population Structure -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-1.5 h-8 bg-accent-blue rounded-full"></div>
+                    <h2 class="text-2xl font-bold text-slate-900">인구 구조의 재편</h2>
+                </div>
+                <p class="text-slate-600 leading-relaxed mb-8 text-lg">
+                    부산의 인구 구조는 가파르게 고령화되고 있습니다. 특히 60세 이상의 고령 인구가 차지하는 비중이 31%를 넘어서며, 도시 전반의 복지 및 인프라 정책의 대대적인 수정이 필요한 시점입니다.
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
+                        <div class="w-10 h-10 bg-white shadow-sm rounded-lg flex items-center justify-center text-blue-600 font-bold">01</div>
+                        <p class="text-sm font-semibold text-slate-700">전국 대비 가장 빠른 고령화 속도 기록</p>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-xl">
+                        <div class="w-10 h-10 bg-white shadow-sm rounded-lg flex items-center justify-center text-blue-600 font-bold">02</div>
+                        <p class="text-sm font-semibold text-slate-700">원도심 지역 중심의 초고령 사회 진입</p>
+                    </div>
+                </div>
             </div>
-            <div class="bg-slate-800/50 rounded-3xl p-6 border border-slate-700">
-                <div class="chart-container h-[400px]">
+            <div class="stat-card p-10">
+                <div class="chart-container">
+                    <canvas id="demographicDonut"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trend Analysis -->
+        <section>
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-1.5 h-8 bg-accent-blue rounded-full"></div>
+                <h2 class="text-2xl font-bold text-slate-900">연도별 추이 분석</h2>
+            </div>
+            <div class="stat-card p-8">
+                <div class="chart-container" style="height: 400px;">
                     <canvas id="trendMixedChart"></canvas>
                 </div>
             </div>
         </section>
+
     </main>
 
-    <footer class="mt-24 py-8 border-t border-slate-800 text-center text-slate-500 text-sm">
-        <p>Source: 통계청 인구총조사 (2020-2024)</p>
+    <footer class="bg-slate-900 text-slate-400 py-16 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <h4 class="text-white font-bold text-lg mb-2 tracking-tight">BUSAN POPULATION DATA</h4>
+                <p class="text-sm">데이터 출처: 국가통계포털(KOSIS) 및 부산광역시 통계</p>
+            </div>
+            <div class="flex gap-6 text-sm">
+                <span>Privacy Policy</span>
+                <span>Terms of Service</span>
+                <span>© 2024 Busan Data Lab.</span>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -199,8 +265,8 @@
             if (e.key === 'Escape' && videoModal.style.display === 'flex') closeVideoPopup();
         });
 
-        Chart.defaults.color = '#94a3b8';
-        Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.font.family = "'Pretendard', sans-serif";
 
         new Chart(document.getElementById('demographicDonut'), {
             type: 'doughnut',
@@ -208,15 +274,22 @@
                 labels: ['60세 이상', '60세 미만'],
                 datasets: [{
                     data: [1020554, 2236702],
-                    backgroundColor: ['#e11d48', '#0ea5e9'],
-                    borderWidth: 0
+                    backgroundColor: ['#2563eb', '#e2e8f0'],
+                    hoverBackgroundColor: ['#1d4ed8', '#cbd5e1'],
+                    borderWidth: 0,
+                    weight: 0.5
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '75%',
-                plugins: { legend: { position: 'bottom' } }
+                cutout: '80%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, usePointStyle: true, font: { weight: 600 } }
+                    }
+                }
             }
         });
 
@@ -227,19 +300,24 @@
                 datasets: [
                     {
                         type: 'line',
-                        label: '고령 인구 증가 추이',
+                        label: '고령 인구 증가 (Line)',
                         data: [892277, 934024, 965387, 997993, 1020554],
-                        borderColor: '#fb7185',
-                        borderWidth: 3,
+                        borderColor: '#2563eb',
+                        borderWidth: 4,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#2563eb',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
                         yAxisID: 'y1',
-                        fill: false,
-                        tension: 0.4
+                        tension: 0.4,
+                        fill: false
                     },
                     {
-                        label: '총 인구 감소 추이',
+                        label: '총 인구 감소 (Bar)',
                         data: [3349016, 3324335, 3295760, 3279604, 3257256],
-                        backgroundColor: 'rgba(14, 165, 233, 0.6)',
-                        borderRadius: 8,
+                        backgroundColor: '#f1f5f9',
+                        hoverBackgroundColor: '#e2e8f0',
+                        borderRadius: 12,
                         yAxisID: 'y'
                     }
                 ]
@@ -247,9 +325,24 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', align: 'end', labels: { boxWidth: 8, usePointStyle: true, font: { weight: 600 } } }
+                },
                 scales: {
-                    y: { position: 'left', min: 3000000, ticks: { callback: v => (v / 10000).toLocaleString() + '만' } },
-                    y1: { position: 'right', min: 800000, ticks: { callback: v => (v / 10000).toLocaleString() + '만' } }
+                    y: { 
+                        display: false,
+                        grid: { display: false },
+                        min: 3000000 
+                    },
+                    y1: {
+                        position: 'right',
+                        grid: { borderDash: [5, 5] },
+                        min: 800000,
+                        ticks: { callback: v => (v / 10000).toLocaleString() + '만' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
                 }
             }
         });
