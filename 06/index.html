@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busan Local Vibe - 바다 너머 진짜 부산</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fcfcfc;
+            color: #1a1a1a;
+            scroll-behavior: smooth;
+        }
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* 메인 히어로 배경 - 부산의 밤 (마린시티) */
+        .hero-gradient {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            background-color: #1a1a1a;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        .sticky-nav {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 2px;
+            background: #1a1a1a;
+            margin-top: 10px;
+        }
+        .img-wrapper {
+            background-color: #f3f4f6;
+            overflow: hidden;
+            position: relative;
+        }
+        /* 이미지 로드 애니메이션 */
+        .fade-in-img {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        .fade-in-img.loaded {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 sticky-nav border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <h1 class="serif text-2xl font-bold tracking-tighter">BUSAN LOCAL VIBE</h1>
+            <div class="hidden md:flex space-x-10 text-sm font-medium tracking-widest uppercase">
+                <a href="#about" class="hover:text-gray-500 transition">About</a>
+                <a href="#course" class="hover:text-gray-500 transition">Courses</a>
+                <a href="#strategy" class="hover:text-gray-400 px-4 py-2 bg-black text-white rounded-full transition">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="h-screen flex items-center justify-center relative hero-gradient">
+        <div class="text-center text-white px-6">
+            <p class="uppercase tracking-[0.3em] text-sm mb-4">Beyond the Blue Sea</p>
+            <h2 class="serif text-6xl md:text-8xl mb-8 leading-tight">Authentic<br>Busan</h2>
+            <div class="w-12 h-1 bg-white mx-auto mb-8"></div>
+            <p class="text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+                바다 너머의 일상, 부산의 심장부가 들려주는 진짜 이야기를 만나보세요. 
+                로컬의 활기와 현대적 세련미가 공존하는 특별한 여행이 시작됩니다.
+            </p>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-20 items-center">
+            <div>
+                <span class="text-xs uppercase tracking-widest text-gray-400">Our Vision</span>
+                <h3 class="text-4xl font-bold mt-4 mb-8 leading-tight section-title">단순한 관광을 넘어<br>로컬의 일상을 경험하다</h3>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    해운대와 광안리의 화려한 바다 뒤에는 부산 청년들의 에너지가 응축된 서면과 전포동이 있습니다. 우리는 '관광객용 부산'이 아닌, 로컬들이 사랑하고 즐기는 진짜 부산의 매력을 큐레이션합니다.
+                </p>
+                <p class="text-gray-600 leading-relaxed">
+                    전국 유동인구 1위의 활기찬 상권부터 공구거리 사이의 감각적인 카페까지, 부산의 새로운 이면을 발견하는 기쁨을 선사합니다.
+                </p>
+            </div>
+            <div class="relative">
+                <div class="img-wrapper rounded-lg shadow-2xl h-[500px]">
+                    <!-- 골목 감성 이미지: Unsplash 안정적인 ID 사용 -->
+                    <img src="https://images.unsplash.com/photo-1590650153855-d9e808231d41?auto=format&fit=crop&q=80&w=1000" 
+                         alt="[이미지: 부산 로컬 골목 분위기]" 
+                         class="w-full h-full object-cover fade-in-img"
+                         onload="this.classList.add('loaded')">
+                </div>
+                <div class="absolute -bottom-10 -left-10 bg-white p-8 hidden lg:block shadow-xl rounded-sm border border-gray-100">
+                    <p class="serif text-4xl mb-2 font-bold">127,065+</p>
+                    <p class="text-xs uppercase tracking-widest text-gray-400">Daily Visitors in Seomyeon</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="course" class="bg-gray-50 py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h3 class="serif text-5xl mb-4">Day & Night Dual City</h3>
+                <p class="text-gray-500 uppercase tracking-widest text-xs">Explore the two faces of Busan</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Course A -->
+                <div class="bg-white group overflow-hidden rounded-sm card-hover shadow-sm">
+                    <div class="h-[400px] img-wrapper">
+                        <!-- 전포동 카페 감성: Unsplash 안정적인 ID 사용 -->
+                        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=1000" 
+                             alt="[이미지: 전포 카페거리 테라스]" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-700 fade-in-img"
+                             onload="this.classList.add('loaded')">
+                    </div>
+                    <div class="p-10">
+                        <span class="text-orange-500 text-xs font-bold uppercase tracking-widest">Course A | Day</span>
+                        <h4 class="text-2xl font-bold mt-4 mb-4">전포 로컬 크리에이티브 투어</h4>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">전 세계 유일, 낡은 공구 거리와 세련된 카페가 공존하는 힙한 골목을 탐험합니다. 로컬 브랜드 팝업과 뉴트로 미식 체험이 기다리고 있습니다.</p>
+                        <ul class="text-xs text-gray-400 space-y-2 mb-8">
+                            <li>#전포공구길 #스냅촬영 #부산미식 #뉴트로</li>
+                        </ul>
+                        <a href="#" class="inline-block border-b border-black pb-1 text-sm font-bold uppercase hover:text-gray-400 hover:border-gray-400 transition">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Course B -->
+                <div class="bg-white group overflow-hidden rounded-sm card-hover shadow-sm">
+                    <div class="h-[400px] img-wrapper">
+                        <!-- 부산 야경: Unsplash 안정적인 ID 사용 -->
+                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&q=80&w=1000" 
+                             alt="[이미지: 부산 야경 도시 경관]" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-700 fade-in-img"
+                             onload="this.classList.add('loaded')">
+                    </div>
+                    <div class="p-10">
+                        <span class="text-blue-500 text-xs font-bold uppercase tracking-widest">Course B | Night</span>
+                        <h4 class="text-2xl font-bold mt-4 mb-4">어반 오션 시티 라이트 투어</h4>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">마린시티의 화려한 야경과 광안리 해변의 에너지를 만끽합니다. 프라이빗 요트 파티와 비치바 호핑으로 잊지 못할 밤을 선사합니다.</p>
+                        <ul class="text-xs text-gray-400 space-y-2 mb-8">
+                            <li>#나이트요트 #비치바호핑 #시티뷰시네마 #야경</li>
+                        </ul>
+                        <a href="#" class="inline-block border-b border-black pb-1 text-sm font-bold uppercase hover:text-gray-400 hover:border-gray-400 transition">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy / Features -->
+    <section id="strategy" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-16">
+                <div class="text-center">
+                    <div class="serif text-5xl text-gray-200 mb-6 italic">01</div>
+                    <h5 class="text-lg font-bold mb-4">진짜 유동인구 데이터</h5>
+                    <p class="text-sm text-gray-500 leading-relaxed">SKT 유동인구 데이터를 기반으로 지금 이 순간 가장 뜨거운 장소를 실시간으로 추천해 드립니다.</p>
+                </div>
+                <div class="text-center">
+                    <div class="serif text-5xl text-gray-200 mb-6 italic">02</div>
+                    <h5 class="text-lg font-bold mb-4">Old & New 미식 가이드</h5>
+                    <p class="text-sm text-gray-500 leading-relaxed">부산의 전통 노포부터 미쉐린 가이드 맛집까지, 입체적인 미식의 즐거움을 도슨트해 드립니다.</p>
+                </div>
+                <div class="text-center">
+                    <div class="serif text-5xl text-gray-200 mb-6 italic">03</div>
+                    <h5 class="text-lg font-bold mb-4">안전한 나이트 라이프</h5>
+                    <p class="text-sm text-gray-500 leading-relaxed">최고의 치안을 자랑하는 부산의 밤. 24시간 잠들지 않는 서면의 활기를 안심 셔틀과 함께 즐기세요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / CTA -->
+    <footer id="contact" class="bg-black text-white py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h3 class="serif text-4xl md:text-6xl mb-12">Discover Your Busan</h3>
+            <p class="text-gray-400 mb-12 max-w-xl mx-auto font-light">당신만의 부산 로컬 바이브를 찾을 준비가 되셨나요? 지금 바로 투어 예약을 문의하세요.</p>
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4">
+                <button class="bg-white text-black px-12 py-4 rounded-full font-bold hover:bg-gray-200 transition">Request a Tour</button>
+                <button class="border border-white text-white px-12 py-4 rounded-full font-bold hover:bg-white hover:text-black transition">Download Guide</button>
+            </div>
+            <div class="mt-24 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between text-xs text-gray-500 space-y-4 md:space-y-0">
+                <p>© 2024 BUSAN LOCAL VIBE. All rights reserved.</p>
+                <div class="space-x-6 uppercase tracking-widest">
+                    <a href="#">Instagram</a>
+                    <a href="#">YouTube</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
