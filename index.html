@@ -200,7 +200,7 @@
         const assignments = [
             { id: '01', title: 'AI의 이해', desc: 'AI의 정의, 역사 및 생성형 AI의 메커니즘을 분석했습니다.', detail: '인공지능의 태동기부터 현재의 LLM 시대까지의 흐름을 정리하였습니다.', color: 'from-purple-500 to-pink-500', link: './02/index.html', tools: ['Gemini', 'Research'] },
             { id: '02', title: '데이터 스토리텔링', desc: '공공 데이터를 분석하여 시각적 리포트와 스토리북을 제작했습니다.', detail: '사회복지 데이터를 기반으로 인사이트를 도출하고 내러티브를 구성했습니다.', color: 'from-blue-500 to-cyan-500', link: './03/index.html', tools: ['Storybook', 'Data'] },
-            { id: '03', title: '웹기술의 이해', desc: '웹의 동작 원리와 프론트엔드 핵심 기술을 학습했습니다.', detail: 'HTML, CSS, JavaScript의 상호작용과 브라우저 렌더링 과정을 실습했습니다.', color: 'from-teal-500 to-emerald-500', link: './04/index.html', tools: ['HTML5', 'Tailwind', 'JS'] },
+            { id: '03', title: '웹기술의 이해', desc: '웹의 동작 원리와 프론트엔드 핵심 기술을 학습했습니다.', detail: 'HTML, CSS, JavaScript의 상호작용과 브라우저 렌더링 과정을 실습했습니다.', color: 'from-teal-500 to-emerald-500', tools: ['HTML5', 'Tailwind', 'JS'] },
             { id: '04', title: '중간고사', desc: '중간고사 과제입니다.', detail: '중간고사 관련 상세 내용은 결과물을 통해 확인하실 수 있습니다.', color: 'from-orange-500 to-amber-500', link: 'https://codebuster0325-web.github.io/yuan/', tools: ['Exam', 'Project'] },
             { id: '05', title: '데이터분석(고령운전자)', desc: '코랩으로 데이터분석', detail: 'Google Colab과 Python을 사용하여 고령 운전자 사고 데이터를 정제하고 분석하였습니다.', color: 'from-red-500 to-rose-500', link: './05/index.html', tools: ['Colab', 'Python'] },
             { id: '06', title: '데이터분석(개인형이동장치)', desc: '공유 전동킥보드 등 개인형 이동장치(PMD)의 이용 데이터를 분석했습니다.', detail: '공공 빅데이터를 분석하여 개인형 이동장치의 주 이용 도로망을 파악하고 사고 유발 위험 구역을 식별하여 입지 최적화 대안을 설계했습니다.', color: 'from-indigo-500 to-blue-500', link: './06/index.html', tools: ['Data', 'Python', 'Colab'] },
@@ -216,7 +216,21 @@
             card.className = `glass glass-card p-8 rounded-[2rem] card-glow-${index % 10} group cursor-pointer`;
             card.setAttribute('data-aos', 'fade-up');
             card.setAttribute('data-aos-delay', (index % 3) * 100);
-            card.onclick = () => openModal(item);
+            
+            // 링크가 있는 카드는 클릭 시 바로 이동, 없는 카드(ID:03 등)는 상세 모달창 열기
+            card.onclick = () => {
+                if (item.link) {
+                    const isExternal = item.link.startsWith('http');
+                    if (isExternal) {
+                        window.open(item.link, '_blank');
+                    } else {
+                        window.location.href = item.link;
+                    }
+                } else {
+                    openModal(item);
+                }
+            };
+
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-8">
                     <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white font-bold group-hover:scale-110 transition-transform duration-500">${item.id}</div>
