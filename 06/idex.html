@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도로 위 안전 리포트 - 전체 사고 vs PM 사고 분석</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts (Noto Sans KR & Playfair Display for accents) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .editorial-gradient {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        }
+        .accent-gradient {
+            background: linear-gradient(135deg, #dc2626 0%, #f97316 100%);
+        }
+        .premium-shadow {
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 8px -1px rgba(15, 23, 42, 0.03);
+        }
+        .hover-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+        }
+        .article-body p {
+            line-height: 1.9;
+            margin-bottom: 1.75rem;
+            color: #334155;
+            font-size: 1.075rem;
+            word-break: keep-all;
+        }
+        .article-body h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #0f172a;
+            margin-top: 3.5rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        /* 첫 글자 드롭캡 효과 */
+        .dropcap::first-letter {
+            font-size: 3.5rem;
+            font-weight: 900;
+            float: left;
+            color: #dc2626;
+            margin-right: 0.65rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased bg-slate-50">
+
+    <!-- Top Border Line -->
+    <div class="h-1.5 w-full accent-gradient"></div>
+
+    <!-- Header Section -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-slate-900 text-white p-2 rounded-xl">
+                    <i data-lucide="activity" class="w-5 h-5 text-red-500"></i>
+                </div>
+                <div>
+                    <span class="font-black text-lg tracking-tight text-slate-900 block leading-none">피누뉴스</span>
+                    <span class="text-[10px] font-bold text-red-500 tracking-widest uppercase">DATA JOURNALISM</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-xs text-slate-400 font-medium hidden sm:block">Special Interactive Report</span>
+                <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
+                <div class="text-right">
+                    <span class="text-xs font-bold text-slate-900 block">최유안 기자</span>
+                    <span class="text-[9px] text-slate-400 block">PNU NEWS D-LAB</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero / Visual Entry -->
+    <section class="editorial-gradient text-white py-16 md:py-24 relative overflow-hidden">
+        <!-- Abstract decorative grid patterns -->
+        <div class="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-red-500 rounded-full blur-3xl opacity-20"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-orange-500 rounded-full blur-3xl opacity-10"></div>
+
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20 mb-6">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                EXCLUSIVE DATA ANALYSIS
+            </span>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-8">
+                전체 교통사고 줄어드는데…<br class="hidden md:block">
+                ‘도로 위 시한폭탄’ <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">PM 사고는 2.5배 폭증</span>
+            </h1>
+            <div class="h-1 w-20 bg-red-500 mx-auto mb-8 rounded-full"></div>
+            <p class="text-slate-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+                지난 5년간 누적 기록된 100만 건 이상의 교통사고 빅데이터 정밀 분석.<br>
+                감소하는 전체 추세 이면에 감춰진 개인형 이동장치(PM)의 잠재적 위험지표를 시각화했습니다.
+            </p>
+        </div>
+    </section>
+
+    <!-- Metrics Dashboard -->
+    <section class="py-12 max-w-6xl mx-auto px-6 -mt-8 relative z-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Metric Card 1 -->
+            <div class="bg-white p-6 rounded-2xl premium-shadow border border-slate-100 flex flex-col justify-between hover-card transition-all duration-300">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">5개년 누적 전체 사고</span>
+                        <div class="p-2.5 bg-slate-50 text-slate-500 rounded-xl">
+                            <i data-lucide="car-front" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-black text-slate-900 tracking-tight">1,004,265 <span class="text-sm font-normal text-slate-500">건</span></div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs text-emerald-600 font-bold gap-1">
+                    <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                    5개년 연간 안정적 우하향 감소 추세 (-6.3%)
+                </div>
+            </div>
+
+            <!-- Metric Card 2 -->
+            <div class="bg-white p-6 rounded-2xl premium-shadow border border-slate-100 flex flex-col justify-between hover-card transition-all duration-300">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">5개년 누적 PM 사고</span>
+                        <div class="p-2.5 bg-red-50 text-red-500 rounded-xl">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-black text-slate-900 tracking-tight">9,639 <span class="text-sm font-normal text-slate-500">건</span></div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs text-red-600 font-bold gap-1">
+                    <i data-lucide="arrow-up-right" class="w-4 h-4 animate-bounce"></i>
+                    2020년 대비 무려 148.8% 폭발적 증가
+                </div>
+            </div>
+
+            <!-- Metric Card 3 -->
+            <div class="bg-white p-6 rounded-2xl premium-shadow border border-slate-100 flex flex-col justify-between hover-card transition-all duration-300">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">최고 위험성 전이 구간</span>
+                        <div class="p-2.5 bg-amber-50 text-amber-500 rounded-xl">
+                            <i data-lucide="trending-up" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-black text-amber-600 tracking-tight">93.4% <span class="text-sm font-normal text-slate-500">연간 급증</span></div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs text-amber-600 font-bold gap-1">
+                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                    2020년 ➔ 2021년 PM 대중화 시점 발생
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chart Visualization Section -->
+    <section class="py-6 max-w-6xl mx-auto px-6">
+        <div class="bg-white p-6 md:p-10 rounded-3xl premium-shadow border border-slate-100">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
+                <div>
+                    <span class="text-xs font-bold text-red-500 tracking-wider uppercase block mb-1">Interactive Chart</span>
+                    <h2 class="text-xl md:text-2xl font-black text-slate-900 flex items-center gap-2">
+                        실제 사고 건수 대비 격차 분석
+                    </h2>
+                    <p class="text-xs md:text-sm text-slate-400 mt-1">상단의 스위치를 사용해 전체 사고 곡선과 PM 사고 데이터를 전환하며 정밀 비교하세요.</p>
+                </div>
+                <!-- Premium Chart Switches -->
+                <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200/50 self-start md:self-auto shadow-inner">
+                    <button id="btnTotal" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-800 shadow-md transition-all duration-200">전체 사고</button>
+                    <button id="btnPm" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-all duration-200">PM 사고만 보기</button>
+                </div>
+            </div>
+
+            <!-- Chart Canvas -->
+            <div class="relative w-full h-[320px] md:h-[480px]">
+                <canvas id="trafficChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Detail Table & Interactive Quiz Section -->
+    <section class="py-6 max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Table Box -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl premium-shadow border border-slate-100">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-1.5 h-6 bg-slate-800 rounded-full"></div>
+                    <h3 class="text-lg font-black text-slate-900">연도별 교통사고 통계 데이터 실사</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 text-slate-400 text-xs font-bold tracking-wider">
+                                <th class="py-3.5 px-3">분류</th>
+                                <th class="py-3.5 px-3 text-right">2020년</th>
+                                <th class="py-3.5 px-3 text-right">2021년</th>
+                                <th class="py-3.5 px-3 text-right">2022년</th>
+                                <th class="py-3.5 px-3 text-right">2023년</th>
+                                <th class="py-3.5 px-3 text-right">2024년</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm font-medium divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="py-4 px-3 font-bold text-slate-700">전체 사고</td>
+                                <td class="py-4 px-3 text-right text-slate-500">209,654</td>
+                                <td class="py-4 px-3 text-right text-slate-500">203,130</td>
+                                <td class="py-4 px-3 text-right text-slate-500">196,836</td>
+                                <td class="py-4 px-3 text-right text-slate-500">198,296</td>
+                                <td class="py-4 px-3 text-right text-slate-500 font-bold text-slate-800">196,349</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="py-4 px-3 font-bold text-red-600">PM 사고</td>
+                                <td class="py-4 px-3 text-right text-red-500">897</td>
+                                <td class="py-4 px-3 text-right text-red-500">1,735</td>
+                                <td class="py-4 px-3 text-right text-red-500">2,386</td>
+                                <td class="py-4 px-3 text-right text-red-500">2,389</td>
+                                <td class="py-4 px-3 text-right text-red-600 font-bold">2,232</td>
+                            </tr>
+                            <tr class="bg-red-50/30">
+                                <td class="py-3.5 px-3 font-extrabold text-slate-900">비율 (PM%)</td>
+                                <td class="py-3.5 px-3 text-right text-slate-700">0.43%</td>
+                                <td class="py-3.5 px-3 text-right text-slate-700">0.85%</td>
+                                <td class="py-3.5 px-3 text-right text-slate-700 font-bold">1.21%</td>
+                                <td class="py-3.5 px-3 text-right text-slate-700">1.20%</td>
+                                <td class="py-3.5 px-3 text-right text-slate-900 font-black">1.14%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-6 p-4 bg-slate-50 rounded-2xl border border-slate-100 text-xs text-slate-500 flex items-start gap-2">
+                    <i data-lucide="info" class="w-4.5 h-4.5 shrink-0 text-slate-400 mt-0.5"></i>
+                    <p class="leading-relaxed">
+                        PM 교통사고 비율은 2020년 전체 사고의 0.43% 수준이었으나, 매년 성장을 거쳐 2024년에는 **1.14%**로 무려 3배 가까이 점유율이 높아졌습니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quiz Box (Interactivity Card) -->
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 md:p-8 rounded-3xl text-white flex flex-col justify-between relative overflow-hidden premium-shadow">
+                <div class="absolute right-0 top-0 translate-x-12 -translate-y-12 w-48 h-48 bg-slate-800 rounded-full blur-2xl opacity-40"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="px-2.5 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold">캠페인 퀴즈</span>
+                        <h3 class="text-lg font-black">내 킥보드 안전 상식은 몇 점?</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-6">최근 강화된 도로교통법 기준 자가 진단 테스트를 진행해 보세요.</p>
+                    
+                    <!-- Quiz Box container -->
+                    <div id="quiz-container" class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/10">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-extrabold text-red-400 uppercase tracking-wider" id="quiz-step">Q1. 면허 필수 여부</span>
+                            <span class="text-xs text-slate-400" id="quiz-progress">1 / 3</span>
+                        </div>
+                        <h4 class="font-extrabold text-white text-base md:text-lg mb-8 min-h-[56px] leading-relaxed" id="quiz-question">전동킥보드는 자전거 도로가 있다면 면허가 없어도 누구나 운전할 수 있다?</h4>
+                        
+                        <div class="grid grid-cols-2 gap-4" id="quiz-options">
+                            <button onclick="checkAnswer(true)" class="py-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/20 hover:border-white/30 font-bold text-white transition-all duration-200 flex items-center justify-center gap-1.5 text-sm">
+                                <i data-lucide="circle" class="w-4 h-4 text-red-400"></i> 그렇다 (O)
+                            </button>
+                            <button onclick="checkAnswer(false)" class="py-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/20 hover:border-white/30 font-bold text-white transition-all duration-200 flex items-center justify-center gap-1.5 text-sm">
+                                <i data-lucide="x" class="w-4 h-4 text-emerald-400"></i> 아니다 (X)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400 relative z-10">
+                    <span>* 기준 법률: 도로교통법 개정 법령집</span>
+                    <span class="flex items-center gap-1"><i data-lucide="lock" class="w-3.5 h-3.5 text-red-400"></i> 익명 보장</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Article Integration Section -->
+    <section class="py-12 max-w-4xl mx-auto px-6">
+        <div class="bg-white rounded-3xl premium-shadow border border-slate-200/60 overflow-hidden">
+            <!-- Article Header (Editorial Magazine Style) -->
+            <div class="bg-slate-900 px-6 py-12 md:p-14 text-white relative">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div class="relative z-10">
+                    <span class="text-xs font-bold tracking-widest text-red-500 uppercase border border-red-500/30 px-2.5 py-1 rounded-md">SPECIAL EXCLUSIVITY</span>
+                    <h1 class="text-2xl md:text-4xl font-extrabold text-white mt-6 leading-tight tracking-tight">
+                        [심층 분석] 전체 교통사고 줄어드는데… ‘도로 위 시한폭탄’ PM 사고는 5년 새 2.5배 폭증
+                    </h1>
+                    <p class="text-slate-400 text-sm md:text-base mt-4 font-light">
+                        2020~2024 국내 전체 사고와 퍼스널 모빌리티 사고의 전수 데이터를 추적하다.
+                    </p>
+                    <div class="flex flex-wrap gap-4 mt-8 pt-6 border-t border-white/10 items-center text-xs text-slate-400">
+                        <span class="flex items-center gap-1.5"><i data-lucide="user" class="w-4 h-4 text-slate-500"></i> 최유안 기자</span>
+                        <span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-4 h-4 text-slate-500"></i> 2026. 05. 22</span>
+                        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4 text-slate-500"></i> 부산=피누뉴스 데이터랩</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article Body Content -->
+            <div class="p-6 md:p-12 article-body bg-white">
+                <p class="dropcap font-bold text-slate-900 text-lg leading-relaxed mb-8">
+                    부부와 연인, 출퇴근길 학생들의 발이 되어주는 교통수단의 다변화 속에서 뜻밖의 위험 경보가 켜졌다. 정부와 지자체의 지속적인 교통안전 대책과 보행자 중심 문화 정착에 힘입어 국내 전체 교통사고 발생 건수는 매년 꾸준히 감소세를 이어가고 있으나, 전동킥보드 등 개인형 이동장치(PM·Personal Mobility) 사고는 같은 기간 반비례하여 기하급수적으로 폭증하는 이상 기후 현상을 보여 충격을 던져주고 있다.
+                </p>
+
+                <p>
+                    본지가 단독 입수한 최근 5년간(2020년~2024년) 국내 교통사고 종합 분석 리포트와 원시 로우 데이터 100만 4,265건을 정밀 분석한 결과, 전체적인 안전 흐름과 PM의 상충 구도가 매우 또렷한 시각 지표로 도출되었다.
+                </p>
+
+                <h2>
+                    <i data-lucide="trending-down" class="text-emerald-500 w-5 h-5"></i>
+                    📉 전체 교통사고는 '우하향'… 안전 대책 통했다
+                </h2>
+                
+                <p>
+                    최근 5년간 전국 도로망에서 발생한 총 교통사고 건수는 100만 4,265건으로 집계되었다. 연도별 통계 추이를 거시적인 시각으로 살펴보면 안전 장치가 비교적 단단히 뿌리내리고 있는 국면이다. 
+                </p>
+                <p>
+                    2020년 20만 9,654건이던 교통사고 발생량은 매년 감속을 보였다. 2021년 20만 3,130건(전년 대비 -3.1%), 2022년 19만 6,836건(전년 대비 -3.1%)으로 잇달아 내려앉았다. 2023년의 경우 19만 8,296건으로 반짝 미세 상승(+0.7%)을 기록했으나, 이듬해인 2024년엔 19만 6,349건(-1.0%)으로 즉각 조정되며 장기적 우하향 안정 궤도에 자리잡은 모습을 나타냈다.
+                </p>
+                
+                <p>
+                    5개년 추세로 따지면 약 6.3%의 순감소세를 실현한 셈이다. 교차로 우회전 일시정지 전면 단속 의무화, 어린이보호구역 내 가중 처벌 등을 핵심 골자로 삼은 강력한 교통 규제들이 사회 시스템 전반에 성공적으로 정착한 순기능적 영향으로 보여진다.
+                </p>
+
+                <!-- Editorial Pull Quote -->
+                <div class="my-10 p-8 bg-slate-50 border-l-4 border-red-500 rounded-r-2xl relative">
+                    <span class="font-serif text-6xl text-slate-200 absolute left-4 top-2 select-none">“</span>
+                    <p class="font-extrabold text-slate-900 text-lg mb-2 relative z-10 leading-relaxed">
+                        전체 사고 감소 흐름을 비웃는 PM의 독주
+                    </p>
+                    <p class="text-xs text-red-500 font-bold relative z-10 flex items-center gap-1">
+                        <i data-lucide="bell" class="w-4 h-4"></i> 무면허 이용, 비대면 면허 인증 허점이 빚어낸 위험 통계
+                    </p>
+                </div>
+
+                <h2>
+                    <i data-lucide="trending-up" class="text-red-500 w-5 h-5"></i>
+                    📈 '나홀로 폭주'하는 개인형 이동장치(PM) 사고
+                </h2>
+                
+                <p>
+                    안정 가도를 타는 거시 지표 뒤로 공유 모빌리티 서비스 확장으로 대중 접근성이 비약적으로 증가한 PM(개인형 이동장치) 영역은 가혹할 정도로 높은 사망 및 부상 잠재 사고율을 쌓고 있다. 지난 5년간 국내 PM 가해 교통사고는 도합 9,639건으로 1만 건에 육박한다.
+                </p>
+                
+                <p>
+                    2020년 당시 발생 건수 897건에 그치던 PM 관련 사고는 2021년 단 한 해 만에 1,735건으로 무려 **93.4%** 폭등했다. 폭주 현상은 멈추지 않고 2022년 2,386건(+37.5%)으로 불을 뿜었으며 2023년에는 2,389건으로 역사적 정점을 찍었다. 2024년에 접어들며 비로소 최초의 소폭 둔화(2,232건, 전년 대비 -6.6%)를 마크했으나, 이는 여전히 기저 시점인 2020년에 견주면 무려 **148.8% 급증해 있는 상태**다.
+                </p>
+
+                <h2>
+                    <i data-lucide="alert-triangle" class="text-amber-500 w-5 h-5"></i>
+                    🚨 무엇이 문제인가? '제도적 허점'과 '안전불감증'의 합작품
+                </h2>
+                
+                <p>
+                    사고 원인의 중심에는 법과 라이딩 문화의 극심한 부조화가 도사리고 있다. 2021년 5월 강화 시행된 도로교통법에 의거, 현재 전동킥보드 탑승 시 원동기 장치 면허 이상의 무면허 운전 제한 및 헬멧 등 인명보호 장구 착용이 완전히 의무화되었다. 그러나 실제 현장에서는 여전히 2인 이상 탑승, 인도 질주, 야간 음주 탑승 등이 무방비로 단속망을 비껴가고 있다.
+                </p>
+                <p>
+                    특히 청소년층의 공유 PM 기기 무단 이용 수단으로 전락한 '비대면 신분증 인증의 허술함' 역시 위험 지수를 높이는 자양분이 되었다. 무단 대여를 원천 봉쇄할 엄격한 인증 체계나 기기 자동 정지 소프트웨어 패치 등 제조 및 렌탈 브랜드의 안전 규제 고도화 역시 요원한 과제다.
+                </p>
+
+                <h2>
+                    <i data-lucide="help-circle" class="text-slate-800 w-5 h-5"></i>
+                    💡 "단속 넘어 근본적 체질 개선 필요"
+                </h2>
+                
+                <p>
+                    한국교통안전연구소 핵심 관계자는 "전체 교통 지형의 사고 볼륨이 지속해서 내려앉는 고무적인 기조에서 PM 혼자서만 사고 전파 곡선을 급등시킨 현실은 정부의 관리 제어망에서 PM이 여전히 무풍지대로 기능하고 있음을 증명한다"며 단호한 행정 보강을 주문했다.
+                </p>
+                <p>
+                    이어 "현재의 일시적인 완만한 감소 국면에 조급한 만족감을 나타낼 단계가 전혀 아니다"라며 "주 사용자 계층인 청소년 및 청년층을 적극 겨냥한 모바일 맞춤 안전 캠페인 설계는 물론이고 도로 인프라 레벨에서 마이크로 모빌리티 전용 전천후 차선 확충과 인도 분리대가 반드시 동반 배치되어야 보행자와 이용자 모두 상생할 수 있을 것"이라고 제언했다.
+                </p>
+            </div>
+            
+            <!-- Professional Reporter Card Inside Article -->
+            <div class="bg-slate-50 p-6 md:p-10 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-extrabold text-xl shadow-md">
+                        최
+                    </div>
+                    <div>
+                        <p class="font-extrabold text-slate-900 text-base">최유안 기자</p>
+                        <p class="text-xs text-slate-500 font-medium">피누뉴스 디지털뉴스국 데이터랩·디지털 스페셜리스트</p>
+                    </div>
+                </div>
+                <a href="mailto:yuan@pnunews.com" class="px-5 py-3 bg-white hover:bg-slate-900 text-slate-700 hover:text-white border border-slate-200 hover:border-slate-900 text-xs font-bold rounded-xl transition-all duration-200 flex items-center gap-2 shadow-sm">
+                    <i data-lucide="mail" class="w-4 h-4"></i> 이메일 제보 및 제휴 문의
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Danger Highlights & Rules Section (Grid Banner) -->
+    <section class="py-6 max-w-6xl mx-auto px-6">
+        <div class="flex items-center gap-2 mb-8">
+            <div class="w-1.5 h-6 bg-red-500 rounded-full"></div>
+            <h3 class="text-2xl font-black text-slate-900">PM 안전 라이딩을 위한 핵심 수칙 4</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Rule 1 -->
+            <div class="bg-white p-6 rounded-2xl premium-shadow border border-slate-100 flex flex-col justify-between hover-card transition-all duration-300">
+                <div class="p-3 bg-red-50 text-red-500 rounded-xl w-fit mb-4">
+                    <i data-lucide="shield" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 text-base mb-1">면허 지참 탑승</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">자전거도로 주행 여부 무관하게 면허증(원동기 면허 등)이 반드시 요구됩니다.</p>
+                </div>
+            </div>
+
+            <!-- Rule 2 -->
+            <div class="bg-white p-6 rounded-2xl premium-shadow border border-slate-100 flex flex-col justify-between hover-card transition-all duration-300">
+                <div class="p-3 bg-orange-50 text-orange-500 rounded-xl w-fit mb-4">
+                    <i data-lucide="users" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 text-base mb-1">동승자 1인 전용</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">PM의 공식 승차 규격은 1인입니다. 동승은 차량 균형을 무너뜨리는 위험행위입니다.</p>
+                </div>
+            </div>
+
+            <!-- Rule 3 -->
+            <div class="bg-white p-6 rounded-2xl premium-shadow border border-slate-100 flex flex-col justify-between hover-card transition-all duration-300">
+                <div class="p-3 bg-amber-50 text-amber-500 rounded-xl w-fit mb-4">
+                    <i data-lucide="milestone" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 text-base mb-1">인도 주행 불법</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">자전거 전용 차선이 우선 주행 구역이며 없으면 반드시 차도 우측으로 진입해야 합니다.</p>
+                </div>
+            </div>
+
+            <!-- Rule 4 -->
+            <div class="bg-white p-6 rounded-2xl premium-shadow border border-slate-100 flex flex-col justify-between hover-card transition-all duration-300">
+                <div class="p-3 bg-emerald-50 text-emerald-500 rounded-xl w-fit mb-4">
+                    <i data-lucide="construction" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 text-base mb-1">인명 헬멧 고수</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">PM 사고 사망자의 압도적 비중은 대뇌 부상에서 유발됩니다. 반드시 헬멧을 조여 매세요.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-500 py-16 mt-20 relative">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-2 mb-3">
+                    <span class="font-black text-white text-lg tracking-tight">피누뉴스 데이터랩</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    본 데이터 분석 대시보드는 실제 지자체 및 유관 기관의 5개년치 전수 데이터를 가공·조정하여 투명하게 분석 반영되었습니다.
+                </p>
+            </div>
+            <div class="text-center md:text-right text-xs">
+                <p class="text-slate-400">© 2026 PINUNEWS. All rights reserved.</p>
+                <p class="mt-2 text-slate-600">책임 개발 및 저널 취재 : 최유안 기자 | 대표 이메일 : yuan@pnunews.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chart Logic & Quiz Logic Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Data arrays
+        const years = ['2020', '2021', '2022', '2023', '2024'];
+        const totalAccidents = [209654, 203130, 196836, 198296, 196349];
+        const pmAccidents = [897, 1735, 2386, 2389, 2232];
+
+        // Chart.js Configuration
+        const ctx = document.getElementById('trafficChart').getContext('2d');
+        
+        // Initial setup shows dual-axis comparison with modern styling
+        const mainChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: '전체 교통사고 (좌측 축)',
+                        data: totalAccidents,
+                        borderColor: '#64748b',
+                        backgroundColor: 'rgba(100, 116, 139, 0.05)',
+                        borderWidth: 3,
+                        yAxisID: 'yTotal',
+                        tension: 0.35,
+                        pointBackgroundColor: '#475569',
+                        pointHoverBackgroundColor: '#475569',
+                        pointHoverRadius: 8,
+                        fill: true
+                    },
+                    {
+                        label: 'PM 교통사고 (우측 축)',
+                        data: pmAccidents,
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.06)',
+                        borderWidth: 4.5,
+                        yAxisID: 'yPm',
+                        tension: 0.35,
+                        pointBackgroundColor: '#dc2626',
+                        pointHoverBackgroundColor: '#dc2626',
+                        pointHoverRadius: 8,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: 'Noto Sans KR',
+                                size: 12,
+                                weight: '700'
+                            },
+                            boxWidth: 16,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        padding: 14,
+                        titleFont: { family: 'Noto Sans KR', size: 14, weight: '700' },
+                        bodyFont: { family: 'Noto Sans KR', size: 13 },
+                        backgroundColor: '#0f172a',
+                        borderWidth: 1,
+                        borderColor: '#1e293b',
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label = label.split(' ')[0] + ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y.toLocaleString() + '건';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { family: 'Noto Sans KR', size: 12, weight: 'bold' }, color: '#64748b' }
+                    },
+                    yTotal: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '전체 교통사고 발생건수',
+                            font: { family: 'Noto Sans KR', size: 11, weight: 'bold' },
+                            color: '#64748b'
+                        },
+                        ticks: {
+                            color: '#64748b',
+                            callback: function(value) {
+                                return (value / 1000).toLocaleString() + 'k';
+                            }
+                        },
+                        grid: {
+                            color: '#f1f5f9'
+                        }
+                    },
+                    yPm: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'PM 단독 사고 건수',
+                            font: { family: 'Noto Sans KR', size: 11, weight: 'bold' },
+                            color: '#dc2626'
+                        },
+                        grid: { drawOnChartArea: false }, 
+                        ticks: {
+                            color: '#dc2626',
+                            callback: function(value) {
+                                return value.toLocaleString() + '건';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Toggle buttons logic with styling update
+        const btnTotal = document.getElementById('btnTotal');
+        const btnPm = document.getElementById('btnPm');
+
+        btnTotal.addEventListener('click', () => {
+            btnTotal.className = "px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-800 shadow-md transition-all duration-200";
+            btnPm.className = "px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-all duration-200";
+            
+            mainChart.setDatasetVisibility(0, true);
+            mainChart.setDatasetVisibility(1, true);
+            mainChart.options.scales.yTotal.display = true;
+            mainChart.options.scales.yPm.display = true;
+            mainChart.update();
+        });
+
+        btnPm.addEventListener('click', () => {
+            btnPm.className = "px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-800 shadow-md transition-all duration-200";
+            btnTotal.className = "px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-all duration-200";
+            
+            mainChart.setDatasetVisibility(0, false);
+            mainChart.setDatasetVisibility(1, true);
+            mainChart.options.scales.yTotal.display = false;
+            mainChart.options.scales.yPm.display = true;
+            mainChart.update();
+        });
+
+
+        // Quiz Data and Logic
+        const quizData = [
+            {
+                q: "Q1. 면허 필수 여부",
+                progress: "1 / 3",
+                question: "전동킥보드는 자전거 도로가 있다면 원동기장치자전거 또는 자동차 면허가 없어도 누구나 운전할 수 있다?",
+                answer: false, 
+                comment: "틀렸습니다! 전동킥보드 주행에는 반드시 최소 '제2종 원동기장치자전거면허' 이상이 필수로 요구됩니다. 무면허 운전 시 범칙금 10만 원이 즉각 부과됩니다."
+            },
+            {
+                q: "Q2. 탑승 인원 수칙",
+                progress: "2 / 3",
+                question: "친구나 자녀를 앞/뒤에 태우고 전동킥보드를 둘이서 동시에 타는 것은 허용된다?",
+                answer: false, 
+                comment: "틀렸습니다! PM의 승차정원은 법적으로 정확히 1명입니다. 2인 이상 탑승 시 급격히 조향 능력을 상실하여 대형 전복 사고의 지름길이 되며 범칙금 부과 대상입니다."
+            },
+            {
+                q: "Q3. 올바른 주행 구역",
+                progress: "3 / 3",
+                question: "인도에 보행자가 전혀 없고 안전하다면 전동킥보드를 타고 인도로 신속히 서행 통과하는 것은 괜찮다?",
+                answer: false, 
+                comment: "틀렸습니다! 인도 주행은 예외 없이 법적 처벌 대상입니다. 보도를 타고 달리다 보행자와 단순 스침 수준의 인적 접촉만 있어도 12대 중과실 중 하나로 인정됩니다."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+
+        function checkAnswer(userChoice) {
+            const currentQuiz = quizData[currentQuizIndex];
+            const isCorrect = (userChoice === currentQuiz.answer);
+            
+            const container = document.getElementById('quiz-container');
+            
+            let feedbackColor = isCorrect ? 'text-emerald-100 bg-emerald-500/10 border-emerald-500/20' : 'text-red-100 bg-red-500/10 border-red-500/20';
+            let titleText = isCorrect ? '🎉 완벽한 정답입니다!' : '❌ 잘못된 상식입니다!';
+            
+            container.innerHTML = `
+                <div class="p-5 rounded-2xl border ${feedbackColor} flex flex-col justify-between h-full min-h-[220px]">
+                    <div>
+                        <h4 class="font-extrabold text-lg mb-3">${titleText}</h4>
+                        <p class="text-xs md:text-sm font-medium leading-relaxed mb-6 text-slate-200">${currentQuiz.comment}</p>
+                    </div>
+                    <button id="btnNextQuiz" onclick="nextQuiz()" class="w-full py-3 bg-white text-slate-900 rounded-xl text-xs font-bold hover:bg-slate-100 transition-all duration-200 flex items-center justify-center gap-1.5">
+                        ${currentQuizIndex < quizData.length - 1 ? '다음 문제 해결하기 <i data-lucide="arrow-right" class="w-4 h-4 text-slate-900"></i>' : '첫 질문으로 돌아가기 <i data-lucide="rotate-ccw" class="w-4 h-4 text-slate-900"></i>'}
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function nextQuiz() {
+            if (currentQuizIndex < quizData.length - 1) {
+                currentQuizIndex++;
+                renderQuiz();
+            } else {
+                currentQuizIndex = 0; 
+                renderQuiz();
+            }
+        }
+
+        function renderQuiz() {
+            const currentQuiz = quizData[currentQuizIndex];
+            const container = document.getElementById('quiz-container');
+            
+            container.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-extrabold text-red-400 uppercase tracking-wider" id="quiz-step">${currentQuiz.q}</span>
+                    <span class="text-xs text-slate-400" id="quiz-progress">${currentQuiz.progress}</span>
+                </div>
+                <h4 class="font-bold text-white text-base md:text-lg mb-8 min-h-[56px] leading-relaxed" id="quiz-question">${currentQuiz.question}</h4>
+                
+                <div class="grid grid-cols-2 gap-4" id="quiz-options">
+                    <button onclick="checkAnswer(true)" class="py-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/20 hover:border-white/30 font-bold text-white transition-all duration-200 flex items-center justify-center gap-1.5 text-sm">
+                        <i data-lucide="circle" class="w-4 h-4 text-red-400"></i> 그렇다 (O)
+                    </button>
+                    <button onclick="checkAnswer(false)" class="py-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/20 hover:border-white/30 font-bold text-white transition-all duration-200 flex items-center justify-center gap-1.5 text-sm">
+                        <i data-lucide="x" class="w-4 h-4 text-emerald-400"></i> 아니다 (X)
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
