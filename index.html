@@ -155,7 +155,7 @@
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <div class="w-8 h-8 bg-gradient-to-tr from-purple-500 to-blue-500 rounded-lg"></div>
-                <span class="text-xl font-bold tracking-tighter uppercase italic">AI Literacy</span>
+                <span class="text-xl font-bold tracking-tighter uppercase italic text-gradient">AI Literacy</span>
             </div>
             
             <div class="flex items-center space-x-6">
@@ -279,15 +279,15 @@
             document.getElementById('theme-icon').textContent = '🌙';
         }
 
-        // Original configurations & customized folder-link mapping restored perfectly
+        // Original Configurations with Correct Paths
         const assignments = [
             { id: '01', title: 'AI의 이해', desc: 'AI의 정의, 역사 및 생성형 AI의 메커니즘을 분석했습니다.', color: 'from-purple-500 to-pink-500', link: './01/index.html', tools: ['Gemini', 'Research'] },
             { id: '02', title: '데이터 스토리텔링', desc: '공공 데이터를 분석하여 시각적 리포트와 스토리북을 제작했습니다.', color: 'from-blue-500 to-cyan-500', link: './02/index.html', tools: ['Storybook', 'Data'] },
-            { id: '03', title: '웹기술의 이해', desc: '웹의 동작 원리와 프론트엔드 핵심 기술을 학습했습니다.', color: 'from-teal-500 to-emerald-500', link: './04/index.html', tools: ['HTML5', 'Tailwind', 'JS'] }, // 3번 카드는 원래 설정하신 ./04/index.html로 다이렉트 연동
+            { id: '03', title: '웹기술의 이해', desc: '웹의 동작 원리와 프론트엔드 핵심 기술을 학습했습니다.', color: 'from-teal-500 to-emerald-500', link: './04/index.html', tools: ['HTML5', 'Tailwind', 'JS'] }, 
             { id: '04', title: '중간고사', desc: '중간고사 과제입니다.', color: 'from-orange-500 to-amber-500', link: 'https://codebuster0325-web.github.io/yuan/', tools: ['Exam', 'Project'] },
             { id: '05', title: '데이터분석(고령운전자)', desc: '코랩으로 데이터분석', color: 'from-red-500 to-rose-500', link: './05/index.html', tools: ['Colab', 'Python'] },
             { id: '06', title: '데이터분석(개인형이동장치)', desc: '개인형 이동장치(PMD) 이용 현황과 안전 데이터를 다각도로 시각화하고 분석했습니다.', color: 'from-indigo-500 to-blue-500', link: './06/index.html', tools: ['Data', 'Python'] },
-            { id: '07', title: '이미지 생성 AI 활용', desc: '캠페인을 위한 감각적인 포스터 이미지를 AI로 제작했습니다.', color: 'from-pink-500 to-purple-500', link: '', tools: ['DALL-E', 'Midjourney'] },
+            { id: '07', title: '일일 박스오피스', desc: '영화진흥위원회 오픈 API를 활용하여 실시간 박스오피스 순위와 영화 세부 정보를 시각화한 모던 웹 애플리케이션입니다.', color: 'from-pink-500 to-purple-500', link: 'https://movie-57h5.vercel.app/', tools: ['API', 'Vercel', 'JS'] },
             { id: '08', title: '데이터 기반 내러티브', desc: '수치를 감성적인 내러티브로 전환하여 콘텐츠를 제작했습니다.', color: 'from-yellow-400 to-orange-500', link: '', tools: ['Canva', 'Storyline'] },
             { id: '09', title: 'AI 자동화 워크플로우', desc: '데이터 수집부터 알림까지의 자동화 파이프라인을 구축했습니다.', color: 'from-green-500 to-teal-500', link: '', tools: ['Zapier', 'Notion'] },
             { id: '10', title: '최종 융합 프로젝트', desc: '모든 역량을 집약하여 지역사회 복지 혁신안을 발표했습니다.', color: 'from-blue-600 to-indigo-700', link: '', tools: ['Final Project', 'Pitch'] }
@@ -304,7 +304,7 @@
             const hasLink = item.link && item.link.trim() !== '';
             const btnText = hasLink ? '결과물 보기' : '준비 중';
 
-            // Card and Button click redirect logic (safeguards GitHub pages links)
+            // Click handling to route strictly as defined
             const handleCardClick = (e) => {
                 if (e) e.stopPropagation();
                 if (hasLink) {
