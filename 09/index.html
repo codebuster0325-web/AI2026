@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산 정(情)꾸 투어 - 로컬 감성 관광 콘텐츠 기획안</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'sans-serif'],
+                        brand: ['Black Han Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        busanBlue: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0070f3',
+                            600: '#005bc2',
+                            900: '#0b2545',
+                        },
+                        jeongCoral: {
+                            500: '#ff6b6b',
+                            600: '#fa5252',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-subtle': 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-busanBlue-100 selection:text-busanBlue-900 overflow-x-hidden">
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 glass-panel shadow-sm border-b border-slate-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-tr from-busanBlue-500 to-jeongCoral-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-busanBlue-500/20">
+                    情
+                </div>
+                <div>
+                    <span class="font-brand text-xl tracking-wider text-busanBlue-900">부산 정꾸 투어</span>
+                    <span class="hidden sm:inline-block text-xs text-slate-500 ml-2 border-l border-slate-200 pl-2">K-관광 신규 콘텐츠</span>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                <a href="#stats" class="hover:text-busanBlue-500 transition-colors">데이터 분석</a>
+                <a href="#concept" class="hover:text-busanBlue-500 transition-colors">기획 콘셉트</a>
+                <a href="#interactive" class="hover:text-busanBlue-500 transition-colors">체험 맛보기</a>
+                <a href="#itinerary" class="hover:text-busanBlue-500 transition-colors">상세 일정</a>
+                <a href="#trust" class="hover:text-busanBlue-500 transition-colors">바가지 보증</a>
+            </div>
+            <div>
+                <a href="#booking" class="bg-busanBlue-900 text-white hover:bg-busanBlue-500 px-5 py-2.5 rounded-full text-sm font-bold shadow-md hover:shadow-lg hover:shadow-busanBlue-500/15 transition-all duration-300">
+                    협업 문의하기
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden py-20 lg:py-32 bg-gradient-to-b from-busanBlue-50 via-white to-slate-50">
+        <!-- Floating Ambient Blurs -->
+        <div class="absolute top-20 left-10 w-72 h-72 bg-busanBlue-100 rounded-full blur-3xl opacity-60 pointer-events-none animate-pulse-subtle"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-jeongCoral-50 rounded-full blur-3xl opacity-70 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 bg-busanBlue-100/60 text-busanBlue-600 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-sm">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-busanBlue-500 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-busanBlue-500"></span>
+                    </span>
+                    <span>부산 300만 관광객 유치기념 기획</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-tight">
+                    나만의 맛으로 꾸미고<br class="hidden sm:inline">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-busanBlue-500 to-jeongCoral-500">부산의 '정(情)'</span>으로 채우다
+                </h1>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                    K-콘텐츠 중심지 부산! 대만 Z세대부터 글로벌 트렌드 세터까지 사로잡을 단 하나의 로컬 밀착형 힐링 투어 콘텐츠, <strong class="text-slate-800 font-bold">부산 정꾸(情-kku) 투어</strong> 기획안을 소개합니다.
+                </p>
+                <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                    <a href="#interactive" class="w-full sm:w-auto text-center bg-gradient-to-r from-busanBlue-500 to-busanBlue-600 text-white hover:from-busanBlue-600 hover:to-busanBlue-900 px-8 py-4 rounded-2xl font-bold shadow-xl shadow-busanBlue-500/20 transition-all duration-300">
+                        인터랙티브 체험하기 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#concept" class="w-full sm:w-auto text-center bg-white text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 px-8 py-4 rounded-2xl font-bold transition-all duration-300">
+                        기획 방향 상세 보기
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Hero Mockup Display -->
+            <div class="lg:col-span-5 relative">
+                <div class="relative mx-auto max-w-[340px] aspect-[9/16] bg-slate-900 rounded-[40px] shadow-2xl border-[8px] border-slate-800 overflow-hidden transform hover:scale-[1.02] transition-transform duration-500">
+                    <!-- Phone Camera notch -->
+                    <div class="absolute top-0 inset-x-0 h-6 bg-slate-800 rounded-b-3xl flex justify-center items-center z-30">
+                        <div class="w-16 h-4 bg-black rounded-full"></div>
+                    </div>
+                    <!-- App Interface Mock -->
+                    <div class="h-full bg-gradient-to-b from-busanBlue-900 to-slate-950 p-6 flex flex-col justify-between text-white relative">
+                        <div class="pt-6">
+                            <div class="flex justify-between items-center text-xs opacity-70">
+                                <span>11:13 PM</span>
+                                <div class="space-x-1">
+                                    <i class="fa-solid fa-wifi"></i>
+                                    <i class="fa-solid fa-battery-three-quarters"></i>
+                                </div>
+                            </div>
+                            <div class="mt-8 space-y-2">
+                                <span class="bg-jeongCoral-500/90 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full">JEONG-KKU MATCH</span>
+                                <h2 class="font-brand text-2xl tracking-wide">마, 마이 국밥 레시피!</h2>
+                                <p class="text-[11px] text-slate-300">나만의 비율로 다대기, 새우젓, 부추(정구지)를 커스텀해 묵어봐라!</p>
+                            </div>
+                        </div>
+
+                        <!-- Mini Interactive Widget Inside Mobile Mock -->
+                        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-slate-800 text-sm">🍲</div>
+                                <div>
+                                    <p class="text-xs font-semibold">내 커스텀 국밥 지수</p>
+                                    <p class="text-[10px] text-slate-300">얼큰하고 칼칼한 부산의 맛</p>
+                                </div>
+                            </div>
+                            <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-orange-400 to-red-500 h-full w-4/5"></div>
+                            </div>
+                            <div class="flex justify-between text-[9px] text-slate-300">
+                                <span>순한맛</span>
+                                <span>정구지 폭탄</span>
+                                <span>진국</span>
+                            </div>
+                        </div>
+
+                        <div class="pb-4">
+                            <button onclick="document.getElementById('interactive').scrollIntoView({behavior: 'smooth'})" class="w-full bg-white text-busanBlue-900 font-bold py-3 rounded-xl text-xs tracking-wider shadow-lg hover:bg-busanBlue-50 transition-colors">
+                                모바일 앱 시연 체험하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decorative tags around phone -->
+                <div class="absolute -top-4 -right-4 bg-white shadow-xl rounded-2xl p-3 flex items-center space-x-2 animate-bounce-slow">
+                    <span class="text-xl">🇹🇼</span>
+                    <span class="text-xs font-bold text-slate-800">대만 1등 최애 도시</span>
+                </div>
+                <div class="absolute bottom-8 -left-8 bg-white shadow-xl rounded-2xl p-3 flex items-center space-x-2">
+                    <span class="text-xl">🍲</span>
+                    <span class="text-xs font-bold text-slate-800">커스텀 돼지국밥</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Market Insights Section -->
+    <section id="stats" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 class="text-xs font-bold text-busanBlue-500 tracking-wider uppercase">Market Insights</h2>
+                <p class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">수치가 증명하는 왜 지금 '부산'이어야 하는가</p>
+                <p class="text-slate-500">코로나 이후 부산의 관광 폭풍 성장은 단순한 일시적 트렌드가 아닙니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Stat Card 1 -->
+                <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-busanBlue-50 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                    <div class="w-12 h-12 bg-busanBlue-100 rounded-2xl flex items-center justify-center text-busanBlue-600 mb-6 relative">
+                        <i class="fa-solid fa-users text-lg"></i>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium">연간 외국인 관광객 수</p>
+                    <p class="text-4xl font-extrabold text-slate-900 mt-2">300만 명 +</p>
+                    <p class="text-xs text-emerald-600 font-semibold mt-2">
+                        <i class="fa-solid fa-arrow-trend-up mr-1"></i> 부산 상주 인구와 맞먹는 대기록
+                    </p>
+                </div>
+
+                <!-- Stat Card 2 -->
+                <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                    <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 mb-6 relative">
+                        <i class="fa-solid fa-wallet text-lg"></i>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium">외국인 관광객 연간 소비액</p>
+                    <p class="text-4xl font-extrabold text-slate-900 mt-2">1조 원 돌파</p>
+                    <p class="text-xs text-emerald-600 font-semibold mt-2">
+                        <i class="fa-solid fa-arrow-trend-up mr-1"></i> 지역 경제 활성화 견인차 역할
+                    </p>
+                </div>
+
+                <!-- Stat Card 3 -->
+                <div class="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:shadow-xl transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 mb-6 relative">
+                        <i class="fa-solid fa-plane-arrival text-lg"></i>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium">관광객 비율 1위 국가</p>
+                    <p class="text-4xl font-extrabold text-slate-900 mt-2">대만 (Taiwan)</p>
+                    <p class="text-xs text-orange-600 font-semibold mt-2">
+                        <i class="fa-solid fa-globe mr-1"></i> 연간 약 50만 명 방문 (중/일 제치고 1위)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Concept Section -->
+    <section id="concept" class="py-20 bg-slate-50 border-t border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="text-xs font-bold text-jeongCoral-500 tracking-wider uppercase">New Concept</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+                        '정꾸'는 꾸민다는 뜻의<br>
+                        '정(情)'과 '커스텀(꾸미기)'의 만남!
+                    </h2>
+                    <p class="text-slate-600 leading-relaxed font-light">
+                        개인화된 맞춤 여행을 지향하는 Z세대의 성향과, 다정함이 묻어나는 투박한 부산 사람들의 '정'을 담아 로컬 깊숙이 교감하는 유일무이한 체험 기반 투어입니다.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="w-6 h-6 bg-busanBlue-100 rounded-full flex items-center justify-center text-busanBlue-600 mt-1"><i class="fa-solid fa-check text-xs"></i></span>
+                            <div>
+                                <h4 class="font-bold text-slate-800">로컬 밀착형 사투리 배움 클래스</h4>
+                                <p class="text-sm text-slate-500">억양이 있는 부산 말을 배우며 진정한 한국 고유의 정취를 교감합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="w-6 h-6 bg-busanBlue-100 rounded-full flex items-center justify-center text-busanBlue-600 mt-1"><i class="fa-solid fa-check text-xs"></i></span>
+                            <div>
+                                <h4 class="font-bold text-slate-800">내 손으로 직접 조미하는 부산 미식</h4>
+                                <p class="text-sm text-slate-500">돼지국밥 등 본인의 취향에 맞게 간을 더하며 나만의 커스텀 레시피를 발견합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="w-6 h-6 bg-busanBlue-100 rounded-full flex items-center justify-center text-busanBlue-600 mt-1"><i class="fa-solid fa-check text-xs"></i></span>
+                            <div>
+                                <h4 class="font-bold text-slate-800">바가지 요금 ZERO '정가제 인증'</h4>
+                                <p class="text-sm text-slate-500">시와 연계해 정찰제 야시장 투어를 전개, 외국인들의 숨은 가장 큰 걱정을 제거합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Concept Detail Card 1 -->
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-4">💬</div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">단디 마스터 클래스</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">
+                            부산 토박이가 알려주는 핵심 사투리 한마디. 전통시장에서 흥정을 하거나 맛을 평가할 때 사용할 수 있는 실용 로컬 언어 체험.
+                        </p>
+                    </div>
+
+                    <!-- Concept Detail Card 2 -->
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-4">🍲</div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">국밥 믹스롤로지</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">
+                            돼지국밥에 부추(정구지), 다대기, 새우젓을 기호에 따라 커스텀하는 미식 가이드 북 제공. 나만의 DIY 황금 레시피 구축 및 인증.
+                        </p>
+                    </div>
+
+                    <!-- Concept Detail Card 3 -->
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-4">🎟️</div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">정(情)가 마켓 투어</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">
+                            부산 유명 전통시장의 협약 점포를 통한 투명 정찰제 소비. 외국인들이 걱정하는 숨은 바가지를 원천 봉쇄하여 신뢰도 상승.
+                        </p>
+                    </div>
+
+                    <!-- Concept Detail Card 4 -->
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-4">🍻</div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">광안리 로컬 비어 워킹</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">
+                            복잡하고 비싼 광안리 횟집 바가지 대신, 시장에서 사온 먹거리와 부산 로컬 캔맥주를 해변에서 낭만적으로 마시는 실용적인 야경 산책.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Experience Center -->
+    <section id="interactive" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-xs font-bold text-busanBlue-500 tracking-wider uppercase">Interactive Experience</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">지면으로 먼저 경험하는 투어 가상 체험</h2>
+                <p class="text-slate-500">실제 외국인 관광객이 앱을 통해 체험하게 될 두 가지 대표 콘텐츠를 가상으로 즐겨보세요.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- GAME 1: Gukbap Customizer -->
+                <div class="bg-slate-50 rounded-[32px] p-8 border border-slate-200/60 shadow-lg relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="bg-busanBlue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">체험 #1</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-bolt mr-1"></i>실시간 적용 중</span>
+                        </div>
+                        <h3 class="font-brand text-2xl text-slate-900 tracking-wider mb-2">🍲 마이 국밥(DIY Gukbap) 시뮬레이션</h3>
+                        <p class="text-slate-500 text-sm mb-6">부추, 다대기, 새우젓을 직접 투하해 나만의 황금빛 국밥 비주얼과 매콤지수를 테스트해 보세요!</p>
+                        
+                        <!-- Gukbap visual area -->
+                        <div class="relative w-48 h-48 mx-auto my-8 bg-amber-50 rounded-full border-[10px] border-amber-800 shadow-inner flex items-center justify-center overflow-hidden transition-all duration-500" id="gukbap-bowl">
+                            <!-- Soup color overlay -->
+                            <div id="soup-base" class="absolute inset-0 bg-yellow-100/60 transition-colors duration-500"></div>
+                            
+                            <!-- Inside Ingredients inside soup container -->
+                            <div class="absolute inset-4 rounded-full border-4 border-dashed border-amber-700/10 pointer-events-none"></div>
+                            
+                            <!-- Dynamic toppings -->
+                            <div id="visual-paste" class="absolute w-12 h-12 bg-red-600 rounded-full blur-md opacity-0 transform scale-50 transition-all duration-300 pointer-events-none"></div>
+                            <div id="visual-shrimp" class="absolute text-slate-400 text-[10px] font-bold opacity-0 transition-opacity duration-300 pointer-events-none">🍤 🍤</div>
+                            
+                            <!-- Visual Chives (lots of small green blocks) -->
+                            <div id="visual-chives" class="absolute inset-0 grid grid-cols-4 gap-4 p-6 opacity-0 transition-opacity duration-300 pointer-events-none">
+                                <div class="w-3 h-1 bg-emerald-600 rounded transform rotate-45"></div>
+                                <div class="w-4 h-1 bg-emerald-700 rounded transform -rotate-12"></div>
+                                <div class="w-2.5 h-1 bg-emerald-500 rounded transform rotate-90"></div>
+                                <div class="w-3.5 h-1 bg-emerald-600 rounded transform rotate-30"></div>
+                                <div class="w-3 h-1 bg-emerald-500 rounded transform -rotate-45"></div>
+                                <div class="w-4 h-1 bg-emerald-700 rounded transform rotate-15"></div>
+                                <div class="w-3.5 h-1 bg-emerald-600 rounded transform rotate-12"></div>
+                                <div class="w-3.5 h-1 bg-emerald-500 rounded transform rotate-45"></div>
+                            </div>
+
+                            <span class="text-3xl z-10 pointer-events-none" id="bowl-center-emoji">🥩</span>
+                        </div>
+
+                        <!-- Flavor stats -->
+                        <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-3 mb-6">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-semibold text-slate-600">감칠맛 (새우젓)</span>
+                                <span id="stat-salty" class="text-busanBlue-600 font-bold">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div id="bar-salty" class="bg-busanBlue-500 h-full w-0 transition-all duration-300"></div>
+                            </div>
+
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-semibold text-slate-600">얼큰매콤 (다대기)</span>
+                                <span id="stat-spicy" class="text-red-500 font-bold">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div id="bar-spicy" class="bg-red-500 h-full w-0 transition-all duration-300"></div>
+                            </div>
+
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-semibold text-slate-600">로컬 정성 (정구지/부추)</span>
+                                <span id="stat-chives" class="text-emerald-600 font-bold">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                <div id="bar-chives" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                        </div>
+
+                        <!-- Action controls -->
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="addTopping('shrimp')" class="bg-white hover:bg-busanBlue-50 border border-slate-200 py-3 rounded-xl font-bold text-xs flex flex-col items-center gap-1 transition-all">
+                                <span>🍤 새우젓 한 스푼</span>
+                                <span class="text-[10px] text-slate-400">+감칠맛</span>
+                            </button>
+                            <button onclick="addTopping('paste')" class="bg-white hover:bg-red-50 border border-slate-200 py-3 rounded-xl font-bold text-xs flex flex-col items-center gap-1 transition-all">
+                                <span>🌶️ 다대기 한 스푼</span>
+                                <span class="text-[10px] text-slate-400">+매운맛</span>
+                            </button>
+                            <button onclick="addTopping('chives')" class="bg-white hover:bg-emerald-50 border border-slate-200 py-3 rounded-xl font-bold text-xs flex flex-col items-center gap-1 transition-all">
+                                <span>🌿 정구지 팍팍</span>
+                                <span class="text-[10px] text-slate-400">+아삭함</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-slate-200/60 flex items-center justify-between">
+                        <button onclick="resetBowl()" class="text-xs font-bold text-slate-400 hover:text-slate-600"><i class="fa-solid fa-rotate-left mr-1"></i>다시 담기</button>
+                        <button onclick="completeGukbap()" class="bg-busanBlue-900 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-busanBlue-600 transition-colors">내 커스텀 국밥 믹스 완료!</button>
+                    </div>
+                </div>
+
+                <!-- GAME 2: Dialect matching card -->
+                <div class="bg-slate-50 rounded-[32px] p-8 border border-slate-200/60 shadow-lg relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="bg-jeongCoral-500 text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">체험 #2</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-volume-high mr-1"></i>소리 지원</span>
+                        </div>
+                        <h3 class="font-brand text-2xl text-slate-900 tracking-wider mb-2">💬 부산 사투리 완벽 마스터 클래스</h3>
+                        <p class="text-slate-500 text-sm mb-6">관광객이 시장 상인들과 소통할 때 즉각 마법 같은 친밀감을 만들어내는 진짜 부산 표현입니다. 카드를 눌러보세요.</p>
+
+                        <!-- Dialect grid of cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+                            <!-- Card 1 -->
+                            <div onclick="playDialect('단디 주이소!', '정말 꼼꼼하고 알차게 잘 챙겨 주세요! 라는 애정 담긴 말입니다.', 'Dandi Ju-i-so')" class="bg-white p-5 rounded-2xl border border-slate-100 hover:border-busanBlue-200 cursor-pointer shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-xs bg-slate-100 px-2.5 py-1 rounded-lg text-slate-500 font-bold">시장용</span>
+                                    <span class="text-xl">🔥</span>
+                                </div>
+                                <h4 class="font-brand text-xl text-busanBlue-900 tracking-wide mt-3">" 단디 주이소! "</h4>
+                                <p class="text-xs text-slate-400 mt-1">발음: Dandi Ju-i-so</p>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div onclick="playDialect('정구지 마이 주이소!', '정구지는 부산 사투리로 부추를 뜻합니다. 국밥집에서 사용해보세요.', 'Jeong-gu-ji Mai Ju-i-so')" class="bg-white p-5 rounded-2xl border border-slate-100 hover:border-busanBlue-200 cursor-pointer shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-xs bg-slate-100 px-2.5 py-1 rounded-lg text-slate-500 font-bold">식당용</span>
+                                    <span class="text-xl">🌿</span>
+                                </div>
+                                <h4 class="font-brand text-xl text-busanBlue-900 tracking-wide mt-3">" 정구지 마이 주이소! "</h4>
+                                <p class="text-xs text-slate-400 mt-1">발음: Jeonggu-ji Mai</p>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div onclick="playDialect('까리한데예!', '굉장히 세련되고 멋있다! 라는 트렌디한 칭찬의 표현입니다.', 'Kka-ri Han-de-ye')" class="bg-white p-5 rounded-2xl border border-slate-100 hover:border-busanBlue-200 cursor-pointer shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-xs bg-slate-100 px-2.5 py-1 rounded-lg text-slate-500 font-bold">감탄사</span>
+                                    <span class="text-xl">😎</span>
+                                </div>
+                                <h4 class="font-brand text-xl text-busanBlue-900 tracking-wide mt-3">" 까리한데예! "</h4>
+                                <p class="text-xs text-slate-400 mt-1">발음: Kka-ri Han-de-ye</p>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div onclick="playDialect('오이소 보이소 사이소!', '부산 자갈치 시장의 전통 슬로건으로 와서 보고 사라는 환대의 사투리입니다.', 'Oi-so Boi-so Sai-so')" class="bg-white p-5 rounded-2xl border border-slate-100 hover:border-busanBlue-200 cursor-pointer shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-xs bg-slate-100 px-2.5 py-1 rounded-lg text-slate-500 font-bold">환대</span>
+                                    <span class="text-xl">🙋‍♂️</span>
+                                </div>
+                                <h4 class="font-brand text-xl text-busanBlue-900 tracking-wide mt-3">" 오이소, 보이소, 사이소! "</h4>
+                                <p class="text-xs text-slate-400 mt-1">발음: Oi-so Boi-so</p>
+                            </div>
+                        </div>
+
+                        <!-- Speech Box Display -->
+                        <div class="bg-busanBlue-900 text-white rounded-2xl p-5 border border-white/10" id="dialect-box">
+                            <p class="text-xs font-semibold text-busanBlue-200"><i class="fa-solid fa-microphone-lines mr-1.5 animate-pulse"></i> 억양 & 뜻 해설</p>
+                            <p class="text-lg font-brand tracking-wide mt-2 text-jeongCoral-500" id="dialect-target">"단디 주이소!"</p>
+                            <p class="text-xs text-slate-300 mt-2 leading-relaxed" id="dialect-desc">카드를 선택하시면 어떤 뉘앙스인지, 어떻게 발음해야 현지인이 바로 인정하는지 상세 해설이 이곳에 나타납니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-slate-200/60 text-right">
+                        <span class="text-xs text-slate-400">※ 가이드 동행 클래스 수료 시 사투리 수료증 발급 예정</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Itinerary Flow Section -->
+    <section id="itinerary" class="py-20 bg-slate-50 border-t border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-xs font-bold text-jeongCoral-500 tracking-wider uppercase">Tour Course Route</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">지루할 틈 없는 [정꾸 투어] 하루 코스</h2>
+                <p class="text-slate-500">배우고, 사고, 나만의 레시피를 만들어 먹고, 광안리 감성에 취하는 매끈한 일정 설계.</p>
+            </div>
+
+            <!-- Horizontal Timeline (Interactive highlight on click) -->
+            <div class="relative max-w-5xl mx-auto">
+                <div class="absolute left-8 lg:left-1/2 top-0 bottom-0 w-0.5 bg-slate-200 transform lg:-translate-x-1/2 pointer-events-none"></div>
+
+                <!-- Timeline Step 1 -->
+                <div class="relative flex flex-col lg:flex-row items-stretch gap-8 mb-12 group">
+                    <div class="lg:w-1/2 flex justify-end lg:pr-12 pl-12 lg:pl-0 relative">
+                        <div class="absolute left-6 lg:left-auto lg:-right-4 top-1 w-8 h-8 rounded-full bg-busanBlue-500 border-4 border-white shadow-md flex items-center justify-center text-white text-xs font-bold z-10 transition-transform group-hover:scale-125">1</div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow w-full text-left">
+                            <span class="text-xs text-busanBlue-500 font-bold tracking-wider">STEP 1 (13:00 - 14:00)</span>
+                            <h3 class="font-brand text-lg text-slate-900 tracking-wide mt-1">단디 사투리 클래스 장착</h3>
+                            <p class="text-slate-500 text-sm mt-2 leading-relaxed">
+                                감성적인 가배(커피) 한 잔을 마시며 로컬 대학생 버디와 맞춤식 사투리 오리엔테이션. "이모 단디 주이소!"의 발성 및 억양을 현장에서 장난치며 익힙니다.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 hidden lg:flex items-center">
+                        <div class="w-full h-32 rounded-2xl bg-cover bg-center shadow-inner" style="background-image: url('https://images.unsplash.com/photo-1547841243-eacb14453cd9?auto=format&fit=crop&q=80&w=400');"></div>
+                    </div>
+                </div>
+
+                <!-- Timeline Step 2 -->
+                <div class="relative flex flex-col lg:flex-row items-stretch gap-8 mb-12 group">
+                    <div class="lg:w-1/2 hidden lg:flex items-center justify-end">
+                        <div class="w-full h-32 rounded-2xl bg-cover bg-center shadow-inner" style="background-image: url('https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&q=80&w=400');"></div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-start lg:pl-12 pl-12 relative">
+                        <div class="absolute left-6 lg:-left-4 top-1 w-8 h-8 rounded-full bg-busanBlue-500 border-4 border-white shadow-md flex items-center justify-center text-white text-xs font-bold z-10 transition-transform group-hover:scale-125">2</div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow w-full text-left">
+                            <span class="text-xs text-busanBlue-500 font-bold tracking-wider">STEP 2 (14:30 - 16:30)</span>
+                            <h3 class="font-brand text-lg text-slate-900 tracking-wide mt-1">깡통시장 정(情)가 마켓 투어</h3>
+                            <p class="text-slate-500 text-sm mt-2 leading-relaxed">
+                                부평 깡통시장 등 협약된 전통시장에서 바가지가 완전히 차단된 정찰제 식문화 탐방. 사투리 스티커가 붙은 상점을 찾아 미션을 수행하고 부산 어묵, 비빔당면을 맛봅니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Step 3 -->
+                <div class="relative flex flex-col lg:flex-row items-stretch gap-8 mb-12 group">
+                    <div class="lg:w-1/2 flex justify-end lg:pr-12 pl-12 lg:pl-0 relative">
+                        <div class="absolute left-6 lg:left-auto lg:-right-4 top-1 w-8 h-8 rounded-full bg-busanBlue-500 border-4 border-white shadow-md flex items-center justify-center text-white text-xs font-bold z-10 transition-transform group-hover:scale-125">3</div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow w-full text-left">
+                            <span class="text-xs text-busanBlue-500 font-bold tracking-wider">STEP 3 (17:00 - 18:30)</span>
+                            <h3 class="font-brand text-lg text-slate-900 tracking-wide mt-1">나만의 국밥 커스텀 믹스롤로지</h3>
+                            <p class="text-slate-500 text-sm mt-2 leading-relaxed">
+                                시장 내 숨겨진 로컬 맛집 국밥집으로 이동. 취향에 맞는 조미 레시피 키트(다대기, 부추, 새우젓 배합 카드)를 활용해 나만의 궁극의 황금 맛을 완성하고 인스타그램에 공유합니다.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 hidden lg:flex items-center">
+                        <div class="w-full h-32 rounded-2xl bg-cover bg-center shadow-inner" style="background-image: url('https://images.unsplash.com/photo-1569562211093-4ed0d0758f12?auto=format&fit=crop&q=80&w=400');"></div>
+                    </div>
+                </div>
+
+                <!-- Timeline Step 4 -->
+                <div class="relative flex flex-col lg:flex-row items-stretch gap-8 group">
+                    <div class="lg:w-1/2 hidden lg:flex items-center justify-end">
+                        <div class="w-full h-32 rounded-2xl bg-cover bg-center shadow-inner" style="background-image: url('https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&q=80&w=400');"></div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-start lg:pl-12 pl-12 relative">
+                        <div class="absolute left-6 lg:-left-4 top-1 w-8 h-8 rounded-full bg-busanBlue-500 border-4 border-white shadow-md flex items-center justify-center text-white text-xs font-bold z-10 transition-transform group-hover:scale-125">4</div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow w-full text-left">
+                            <span class="text-xs text-busanBlue-500 font-bold tracking-wider">STEP 4 (19:00 - 21:00)</span>
+                            <h3 class="font-brand text-lg text-slate-900 tracking-wide mt-1">광안리 비어 워킹 & 힐링 밤바다</h3>
+                            <p class="text-slate-500 text-sm mt-2 leading-relaxed">
+                                바가지 씌우는 식당이나 횟집들을 벗어나, 시장 야시장에서 포장해 온 감성 핑거 푸드와 부산 로컬 양조 맥주를 들고 광안대교 야경을 바라보며 자유롭게 산책하고 맥주잔을 부딪힙니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Anti-Ripoff & Price Guarantee -->
+    <section id="trust" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="bg-gradient-to-tr from-busanBlue-900 to-slate-900 rounded-[40px] text-white p-8 lg:p-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative overflow-hidden">
+                <!-- Decorative background vector pattern -->
+                <div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#e0effe_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+                <div class="lg:col-span-6 space-y-6">
+                    <span class="bg-jeongCoral-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider">Safe & Fair Zone</span>
+                    <h2 class="font-brand text-3xl lg:text-4xl tracking-wide leading-tight">
+                        부산 관광의 고질적 암초,<br>
+                        '바가지 요금'에 철퇴를 내립니다
+                    </h2>
+                    <p class="text-slate-300 font-light leading-relaxed text-sm lg:text-base">
+                        정꾸 투어와 연계된 모든 로컬 파트너십 상점은 **부산시 지침 100% 정찰제** 규정을 준수합니다. 외국인 대상 불법 차등 가격 적발 시, 투어 이용 금액의 200%를 즉각 돌려드리는 **'200% 정(情) 안심 보상제'**를 적용합니다.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <div class="flex items-center space-x-2 bg-white/10 rounded-full px-4 py-2 border border-white/10">
+                            <span class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span>
+                            <span class="text-xs font-semibold">정가 투명 고지</span>
+                        </div>
+                        <div class="flex items-center space-x-2 bg-white/10 rounded-full px-4 py-2 border border-white/10">
+                            <span class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span>
+                            <span class="text-xs font-semibold">바가지 200% 즉시 보상</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Calculator Widget -->
+                <div class="lg:col-span-6 bg-white text-slate-800 rounded-3xl p-6 lg:p-8 shadow-2xl space-y-6">
+                    <h3 class="font-brand text-xl text-busanBlue-900 tracking-wide text-center">안심 비용 비교 시뮬레이터</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 mb-2">원하시는 참여 형태</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="setPricingMode('solo')" id="btn-solo" class="py-2.5 rounded-xl border-2 border-busanBlue-500 bg-busanBlue-50 text-busanBlue-900 font-bold text-xs transition-all text-center">
+                                    개인 힐링 (1인)
+                                </button>
+                                <button onclick="setPricingMode('group')" id="btn-group" class="py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 font-bold text-xs transition-all text-center">
+                                    커플 & 그룹 (2인 기준)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Comparative slider -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span class="text-slate-500">길거리 미식 소비 개수</span>
+                                <span id="food-count-lbl" class="text-busanBlue-500 font-bold">3개</span>
+                            </div>
+                            <input oninput="updatePricing(this.value)" type="range" min="1" max="6" value="3" class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-busanBlue-500">
+                        </div>
+
+                        <div class="border-t border-slate-100 pt-4 grid grid-cols-2 gap-4">
+                            <div class="text-left bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <span class="text-[10px] text-slate-400 block font-bold">일반 자유 투어 (바가지 노출 시)</span>
+                                <span id="price-normal" class="text-base font-extrabold text-slate-500 line-through">65,000 KRW</span>
+                            </div>
+                            <div class="text-left bg-busanBlue-50/50 p-3 rounded-xl border border-busanBlue-100">
+                                <span class="text-[10px] text-busanBlue-600 block font-bold">정꾸 패스 안심 정가제 적용 시</span>
+                                <span id="price-safe" class="text-lg font-black text-busanBlue-900">35,000 KRW</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-50 text-emerald-800 text-xs rounded-xl p-3 flex items-center space-x-2 border border-emerald-100">
+                            <span>💡</span>
+                            <span id="price-savings">정꾸 투어를 이용하면 바가지 대비 약 <strong>30,000원</strong>을 확실히 절약합니다!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collaboration Inquiry Section -->
+    <section id="booking" class="py-20 bg-slate-50 border-t border-slate-100">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="mb-12 space-y-4">
+                <span class="text-xs font-bold text-busanBlue-500 tracking-wider uppercase">Business & Collaboration</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">부산 로컬 상생을 향한 동반자가 되어주세요</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto text-sm leading-relaxed">
+                    본 투어 기획안은 부산광역시 산하 관광 공공기관, 대만 직항 노선 항공사 및 전통시장 상인 연합과의 협업을 전제로 동작합니다. 성공적인 사업 연계를 제안해 주세요.
+                </p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-200/60 text-left max-w-2xl mx-auto">
+                <form onsubmit="submitForm(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-2">제안 단체 / 회사명</label>
+                            <input required type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-busanBlue-500 transition-colors" placeholder="예: 부산관광협의회">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase mb-2">담당자 성명 및 이메일</label>
+                            <input required type="email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-busanBlue-500 transition-colors" placeholder="your@email.com">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-2">제휴 희망 영역</label>
+                        <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-busanBlue-500 transition-colors">
+                            <option>전통시장 점포 및 가맹점 등록 제휴</option>
+                            <option>항공사 연계 투어 패키지 판매 제휴</option>
+                            <option>부산시 지자체 예산 매칭 및 마케팅 제휴</option>
+                            <option>Z세대 유튜버/인플루언서 마케팅 연계</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-2">세부 제안 메모</label>
+                        <textarea required class="w-full h-32 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-busanBlue-500 transition-colors" placeholder="상생 가능한 모델이나 제휴 아이디어를 남겨주시면, 담당 기획자가 3영업일 이내 연락드립니다."></textarea>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <input required type="checkbox" id="privacy" class="h-4 w-4 rounded border-slate-300 text-busanBlue-500 focus:ring-busanBlue-500">
+                        <label for="privacy" class="text-xs text-slate-500 font-medium">개인정보 수집 및 제안서 검토 연락 수신에 동의합니다.</label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-busanBlue-500 to-busanBlue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:from-busanBlue-600 hover:to-busanBlue-900 transition-all text-center">
+                        기획안 파트너십 제안 완료하기
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-gradient-to-tr from-busanBlue-500 to-jeongCoral-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                    情
+                </div>
+                <span class="font-brand text-lg tracking-wider text-white">부산 정꾸 투어</span>
+            </div>
+            
+            <p class="text-xs text-slate-500 text-center md:text-left">
+                © 2026 Busan Jeong-kku Tour Concept. All Rights Reserved. 본 제안서는 시뮬레이션용 데모 페이지입니다.
+            </p>
+
+            <div class="flex space-x-4">
+                <a href="#" class="text-slate-500 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-lg"></i></a>
+                <a href="#" class="text-slate-500 hover:text-white transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JS State Managers -->
+    <script>
+        // Gukbap Customizer States
+        let toppingsState = {
+            shrimp: 0,
+            paste: 0,
+            chives: 0
+        };
+
+        function addTopping(type) {
+            if (toppingsState[type] < 3) {
+                toppingsState[type]++;
+                updateGukbapVisual();
+            }
+        }
+
+        function resetBowl() {
+            toppingsState = { shrimp: 0, paste: 0, chives: 0 };
+            updateGukbapVisual();
+        }
+
+        function updateGukbapVisual() {
+            // Salty / Shrimp update
+            const shrimpPct = Math.min(toppingsState.shrimp * 33.3, 100);
+            document.getElementById('stat-salty').innerText = `${Math.round(shrimpPct)}%`;
+            document.getElementById('bar-salty').style.width = `${shrimpPct}%`;
+            document.getElementById('visual-shrimp').style.opacity = toppingsState.shrimp > 0 ? '1' : '0';
+
+            // Spicy / Paste update
+            const spicyPct = Math.min(toppingsState.paste * 33.3, 100);
+            document.getElementById('stat-spicy').innerText = `${Math.round(spicyPct)}%`;
+            document.getElementById('bar-spicy').style.width = `${spicyPct}%`;
+            
+            const soupBase = document.getElementById('soup-base');
+            const visualPaste = document.getElementById('visual-paste');
+            if (toppingsState.paste === 0) {
+                soupBase.style.backgroundColor = 'rgba(254, 243, 199, 0.6)';
+                visualPaste.style.opacity = '0';
+                visualPaste.style.transform = 'scale(0.5)';
+            } else if (toppingsState.paste === 1) {
+                soupBase.style.backgroundColor = 'rgba(254, 202, 202, 0.4)';
+                visualPaste.style.opacity = '0.5';
+                visualPaste.style.transform = 'scale(0.8)';
+            } else if (toppingsState.paste === 2) {
+                soupBase.style.backgroundColor = 'rgba(248, 113, 113, 0.5)';
+                visualPaste.style.opacity = '0.8';
+                visualPaste.style.transform = 'scale(1)';
+            } else {
+                soupBase.style.backgroundColor = 'rgba(220, 38, 38, 0.7)';
+                visualPaste.style.opacity = '1';
+                visualPaste.style.transform = 'scale(1.2)';
+            }
+
+            // Chives / Green update
+            const chivesPct = Math.min(toppingsState.chives * 33.3, 100);
+            document.getElementById('stat-chives').innerText = `${Math.round(chivesPct)}%`;
+            document.getElementById('bar-chives').style.width = `${chivesPct}%`;
+            
+            const visualChives = document.getElementById('visual-chives');
+            visualChives.style.opacity = toppingsState.chives > 0 ? (toppingsState.chives * 0.33) : '0';
+
+            // Change bowl center emoji based on highest ingredient
+            const bowlEmoji = document.getElementById('bowl-center-emoji');
+            if (toppingsState.chives >= toppingsState.paste && toppingsState.chives >= toppingsState.shrimp && toppingsState.chives > 0) {
+                bowlEmoji.innerText = '🌿';
+            } else if (toppingsState.paste >= toppingsState.shrimp && toppingsState.paste > 0) {
+                bowlEmoji.innerText = '🌶️';
+            } else if (toppingsState.shrimp > 0) {
+                bowlEmoji.innerText = '🍤';
+            } else {
+                bowlEmoji.innerText = '🥩';
+            }
+        }
+
+        function completeGukbap() {
+            // Throw confetti celebration
+            confetti({
+                particleCount: 80,
+                spread: 60,
+                origin: { y: 0.8 }
+            });
+            
+            // Build a cute custom toast alert instead of window.alert
+            showCustomToast("🍲 나만의 황금비율 국밥 커스텀 완료! 마이 국밥 패스에 레시피가 연계되었습니다.");
+        }
+
+        // Dialect card interactive triggers
+        function playDialect(title, desc, audioPhonetics) {
+            document.getElementById('dialect-target').innerText = `"${title}"`;
+            document.getElementById('dialect-desc').innerHTML = `<strong>뜻:</strong> ${desc}<br><br><strong>발음 요령:</strong> 가벼운 경상도 억양을 섞어 "<em>${audioPhonetics}</em>" 하고 힘있게 끝을 내려 뱉는 느낌이 핵심 정(情) 포인트입니다.`;
+            
+            // Highlight container
+            const box = document.getElementById('dialect-box');
+            box.classList.add('ring-4', 'ring-jeongCoral-500/30');
+            setTimeout(() => {
+                box.classList.remove('ring-4', 'ring-jeongCoral-500/30');
+            }, 1000);
+        }
+
+        // Price calculator logic
+        let pricingMode = 'solo';
+        let foodCount = 3;
+
+        function setPricingMode(mode) {
+            pricingMode = mode;
+            if (mode === 'solo') {
+                document.getElementById('btn-solo').classList.add('border-busanBlue-500', 'bg-busanBlue-50', 'text-busanBlue-900');
+                document.getElementById('btn-solo').classList.remove('border-slate-200');
+                document.getElementById('btn-group').classList.remove('border-busanBlue-500', 'bg-busanBlue-50', 'text-busanBlue-900');
+                document.getElementById('btn-group').classList.add('border-slate-200');
+            } else {
+                document.getElementById('btn-group').classList.add('border-busanBlue-500', 'bg-busanBlue-50', 'text-busanBlue-900');
+                document.getElementById('btn-group').classList.remove('border-slate-200');
+                document.getElementById('btn-solo').classList.remove('border-busanBlue-500', 'bg-busanBlue-50', 'text-busanBlue-900');
+                document.getElementById('btn-solo').classList.add('border-slate-200');
+            }
+            updatePricing(foodCount);
+        }
+
+        function updatePricing(val) {
+            foodCount = parseInt(val);
+            document.getElementById('food-count-lbl').innerText = `${foodCount}개`;
+
+            const multiplier = pricingMode === 'solo' ? 1 : 1.8;
+            const baseNormal = 40000 + (foodCount * 12000);
+            const baseSafe = 25000 + (foodCount * 5000);
+
+            const normalPrice = Math.round(baseNormal * multiplier);
+            const safePrice = Math.round(baseSafe * multiplier);
+            const savings = normalPrice - safePrice;
+
+            document.getElementById('price-normal').innerText = `${normalPrice.toLocaleString()} KRW`;
+            document.getElementById('price-safe').innerText = `${safePrice.toLocaleString()} KRW`;
+            
+            document.getElementById('price-savings').innerHTML = `정꾸 투어를 이용하면 바가지 대비 약 <strong>${savings.toLocaleString()}원</strong>을 확실히 절약합니다!`;
+        }
+
+        // Form submit handler with custom dialog box
+        function submitForm(event) {
+            event.preventDefault();
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+            showCustomToast("📬 성공적으로 제안서 협업 요청이 등록되었습니다. 부산 관광 생태계 상생에 힘써주셔서 감사합니다!");
+            event.target.reset();
+        }
+
+        // Custom Premium Toast
+        function showCustomToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 z-50 glass-panel border-l-4 border-busanBlue-500 text-slate-800 p-4 rounded-2xl shadow-2xl max-w-sm flex items-start space-x-3 transition-all transform translate-y-10 opacity-0';
+            toast.innerHTML = `
+                <span class="text-xl">✨</span>
+                <div>
+                    <h5 class="font-bold text-xs text-busanBlue-500 uppercase tracking-wider">알림</h5>
+                    <p class="text-xs text-slate-600 mt-1">${msg}</p>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            
+            // Animate In
+            setTimeout(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            }, 100);
+
+            // Out
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 500);
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
