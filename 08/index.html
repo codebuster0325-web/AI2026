@@ -1,1 +1,1193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>삶의 만족도와 자살률 상관관계 분석 보고서 - 프레젠테이션</title>
+    <meta name="description" content="KOSIS 데이터를 바탕으로 2020~2024년 삶의 만족도와 자살률의 상관관계를 다각도로 분석한 인터랙티브 프레젠테이션입니다.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.06);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #9499b3;
+            --accent-primary: #6366f1; /* Indigo */
+            --accent-secondary: #8b5cf6; /* Violet */
+            --accent-cyan: #06b6d4;
+            --accent-crimson: #ef4444;
+            --font-display: 'Outfit', 'Inter', 'Noto Sans KR', sans-serif;
+            --font-body: 'Inter', 'Noto Sans KR', sans-serif;
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            -webkit-text-fill-color: initial;
+            color: var(--accent-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Presentation Container */
+        .presentation-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 3rem;
+        }
+
+        /* Slides */
+        .slide {
+            position: absolute;
+            width: 90%;
+            max-width: 1200px;
+            height: 80%;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+
+        /* Glassmorphism Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            backdrop-filter: blur(12px);
+            box-shadow: var(--shadow);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slide-title span {
+            background: linear-gradient(135deg, #ffffff, var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-title i {
+            color: var(--accent-primary);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .slide-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .slide-text p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .highlight-text {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .accent-text {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        /* Slide 1: Welcome */
+        .slide-welcome {
+            align-items: center;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .slide-welcome h1 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 40%, var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-welcome p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        .badge {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: var(--accent-primary);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Grid layouts for specific slides */
+        .single-col {
+            grid-template-columns: 1fr;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            height: 100%;
+            max-height: 380px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            transition: transform 0.5s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        /* List Styling */
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            padding: 1.2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .feature-text h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .feature-text p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Table Styling */
+        .table-wrapper {
+            overflow-y: auto;
+            max-height: 380px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: rgba(99, 102, 241, 0.15);
+            font-weight: 600;
+            color: var(--text-primary);
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s ease;
+        }
+
+        th:hover {
+            background-color: rgba(99, 102, 241, 0.3);
+        }
+
+        th i {
+            margin-left: 0.3rem;
+            font-size: 0.75rem;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .rank-high {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-crimson);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .rank-low {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        /* Interactive Map / Region Inspector (Slide 6) */
+        .inspector-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 2rem;
+            align-items: stretch;
+            height: 100%;
+        }
+
+        .controls-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        select {
+            background: var(--bg-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .region-stats {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+
+        .correlation-tag {
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .chart-display {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .bar-chart-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+            gap: 1.2rem;
+        }
+
+        .chart-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chart-row-label {
+            width: 60px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .chart-row-bars {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .bar-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            width: 100%;
+        }
+
+        .bar-name {
+            width: 45px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .bar-fill-sat {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .bar-fill-sui {
+            background: linear-gradient(90deg, #f87171, var(--accent-crimson));
+        }
+
+        .bar-value {
+            width: 45px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* Footer Controls */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(11, 12, 16, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-nav {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: var(--bg-card);
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+
+        .dots {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--accent-primary);
+            width: 24px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .slide-counter {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>SAT-SUI Correlation</span>
+        </div>
+        <div class="header-actions">
+            <a href="https://codebuster0325-web.github.io/AI2026/" class="btn btn-outline"><i class="fa-solid fa-house"></i> 홈</a>
+            <button class="btn btn-outline" id="btn-toc"><i class="fa-solid fa-list"></i> 목차</button>
+            <a href="./correlation_analysis_report.pdf" class="btn" download><i class="fa-solid fa-file-pdf"></i> PDF 보고서 다운로드</a>
+        </div>
+    </header>
+
+    <!-- Presentation Container -->
+    <main class="presentation-container">
+
+        <!-- Slide 1: Welcome -->
+        <section class="slide active" id="slide-1">
+            <div class="card slide-welcome">
+                <span class="badge"><i class="fa-solid fa-database"></i> KOSIS 데이터 기반</span>
+                <h1>삶의 만족도와 자살률 간의<br>상관관계 분석 보고서</h1>
+                <p>주관적 웰빙 지표(삶의 만족도)와 객관적 사회 안전망 지표(자살률)의 5개년(2020~2024년) 연계 분석 및 정책적 제언</p>
+                <button class="btn btn-start" onclick="nextSlide()"><i class="fa-solid fa-circle-play"></i> 발표 시작하기</button>
+            </div>
+        </section>
+
+        <!-- Slide 2: 분석 개요 -->
+        <section class="slide" id="slide-2">
+            <div class="card">
+                <h2 class="slide-title"><i class="fa-solid fa-circle-info"></i> <span>1. 분석 개요 및 데이터 정보</span></h2>
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <p class="highlight-text">주관적 삶의 만족감과 사회적 건강성의 극단적 지표인 자살률은 어떤 관계를 맺고 있을까요?</p>
+                        <p>본 보고서는 국가데이터처의 두 가지 핵심 사회 통계자료를 병합하여 통계적 연관성을 검증했습니다.</p>
+                        <p>피어슨 상관관계 분석 기법을 적용하여 통합 추이, 연도별 흐름, 17개 지역적 특징을 계량적으로 조명합니다.</p>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <div class="feature-icon"><i class="fa-solid fa-face-smile"></i></div>
+                            <div class="feature-text">
+                                <h4>삶의 만족도 지표 (주관적 웰빙)</h4>
+                                <p>「사회조사」 데이터. 13세 이상 인구 중 자신의 경제상황, 관계, 건강 등에 '만족'하는 비율(%)</p>
+                            </div>
+                        </li>
+                        <li class="feature-item">
+                            <div class="feature-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="feature-text">
+                                <h4>인구 10만 명당 자살률 (객관적 지표)</h4>
+                                <p>「사망원인통계」 데이터. 인구 10만 명 기준 자살 사망자 수(명)로 복지 안전망의 실효성을 진단.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: 데이터 요약 표 -->
+        <section class="slide" id="slide-3">
+            <div class="card">
+                <h2 class="slide-title"><i class="fa-solid fa-table"></i> <span>2. 전국 및 지역별 데이터 요약</span></h2>
+                <div class="slide-content single-col">
+                    <div class="table-wrapper">
+                        <table id="data-table">
+                            <thead>
+                                <tr>
+                                    <th onclick="sortTable(0)">행정구역 <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(1)">'20 만족 (%) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(2)">'20 자살 (명) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(3)">'21 만족 (%) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(4)">'21 자살 (명) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(5)">'22 만족 (%) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(6)">'22 자살 (명) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(7)">'23 만족 (%) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(8)">'23 자살 (명) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(9)">'24 만족 (%) <i class="fa-solid fa-sort"></i></th>
+                                    <th onclick="sortTable(10)">'24 자살 (명) <i class="fa-solid fa-sort"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: 전국 추이 분석 -->
+        <section class="slide" id="slide-4">
+            <div class="card">
+                <h2 class="slide-title"><i class="fa-solid fa-chart-line"></i> <span>3-1. 전국 만족도 및 자살률 추이</span></h2>
+                <div class="slide-content">
+                    <div class="image-container">
+                        <img src="./analysis/trend_chart.png" alt="전국 삶의 만족도 및 자살률 추이 그래프">
+                    </div>
+                    <div class="slide-text">
+                        <p class="highlight-text">전체 데이터 통합 피어슨 상관계수: <span class="accent-text">r = -0.1704</span></p>
+                        <p>전국 데이터를 5개년 전체로 통합해 분석한 결과, 삶의 만족도와 자살률은 **약한 음의 상관관계**를 나타냈습니다.</p>
+                        <p>추이 분석을 보면 2021년 삶의 만족도가 큰 폭으로 하락(42.7% → 34.0%)할 때 자살률은 미세한 증가에 그쳤으며, 오히려 2022~2024년 동안 자살률이 눈에 띄게 우상향(25.2명 → 29.1명)하는 양상이 드러납니다.</p>
+                        <p>이는 주관적 행복감의 보편적 개선만으로는 자살의 구조적 원인을 해결하기 어려움을 대변합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: 연도별 상관관계 변동 -->
+        <section class="slide" id="slide-5">
+            <div class="card">
+                <h2 class="slide-title"><i class="fa-solid fa-chart-column"></i> <span>3-2. 연도별 횡단면 상관계수 변화</span></h2>
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <p class="highlight-text">코로나19 팬데믹 초기 이후 연관성의 점진적 단절</p>
+                        <p>연도별 시도 분포를 바탕으로 계산한 피어슨 상관계수는 뚜렷한 경향성을 보여줍니다:</p>
+                        <ul style="margin-left: 1.5rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.5rem;">
+                            <li><span class="highlight-text">2020년: r = -0.5226</span> (유의미한 수준의 반비례 관계)</li>
+                            <li><span class="highlight-text">2021년: r = -0.1126</span> (상관성 급격히 약화)</li>
+                            <li><span class="highlight-text">2022년: r = -0.0077</span> (상관성 전무)</li>
+                            <li><span class="highlight-text">2023년: r = -0.2396</span> (일시적 복귀)</li>
+                            <li><span class="highlight-text">2024년: r = +0.0386</span> (상관성 단절)</li>
+                        </ul>
+                        <p>팬데믹 초기인 2020년에는 사회적 고립감이 심화되는 과정에서 주관적 만족도가 높은 지자체일수록 자살 억제력이 뚜렷했으나, 일상 회복기와 함께 복잡한 거시경제 요인이 작용하며 관계가 약화되었습니다.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="./analysis/correlation_chart.png" alt="연도별 상관계수 변동 추이 그래프">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: 시도별 인터랙티브 분석 -->
+        <section class="slide" id="slide-6">
+            <div class="card">
+                <h2 class="slide-title"><i class="fa-solid fa-circle-nodes"></i> <span>3-3. 지역별 인터랙티브 데이터 탐색</span></h2>
+                <div class="slide-content single-col" style="height: auto;">
+                    <div class="inspector-layout">
+                        <!-- Controls -->
+                        <div class="controls-card">
+                            <div class="form-group">
+                                <label for="region-select"><i class="fa-solid fa-map-location-dot"></i> 조회할 시도 선택</label>
+                                <select id="region-select" onchange="updateRegionInspector()">
+                                    <!-- Options filled dynamically -->
+                                </select>
+                            </div>
+                            <div class="region-stats">
+                                <div class="stat-box">
+                                    <span class="stat-label">시계열 상관계수 (r)</span>
+                                    <span class="stat-value" id="inspect-r">-0.5661</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-label">상관관계 성격</span>
+                                    <span class="correlation-tag" id="inspect-r-type">강한 음의 상관관계</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Charts Display -->
+                        <div class="chart-display">
+                            <h3 style="font-size: 1.1rem; font-weight: 600;" id="inspect-chart-title">서울특별시의 만족도(Sat) 및 자살률(Sui) 추이</h3>
+                            <div class="bar-chart-container" id="bar-chart-container">
+                                <!-- Dynamic CSS Bars -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: 결론 및 제언 -->
+        <section class="slide" id="slide-7">
+            <div class="card">
+                <h2 class="slide-title"><i class="fa-solid fa-lightbulb"></i> <span>4. 종합 결론 및 정책 제언</span></h2>
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <p class="highlight-text">주관적 웰빙 증진과 고위험군 방어망 구축의 이원화 전략 수립 필요</p>
+                        <p>본 상관관계 연구는 복지 정책 입안자들에게 단순하면서도 강력한 시사점을 제시합니다.</p>
+                        <p>지역 평균적 삶의 질 개선 정책은 시민 전체의 만족도를 제고하는 데 긍정적이나, 사회적 한계 상황에 직면한 고위험군 구제책과는 연계 고리가 늘 일치하지 않습니다.</p>
+                        <p>따라서 거시적 주민 지원 정책과 미시적 취약 계층 케어 모델의 정교한 매칭 설계가 요구됩니다.</p>
+                    </div>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <div class="feature-icon" style="color: var(--accent-cyan); background: rgba(6, 182, 212, 0.1);"><i class="fa-solid fa-bullseye"></i></div>
+                            <div class="feature-text">
+                                <h4>핀포인트(Targeted) 집중 예방 전략</h4>
+                                <p>만족도와 자살률 간 연관성이 옅거나 양의 비례 양상(강원, 대구, 서울 등)을 띠는 지자체는 보편 정책보다 청년 실업자, 독거 노인 등 특수 위험군을 직접 개입 타겟팅해야 합니다.</p>
+                            </div>
+                        </li>
+                        <li class="feature-item">
+                            <div class="feature-icon" style="color: var(--accent-secondary); background: rgba(139, 92, 246, 0.1);"><i class="fa-solid fa-users-viewfinder"></i></div>
+                            <div class="feature-text">
+                                <h4>위기 대응 정신건강 거버넌스</h4>
+                                <p>위기 국면(예: 팬데믹 초기)에는 공동체의 행복감 형성이 자살 억제 댐 역할을 합니다. 경제적 위험 신호와 연동하여 1차 보건소 및 상담망 거버넌스를 신속 가동하는 프로토콜을 다듬어야 합니다.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Controls -->
+    <footer>
+        <div class="slide-counter">
+            <span id="current-slide-num">1</span> / <span id="total-slides-num">7</span>
+        </div>
+        <div class="dots" id="slide-dots">
+            <!-- Dynamic Dots -->
+        </div>
+        <div class="nav-buttons">
+            <button class="btn-nav" id="btn-prev" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="btn-nav" id="btn-next" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </footer>
+
+    <!-- Table of Contents Modal -->
+    <div id="toc-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="card" style="width: 90%; max-width: 500px; height: auto; padding: 2rem;">
+            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center;">발표 목차</h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.8rem;" id="toc-list">
+                <!-- TOC items -->
+            </ul>
+            <button class="btn" style="margin-top: 2rem; width: 100%; justify-content: center;" onclick="closeTOC()"><i class="fa-solid fa-xmark"></i> 닫기</button>
+        </div>
+    </div>
+
+    <!-- Data Injection -->
+    <script>
+        const mergedData = [
+            {"Region":"전국","Sat_2020":42.7,"Sui_2020":25.7,"Sat_2021":34.0,"Sui_2021":26.0,"Sat_2022":43.3,"Sui_2022":25.2,"Sat_2023":42.2,"Sui_2023":27.3,"Sat_2024":40.1,"Sui_2024":29.1},
+            {"Region":"서울특별시","Sat_2020":46.4,"Sui_2020":22.7,"Sat_2021":34.1,"Sui_2021":22.6,"Sat_2022":43.2,"Sui_2022":21.4,"Sat_2023":41.9,"Sui_2023":23.2,"Sat_2024":46.3,"Sui_2024":24.1},
+            {"Region":"부산광역시","Sat_2020":40.1,"Sui_2020":27.4,"Sat_2021":31.1,"Sui_2021":27.7,"Sat_2022":41.0,"Sui_2022":27.3,"Sat_2023":40.5,"Sui_2023":29.1,"Sat_2024":37.5,"Sui_2024":30.3},
+            {"Region":"대구광역시","Sat_2020":33.2,"Sui_2020":26.1,"Sat_2021":31.0,"Sui_2021":26.3,"Sat_2022":41.2,"Sui_2022":27.0,"Sat_2023":37.6,"Sui_2023":28.1,"Sat_2024":36.1,"Sui_2024":29.4},
+            {"Region":"인천광역시","Sat_2020":42.4,"Sui_2020":26.5,"Sat_2021":31.1,"Sui_2021":25.9,"Sat_2022":39.3,"Sui_2022":25.8,"Sat_2023":39.8,"Sui_2023":28.8,"Sat_2024":28.0,"Sui_2024":31.2},
+            {"Region":"광주광역시","Sat_2020":43.4,"Sui_2020":22.6,"Sat_2021":38.1,"Sui_2021":26.4,"Sat_2022":46.2,"Sui_2022":25.0,"Sat_2023":43.0,"Sui_2023":27.3,"Sat_2024":40.7,"Sui_2024":29.9},
+            {"Region":"대전광역시","Sat_2020":41.3,"Sui_2020":27.2,"Sat_2021":39.7,"Sui_2021":29.3,"Sat_2022":51.3,"Sui_2022":25.7,"Sat_2023":49.0,"Sui_2023":26.4,"Sat_2024":47.2,"Sui_2024":31.2},
+            {"Region":"울산광역시","Sat_2020":40.7,"Sui_2020":26.4,"Sat_2021":36.5,"Sui_2021":28.5,"Sat_2022":41.6,"Sui_2022":26.3,"Sat_2023":41.4,"Sui_2023":32.7,"Sat_2024":40.6,"Sui_2024":29.2},
+            {"Region":"세종특별자치시","Sat_2020":58.7,"Sui_2020":18.4,"Sat_2021":46.1,"Sui_2021":19.0,"Sat_2022":52.8,"Sui_2022":23.3,"Sat_2023":53.3,"Sui_2023":20.0,"Sat_2024":42.8,"Sui_2024":23.0},
+            {"Region":"경기도","Sat_2020":44.3,"Sui_2020":23.7,"Sat_2021":33.3,"Sui_2021":23.6,"Sat_2022":42.6,"Sui_2022":23.1,"Sat_2023":41.3,"Sui_2023":25.1,"Sat_2024":35.7,"Sui_2024":28.2},
+            {"Region":"강원특별자치도","Sat_2020":45.8,"Sui_2020":33.2,"Sat_2021":37.5,"Sui_2021":32.7,"Sat_2022":45.6,"Sui_2022":33.1,"Sat_2023":47.1,"Sui_2023":34.7,"Sat_2024":42.2,"Sui_2024":34.3},
+            {"Region":"충청북도","Sat_2020":40.5,"Sui_2020":27.1,"Sat_2021":35.5,"Sui_2021":31.8,"Sat_2022":42.6,"Sui_2022":29.0,"Sat_2023":45.3,"Sui_2023":33.3,"Sat_2024":40.7,"Sui_2024":31.8},
+            {"Region":"충청남도","Sat_2020":36.8,"Sui_2020":34.7,"Sat_2021":40.2,"Sui_2021":32.2,"Sat_2022":47.5,"Sui_2022":33.2,"Sat_2023":45.1,"Sui_2023":36.5,"Sat_2024":47.0,"Sui_2024":34.8},
+            {"Region":"전라북도","Sat_2020":41.1,"Sui_2020":27.8,"Sat_2021":38.2,"Sui_2021":28.5,"Sat_2022":43.8,"Sui_2022":26.1,"Sat_2023":47.1,"Sui_2023":25.6,"Sat_2024":44.8,"Sui_2024":32.3},
+            {"Region":"전라남도","Sat_2020":40.9,"Sui_2020":28.5,"Sat_2021":37.5,"Sui_2021":30.2,"Sat_2022":44.7,"Sui_2022":26.6,"Sat_2023":42.0,"Sui_2023":29.2,"Sat_2024":40.2,"Sui_2024":34.5},
+            {"Region":"경상북도","Sat_2020":34.4,"Sui_2020":28.6,"Sat_2021":27.5,"Sui_2021":29.0,"Sat_2022":43.8,"Sui_2022":26.8,"Sat_2023":38.1,"Sui_2023":30.5,"Sat_2024":40.9,"Sui_2024":31.6},
+            {"Region":"경상남도","Sat_2020":45.9,"Sui_2020":25.3,"Sat_2021":32.3,"Sui_2021":26.3,"Sat_2022":42.9,"Sui_2022":26.7,"Sat_2023":44.4,"Sui_2023":28.5,"Sat_2024":42.9,"Sui_2024":28.5},
+            {"Region":"제주특별자치도","Sat_2020":47.9,"Sui_2020":30.0,"Sat_2021":38.5,"Sui_2021":26.1,"Sat_2022":48.2,"Sui_2022":26.0,"Sat_2023":44.7,"Sui_2023":30.5,"Sat_2024":43.4,"Sui_2024":36.3}
+        ];
+
+        const regionalCorrelations = {
+            "서울특별시": 0.2538, "부산광역시": 0.0111, "대구광역시": 0.3856, "인천광역시": -0.4994,
+            "광주광역시": -0.4433, "대전광역시": -0.3907, "울산광역시": 0.0555, "세종특별자치시": -0.4381,
+            "경기도": -0.3972, "강원특별자치도": 0.4885, "충청북도": 0.1069, "충청남도": 0.1665,
+            "전라북도": -0.1545, "전라남도": -0.5661, "경상북도": -0.0438, "경상남도": 0.1624,
+            "제주특별자치도": 0.0273
+        };
+
+        const slideNames = [
+            "표지 및 제목",
+            "1. 분석 개요 및 데이터 정보",
+            "2. 전국 및 시도별 요약 표",
+            "3-1. 전국 추이 분석",
+            "3-2. 연도별 상관계수 변화",
+            "3-3. 지역별 인터랙티브 분석",
+            "4. 종합 결론 및 정책 제언"
+        ];
+
+        let currentSlide = 1;
+        const totalSlides = 7;
+        let sortDirection = {};
+
+        // Slide navigation
+        function showSlide(slideIdx) {
+            document.querySelectorAll('.slide').forEach(s => {
+                s.classList.remove('active');
+                s.classList.remove('prev');
+            });
+
+            const targetSlide = document.getElementById(`slide-${slideIdx}`);
+            if (targetSlide) {
+                targetSlide.classList.add('active');
+                // add visual cues to past slides
+                for(let i = 1; i < slideIdx; i++) {
+                    const prevSlide = document.getElementById(`slide-${i}`);
+                    if(prevSlide) prevSlide.classList.add('prev');
+                }
+            }
+
+            currentSlide = slideIdx;
+            document.getElementById('current-slide-num').innerText = currentSlide;
+            
+            // disable/enable buttons
+            document.getElementById('btn-prev').disabled = currentSlide === 1;
+            document.getElementById('btn-next').disabled = currentSlide === totalSlides;
+
+            // update dots
+            document.querySelectorAll('.dot').forEach((d, idx) => {
+                if (idx + 1 === currentSlide) {
+                    d.classList.add('active');
+                } else {
+                    d.classList.remove('active');
+                }
+            });
+
+            // If entering slide 6, update region inspector
+            if (currentSlide === 6) {
+                updateRegionInspector();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Initialize dots
+        function initDots() {
+            const dotsContainer = document.getElementById('slide-dots');
+            dotsContainer.innerHTML = '';
+            for (let i = 1; i <= totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = `dot ${i === 1 ? 'active' : ''}`;
+                dot.onclick = () => showSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space' || e.key === 'Enter') {
+                if (document.activeElement.tagName !== 'SELECT') {
+                    nextSlide();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (document.activeElement.tagName !== 'SELECT') {
+                    prevSlide();
+                }
+            }
+        });
+
+        // Initialize table
+        function populateTable(data = mergedData) {
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = '';
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                
+                // Color formatting for extreme cells
+                const sui24Class = item.Sui_2024 >= 34 ? 'rank-high' : (item.Sui_2024 <= 24 ? 'rank-low' : '');
+                
+                tr.innerHTML = `
+                    <td style="font-weight: 600;">${item.Region}</td>
+                    <td>${item.Sat_2020.toFixed(1)}</td>
+                    <td>${item.Sui_2020.toFixed(1)}</td>
+                    <td>${item.Sat_2021.toFixed(1)}</td>
+                    <td>${item.Sui_2021.toFixed(1)}</td>
+                    <td>${item.Sat_2022.toFixed(1)}</td>
+                    <td>${item.Sui_2022.toFixed(1)}</td>
+                    <td>${item.Sat_2023.toFixed(1)}</td>
+                    <td>${item.Sui_2023.toFixed(1)}</td>
+                    <td>${item.Sat_2024.toFixed(1)}</td>
+                    <td><span class="rank-badge ${sui24Class}">${item.Sui_2024.toFixed(1)}</span></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Sort table columns
+        function sortTable(colIdx) {
+            const keys = [
+                'Region',
+                'Sat_2020', 'Sui_2020',
+                'Sat_2021', 'Sui_2021',
+                'Sat_2022', 'Sui_2022',
+                'Sat_2023', 'Sui_2023',
+                'Sat_2024', 'Sui_2024'
+            ];
+            
+            const key = keys[colIdx];
+            sortDirection[key] = !sortDirection[key]; // Toggle
+            
+            const sorted = [...mergedData].sort((a, b) => {
+                let valA = a[key];
+                let valB = b[key];
+
+                if (typeof valA === 'string') {
+                    return sortDirection[key] 
+                        ? valA.localeCompare(valB) 
+                        : valB.localeCompare(valA);
+                } else {
+                    return sortDirection[key] ? valA - valB : valB - valA;
+                }
+            });
+
+            populateTable(sorted);
+        }
+
+        // Initialize Region Inspector Select Options
+        function initInspectorSelect() {
+            const select = document.getElementById('region-select');
+            select.innerHTML = '';
+            mergedData.forEach(item => {
+                if (item.Region === '전국') return; // skip nationwide
+                const option = document.createElement('option');
+                option.value = item.Region;
+                option.text = item.Region;
+                select.appendChild(option);
+            });
+            select.value = "서울특별시"; // default select
+        }
+
+        // Update Region Inspector Content
+        function updateRegionInspector() {
+            const region = document.getElementById('region-select').value;
+            const rVal = regionalCorrelations[region];
+            const item = mergedData.find(d => d.Region === region);
+
+            // Update correlation text
+            document.getElementById('inspect-r').innerText = rVal ? rVal.toFixed(4) : "N/A";
+            
+            const rTag = document.getElementById('inspect-r-type');
+            if (rVal < -0.4) {
+                rTag.innerText = "강한 음의 상관관계";
+                rTag.style.background = "rgba(6, 182, 212, 0.15)";
+                rTag.style.color = "var(--accent-cyan)";
+                rTag.style.border = "1px solid rgba(6, 182, 212, 0.3)";
+            } else if (rVal < -0.1) {
+                rTag.innerText = "약한 음의 상관관계";
+                rTag.style.background = "rgba(99, 102, 241, 0.15)";
+                rTag.style.color = "var(--accent-primary)";
+                rTag.style.border = "1px solid rgba(99, 102, 241, 0.3)";
+            } else if (rVal > 0.2) {
+                rTag.innerText = "양의 상관관계 (이례성)";
+                rTag.style.background = "rgba(239, 68, 68, 0.15)";
+                rTag.style.color = "var(--accent-crimson)";
+                rTag.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+            } else {
+                rTag.innerText = "상관관계 거의 없음";
+                rTag.style.background = "rgba(255, 255, 255, 0.05)";
+                rTag.style.color = "var(--text-secondary)";
+                rTag.style.border = "1px solid var(--border-color)";
+            }
+
+            document.getElementById('inspect-chart-title').innerText = `${region}의 연도별 삶의 만족도(Sat) vs 자살률(Sui) 추이`;
+
+            // Render CSS bars
+            const container = document.getElementById('bar-chart-container');
+            container.innerHTML = '';
+
+            const years = ["2020", "2021", "2022", "2023", "2024"];
+            years.forEach(year => {
+                const satVal = item[`Sat_${year}`];
+                const suiVal = item[`Sui_${year}`];
+
+                // map value to percentage width (e.g. max satisfaction is 65%, max suicide is 45)
+                const satWidth = (satVal / 65) * 100;
+                const suiWidth = (suiVal / 45) * 100;
+
+                const row = document.createElement('div');
+                row.className = 'chart-row';
+                row.innerHTML = `
+                    <div class="chart-row-label">${year}년</div>
+                    <div class="chart-row-bars">
+                        <div class="bar-wrapper">
+                            <span class="bar-name">만족도</span>
+                            <div class="bar-track">
+                                <div class="bar-fill bar-fill-sat" style="width: ${satWidth}%"></div>
+                            </div>
+                            <span class="bar-value" style="color: var(--accent-cyan);">${satVal.toFixed(1)}%</span>
+                        </div>
+                        <div class="bar-wrapper">
+                            <span class="bar-name">자살률</span>
+                            <div class="bar-track">
+                                <div class="bar-fill bar-fill-sui" style="width: ${suiWidth}%"></div>
+                            </div>
+                            <span class="bar-value" style="color: #f87171;">${suiVal.toFixed(1)}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // Table of Contents Modal
+        const tocModal = document.getElementById('toc-modal');
+        const btnTOC = document.getElementById('btn-toc');
+
+        btnTOC.onclick = () => {
+            const list = document.getElementById('toc-list');
+            list.innerHTML = '';
+            for (let i = 1; i <= totalSlides; i++) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <button class="btn btn-outline" style="width: 100%; text-align: left; justify-content: flex-start; ${i === currentSlide ? 'border-color: var(--accent-primary); color: white;' : ''}" onclick="goToSlide(${i})">
+                        <span style="width: 30px; font-weight: 700; color: var(--accent-primary);">${i}</span>
+                        <span>${slideNames[i-1]}</span>
+                    </button>
+                `;
+                list.appendChild(li);
+            }
+            tocModal.style.display = 'flex';
+        };
+
+        function closeTOC() {
+            tocModal.style.display = 'none';
+        }
+
+        function goToSlide(idx) {
+            showSlide(idx);
+            closeTOC();
+        }
+
+        // Click outside modal to close
+        window.onclick = (e) => {
+            if (e.target === tocModal) {
+                closeTOC();
+            }
+        };
+
+        // Initialize App
+        window.onload = () => {
+            initDots();
+            populateTable();
+            initInspectorSelect();
+            showSlide(1);
+        };
+    </script>
+</body>
+</html>
