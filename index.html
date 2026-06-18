@@ -279,7 +279,6 @@
             document.getElementById('theme-icon').textContent = '🌙';
         }
 
-        // Original Configurations with Correct Paths
         const assignments = [
             { id: '01', title: 'AI의 이해', desc: 'AI의 정의, 역사 및 생성형 AI의 메커니즘을 분석했습니다.', color: 'from-purple-500 to-pink-500', link: './01/index.html', tools: ['Gemini', 'Research'] },
             { id: '02', title: '데이터 스토리텔링', desc: '공공 데이터를 분석하여 시각적 리포트와 스토리북을 제작했습니다.', color: 'from-blue-500 to-cyan-500', link: './02/index.html', tools: ['Storybook', 'Data'] },
@@ -287,13 +286,12 @@
             { id: '04', title: '중간고사', desc: '중간고사 과제입니다.', color: 'from-orange-500 to-amber-500', link: 'https://codebuster0325-web.github.io/yuan/', tools: ['Exam', 'Project'] },
             { id: '05', title: '데이터분석(고령운전자)', desc: '코랩으로 데이터분석', color: 'from-red-500 to-rose-500', link: './05/index.html', tools: ['Colab', 'Python'] },
             { id: '06', title: '데이터분석(개인형이동장치)', desc: '개인형 이동장치(PMD) 이용 현황과 안전 데이터를 다각도로 시각화하고 분석했습니다.', color: 'from-indigo-500 to-blue-500', link: './06/index.html', tools: ['Data', 'Python'] },
-            { id: '07', title: '이미지 생성 AI 활용', desc: '캠페인을 위한 감각적인 포스터 이미지를 AI로 제작했습니다.', color: 'from-pink-500 to-purple-500', link: '', tools: ['DALL-E', 'Midjourney'] },
+            { id: '07', title: '부산 관광의 성장 요인, 시민 반응, 문제점, 개선 방향', desc: '부산 관광 데이터셋을 토대로 주요 트렌드, 성장 모멘텀 및 현지 거주민의 반응 데이터를 분석하고 인사이트를 도출했습니다.', color: 'from-pink-500 to-purple-500', link: './07/index.html', tools: ['Data', 'Python', 'Analysis'] },
             { id: '08', title: '일일박스오피스', desc: '영화진흥위원회 오픈 API를 활용하여 실시간 박스오피스 순위와 영화 세부 정보를 시각화한 모던 웹 애플리케이션입니다.', color: 'from-yellow-400 to-orange-500', link: 'https://movie-57h5.vercel.app/', tools: ['API', 'Vercel', 'JS'] },
             { id: '09', title: 'AI 자동화 워크플로우', desc: '데이터 수집부터 알림까지의 자동화 파이프라인을 구축했습니다.', color: 'from-green-500 to-teal-500', link: '', tools: ['Zapier', 'Notion'] },
             { id: '10', title: '최종 융합 프로젝트', desc: '모든 역량을 집약하여 지역사회 복지 혁신안을 발표했습니다.', color: 'from-blue-600 to-indigo-700', link: '', tools: ['Final Project', 'Pitch'] }
         ];
 
-        // Render portfolio items inside premium glassmorphism grids
         const grid = document.getElementById('project-grid');
         assignments.forEach((item, index) => {
             const card = document.createElement('div');
@@ -304,7 +302,7 @@
             const hasLink = item.link && item.link.trim() !== '';
             const btnText = hasLink ? '결과물 보기' : '준비 중';
 
-            // Click handling to route strictly as defined
+            // Direct route handling preserving absolute/relative options
             const handleCardClick = (e) => {
                 if (e) e.stopPropagation();
                 if (hasLink) {
@@ -330,8 +328,8 @@
                             Task_Done
                         </div>
                     </div>
-                    <h4 class="text-2xl font-black mb-4 group-hover:translate-x-1 transition-transform duration-300">${item.title}</h4>
-                    <p class="opacity-60 text-sm leading-relaxed mb-8 line-clamp-2 font-light">${item.desc}</p>
+                    <h4 class="text-2xl font-black mb-4 group-hover:translate-x-1 transition-transform duration-300 leading-tight">${item.title}</h4>
+                    <p class="opacity-60 text-sm leading-relaxed mb-8 line-clamp-3 font-light">${item.desc}</p>
                 </div>
                 <div class="mt-auto">
                     <div class="flex flex-wrap gap-2 mb-6">
@@ -347,7 +345,7 @@
             grid.appendChild(card);
         });
 
-        // Backup detail modal implementation for offline/prep links
+        // Modal fallback framework for unlinked assignments
         function openDetailModal(item) {
             document.getElementById('modal-content').innerHTML = `
                 <div class="mb-4 text-purple-500 font-mono text-xs tracking-widest uppercase">Assignment ${item.id} Detail</div>
