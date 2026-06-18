@@ -279,7 +279,7 @@
             document.getElementById('theme-icon').textContent = '🌙';
         }
 
-        // Exact original configurations restored + 10th card configuration modified as requested
+        // Exact original configurations restored, 7번 카드만 ./09/index.html로 이동하도록 세팅 완료
         const assignments = [
             { id: '01', title: 'AI의 이해', desc: 'AI의 정의, 역사 및 생성형 AI의 메커니즘을 분석했습니다.', color: 'from-purple-500 to-pink-500', link: './01/index.html', tools: ['Gemini', 'Research'] },
             { id: '02', title: '데이터 스토리텔링', desc: '공공 데이터를 분석하여 시각적 리포트와 스토리북을 제작했습니다.', color: 'from-blue-500 to-cyan-500', link: './02/index.html', tools: ['Storybook', 'Data'] },
@@ -287,10 +287,10 @@
             { id: '04', title: '중간고사', desc: '중간고사 과제입니다.', color: 'from-orange-500 to-amber-500', link: 'https://codebuster0325-web.github.io/yuan/', tools: ['Exam', 'Project'] },
             { id: '05', title: '데이터분석(고령운전자)', desc: '코랩으로 데이터분석', color: 'from-red-500 to-rose-500', link: './05/index.html', tools: ['Colab', 'Python'] },
             { id: '06', title: '데이터분석(개인형이동장치)', desc: '개인형 이동장치(PMD) 이용 현황과 안전 데이터를 다각도로 시각화하고 분석했습니다.', color: 'from-indigo-500 to-blue-500', link: './06/index.html', tools: ['Data', 'Python'] },
-            { id: '07', title: '유튜브 댓글 데이터 분석', desc: '유튜브 동영상의 댓글 데이터를 수집하고 자연어 처리(NLP)를 통해 감정 키워드를 분석했습니다.', color: 'from-pink-500 to-purple-500', link: './07/index.html', tools: ['Data', 'Python', 'NLP'] },
-            { id: '08', title: '부산 관광의 성장 요인, 시민 반응, 문제점, 개선 방향', desc: '부산 관광 데이터셋을 토대로 주요 트렌드, 성장 모멘텀 및 현지 거주민의 반응 데이터를 분석하고 인사이트를 도출했습니다.', color: 'from-yellow-400 to-orange-500', link: './08/index.html', tools: ['Data', 'Python', 'Analysis'] },
-            { id: '09', title: '일일박스오피스', desc: '영화진흥위원회 오픈 API를 활용하여 실시간 박스오피스 순위와 영화 세부 정보를 시각화한 모던 웹 애플리케이션입니다.', color: 'from-green-500 to-teal-500', link: 'https://movie-57h5.vercel.app/', tools: ['API', 'Vercel', 'JS'] },
-            { id: '10', title: 'Antigravity 활용', desc: 'Antigravity 모듈을 사용하여 물리적 한계를 시뮬레이션하고 분석하는 독창적인 웹 콘텐츠 프로젝트입니다.', color: 'from-blue-600 to-indigo-700', link: 'file:///C:/Users/%EC%B5%9C%EC%9C%A0%EC%95%88/Desktop/yuan/index.html', tools: ['Antigravity', 'Local'] }
+            { id: '07', title: '유튜브 댓글 데이터 분석', desc: '유튜브 동영상의 댓글 데이터를 수집하고 자연어 처리(NLP)를 통해 감정 키워드를 분석했습니다.', color: 'from-pink-500 to-purple-500', link: './09/index.html', tools: ['Data', 'Python', 'NLP'] },
+            { id: '08', title: '부산 관광의 성장 요인, 시민 반응, 문제점, 개선 방향', desc: '부산 관광 데이터셋을 토대로 주요 트렌드, 성장 모멘텀 및 현지 거주민의 반응 데이터를 분석하고 인사이트를 도출했습니다.', color: 'from-yellow-400 to-orange-500', link: './07/index.html', tools: ['Data', 'Python', 'Analysis'] },
+            { id: '09', title: '일일박스오피스', desc: '영화진흥위원회 오픈 API를 활용하여 실시간 박스오피스 순위 and 영화 세부 정보를 시각화한 모던 웹 애플리케이션입니다.', color: 'from-green-500 to-teal-500', link: 'https://movie-57h5.vercel.app/', tools: ['API', 'Vercel', 'JS'] },
+            { id: '10', title: 'Antigravity 활용', desc: 'Antigravity 모듈을 사용하여 물리적 한계를 시뮬레이션하고 분석하는 독창적인 웹 콘텐츠 프로젝트입니다.', color: 'from-blue-600 to-indigo-700', link: './08/index.html', tools: ['Antigravity', 'Local'] }
         ];
 
         const grid = document.getElementById('project-grid');
