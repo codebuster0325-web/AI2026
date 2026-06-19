@@ -6,7 +6,7 @@
     <title>AI 리터러시의 이해 | 최유안 포트폴리오</title>
     
     <!-- Fonts: Pretendard -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -77,6 +77,7 @@
         .card-glow-7 { --glow-color: #10b981; }
         .card-glow-8 { --glow-color: #6366f1; }
         .card-glow-9 { --glow-color: #f43f5e; }
+        .card-glow-10 { --glow-color: #3b82f6; }
 
         .glass-card:hover {
             border-color: var(--glow-color) !important;
@@ -191,10 +192,10 @@
         <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-4">
             <div data-aos="fade-right">
                 <h3 class="text-4xl font-black mb-3 text-gradient">Portfolio Archive</h3>
-                <p class="opacity-50 text-lg font-light">총 10개의 과제 속에 담긴 성장의 기록</p>
+                <p class="opacity-50 text-lg font-light">총 11개의 과제 속에 담긴 성장의 기록</p>
             </div>
             <div class="px-4 py-2 glass rounded-full text-purple-500 text-xs font-mono tracking-widest" data-aos="fade-left">
-                LATEST UPDATE: 2026.05
+                LATEST UPDATE: 2026.06
             </div>
         </div>
 
@@ -256,7 +257,6 @@
     <script>
         AOS.init({ duration: 1000, once: true });
 
-        // Theme Toggle Control
         function toggleTheme() {
             const body = document.getElementById('body-tag');
             const icon = document.getElementById('theme-icon');
@@ -279,7 +279,6 @@
             document.getElementById('theme-icon').textContent = '🌙';
         }
 
-        // 1번부터 10번 카드까지 완벽한 과제 구성 및 요청하신 상대경로 매핑
         const assignments = [
             { id: '01', title: 'AI의 이해', desc: 'AI의 정의, 역사 및 생성형 AI의 메커니즘을 분석했습니다.', color: 'from-purple-500 to-pink-500', link: './02/index.html', tools: ['Gemini', 'Research'] },
             { id: '02', title: '데이터 스토리텔링', desc: '공공 데이터를 분석하여 시각적 리포트와 스토리북을 제작했습니다.', color: 'from-blue-500 to-cyan-500', link: './03/index.html', tools: ['Storybook', 'Data'] },
@@ -290,25 +289,24 @@
             { id: '07', title: '유튜브 댓글 데이터 분석', desc: '유튜브 동영상의 댓글 데이터를 수집하고 자연어 처리(NLP)를 통해 감정 키워드를 분석했습니다.', color: 'from-pink-500 to-purple-500', link: './09/index.html', tools: ['Data', 'Python', 'NLP'] },
             { id: '08', title: '부산 관광의 성장 요인, 시민 반응, 문제점, 개선 방향', desc: '부산 관광 데이터셋을 토대로 주요 트렌드, 성장 모멘텀 및 현지 거주민의 반응 데이터를 분석하고 인사이트를 도출했습니다.', color: 'from-yellow-400 to-orange-500', link: './07/index.html', tools: ['Data', 'Python', 'Analysis'] },
             { id: '09', title: '일일박스오피스', desc: '영화진흥위원회 오픈 API를 활용하여 실시간 박스오피스 순위와 영화 세부 정보를 시각화한 모던 웹 애플리케이션입니다.', color: 'from-green-500 to-teal-500', link: 'https://movie-57h5.vercel.app/', tools: ['API', 'Vercel', 'JS'] },
-            { id: '10', title: 'Antigravity 활용', desc: 'Antigravity 모듈을 사용하여 물리적 한계를 시뮬레이션하고 분석하는 독창적인 웹 콘텐츠 프로젝트입니다.', color: 'from-blue-600 to-indigo-700', link: './08/index.html', tools: ['Antigravity', 'Local'] }
+            { id: '10', title: 'Antigravity 활용', desc: 'Antigravity 모듈을 사용하여 물리적 한계를 시뮬레이션하고 분석하는 독창적인 웹 콘텐츠 프로젝트입니다.', color: 'from-blue-600 to-indigo-700', link: './08/index.html', tools: ['Antigravity', 'Local'] },
+            { id: '11', title: '기말고사', desc: '한 학기 동안 성장해 온 AI 리터러시 역량을 종합하여 제작한 기말고사 결과물입니다.', color: 'from-purple-600 to-blue-600', link: './10/index.html', tools: ['Final', 'Web App', 'Graduation'] }
         ];
 
-        // 프리미엄 카드 그리드 동적 생성 및 "결과물 보기" 버튼 완벽 렌더링
         const grid = document.getElementById('project-grid');
         assignments.forEach((item, index) => {
             const card = document.createElement('div');
-            card.className = `glass glass-card p-8 rounded-[2rem] card-glow-${index % 10} flex flex-col justify-between group cursor-pointer`;
+            card.className = `glass glass-card p-8 rounded-[2rem] card-glow-${index % 11} flex flex-col justify-between group cursor-pointer`;
             card.setAttribute('data-aos', 'fade-up');
             card.setAttribute('data-aos-delay', (index % 3) * 100);
             
             const hasLink = item.link && item.link.trim() !== '';
             const btnText = hasLink ? '결과물 보기' : '준비 중';
 
-            // 클릭 시 깃허브 페이지 호환 상대 경로로 매끄러운 다이렉트 브라우저 이동 처리
             const handleCardClick = (e) => {
                 if (e) e.stopPropagation();
                 if (hasLink) {
-                    if (item.link.startsWith('http')) {
+                    if (item.link.startsWith('http') || item.link.startsWith('file:///')) {
                         window.open(item.link, '_blank');
                     } else {
                         window.location.href = item.link;
@@ -327,7 +325,7 @@
                             ${item.id}
                         </div>
                         <div class="px-3 py-1 glass rounded-full text-[10px] font-mono opacity-50 uppercase">
-                            Task_Done
+                            ${hasLink ? 'Task_Done' : 'In_Progress'}
                         </div>
                     </div>
                     <h4 class="text-2xl font-black mb-4 group-hover:translate-x-1 transition-transform duration-300 leading-tight">${item.title}</h4>
@@ -337,19 +335,16 @@
                     <div class="flex flex-wrap gap-2 mb-6">
                         ${item.tools.map(tool => `<span class="px-3 py-1 bg-gray-500/5 border border-gray-500/10 rounded-lg text-[10px] opacity-70 uppercase font-medium">${tool}</span>`).join('')}
                     </div>
-                    <!-- 요청하신 "결과물 보기" 프리미엄 실버/퍼플 테마 스타일의 고정 버튼 -->
                     <button class="w-full py-3 rounded-xl font-bold text-xs border transition-all duration-300 tracking-wide dark:bg-white/5 bg-black/5 dark:hover:bg-purple-500/20 hover:bg-purple-500/10 dark:border-white/10 border-black/10 hover:border-purple-500/50 dark:hover:border-purple-400/50">
                         ${btnText}
                     </button>
                 </div>
             `;
             
-            // 버튼 클릭 이벤트 바인딩
             card.querySelector('button').onclick = handleCardClick;
             grid.appendChild(card);
         });
 
-        // 예비용 디테일 모달 창 구현
         function openDetailModal(item) {
             document.getElementById('modal-content').innerHTML = `
                 <div class="mb-4 text-purple-500 font-mono text-xs tracking-widest uppercase">Assignment ${item.id} Detail</div>
