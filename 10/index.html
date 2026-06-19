@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가구 분화와 가계 경제의 그늘 - 인포그래픽 리포트</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Playfair Display, Noto Serif KR, Inter, Noto Sans KR) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Noto+Serif+KR:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Noto Serif KR', 'serif'],
+                        sans: ['Inter', 'Noto Sans KR', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#FAF5F0',  // Soft Milk Cream (Background Light)
+                            100: '#F3E9DC', // Light Creamy Latte
+                            200: '#E6CCB2', // Warm Toast Sand
+                            500: '#8C624E', // Cozy Cocoa Mocha (Primary Accent)
+                            600: '#7F5539', // Cocoa Deep
+                            700: '#5C3D2E', // Deep Espresso
+                            900: '#3D2B1F', // Dark Dark Espresso (Dark Text)
+                        },
+                        sage: {
+                            100: '#E8EFE5',
+                            500: '#8FA882', // Soft Sage Green
+                        },
+                        ochre: {
+                            100: '#F9EFE4',
+                            500: '#D4A373', // Caramel Sand
+                        },
+                        clay: {
+                            100: '#F6EBEB',
+                            500: '#C38B8B', // Dusty Rose Clay
+                        },
+                        darkBg: '#1A1512', // Warm Espresso Black (Dark Background)
+                        darkCard: '#241D19' // Cozy Warm Dark Card
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom Scrollbar in Warm tone */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF5F0;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1A1512;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8C624E;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-brand-50 text-[#4A3F35] dark:bg-darkBg dark:text-brand-100 min-h-screen selection:bg-brand-200">
+
+    <!-- Header Navigation -->
+    <nav class="sticky top-0 z-50 backdrop-blur-md bg-brand-50/80 dark:bg-darkBg/80 border-b border-brand-100 dark:border-brand-900/40 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-brand-500 text-white rounded-xl shadow-md shadow-brand-500/10">
+                    <i data-lucide="home" class="w-5 h-5"></i>
+                </div>
+                <span class="font-serif font-black text-lg tracking-wider text-brand-700 dark:text-brand-100">HOME & WELFARE</span>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <a href="#demographics" class="hidden md:inline-block text-xs font-semibold tracking-wider uppercase text-brand-600 dark:text-brand-200 hover:text-brand-500 transition-colors">가구 구조</a>
+                <a href="#economics" class="hidden md:inline-block text-xs font-semibold tracking-wider uppercase text-brand-600 dark:text-brand-200 hover:text-brand-500 transition-colors">가계 경제</a>
+                <a href="#simulator" class="hidden md:inline-block text-xs font-semibold tracking-wider uppercase text-brand-600 dark:text-brand-200 hover:text-brand-500 transition-colors">우리집 시뮬레이션</a>
+                <a href="#ai-report" class="hidden lg:inline-block text-xs font-semibold tracking-wider uppercase text-brand-500 dark:text-brand-300 border-b border-brand-500/30 hover:border-brand-500 transition-all">AI 협업 보고서</a>
+                
+                <!-- Dark Mode Toggle Button -->
+                <button id="themeToggle" class="p-2 rounded-full border border-brand-100 dark:border-brand-900/60 bg-white dark:bg-[#2A221E] hover:bg-brand-100/30 transition shadow-sm">
+                    <i id="themeIcon" data-lucide="sun" class="w-4 h-4 text-ochre-500"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Title Header Section -->
+    <header class="relative overflow-hidden py-24 px-6 border-b border-brand-100 dark:border-brand-900/40 bg-gradient-to-br from-[#FAF5F0] via-[#FAF5F0] to-[#EAE0D5] dark:from-[#1A1512] dark:via-[#1A1512] dark:to-[#241D19]">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-200/20 via-transparent to-transparent opacity-60"></div>
+        <div class="max-w-5xl mx-auto relative z-10 text-center">
+            <span class="inline-flex items-center gap-1.5 py-1 px-3.5 rounded-full text-[10px] font-bold tracking-widest uppercase bg-brand-100 text-brand-700 dark:bg-brand-900/30 dark:text-brand-200 mb-6">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
+                2026 Household & Finance Report
+            </span>
+            <h1 class="font-serif text-4xl md:text-6xl font-black tracking-tight leading-tight mb-8 text-brand-900 dark:text-brand-50">
+                '나 혼자 산다'를 넘어 <br class="md:hidden">
+                <span class="italic text-brand-500">'둘만 산다'</span>의 시대
+            </h1>
+            <p class="text-sm md:text-base text-brand-600 dark:text-brand-200 max-w-2xl mx-auto mb-12 leading-relaxed">
+                대한민국 1인 가구 800만 시대를 정밀 진단합니다. 급격한 가구 소형화 추이와 가구주 고령화가 가져온 2026년 1분기 가계 가처분소득과 소비 구조의 실제 그늘을 감성 인포그래픽 데이터로 탐색해 보세요.
+            </p>
+
+            <!-- Quick Counter Stats -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mt-16">
+                <div class="bg-white dark:bg-[#251E1A] p-5 rounded-2xl shadow-[0_12px_40px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20 hover:translate-y-[-2px] transition">
+                    <p class="text-[10px] text-brand-500 dark:text-brand-300 font-semibold uppercase tracking-wider mb-2">1인 가구 수 (2024)</p>
+                    <h3 class="text-2xl font-serif font-bold text-brand-700 dark:text-brand-100"><span class="counter" data-target="8044948">0</span>가구</h3>
+                    <p class="text-[10px] text-brand-600 dark:text-brand-400 font-medium mt-1">3년간 +12.27% 증가</p>
+                </div>
+                <div class="bg-white dark:bg-[#251E1A] p-5 rounded-2xl shadow-[0_12px_40px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20 hover:translate-y-[-2px] transition">
+                    <p class="text-[10px] text-brand-500 dark:text-brand-300 font-semibold uppercase tracking-wider mb-2">평균 가구원수 (2026)</p>
+                    <h3 class="text-2xl font-serif font-bold text-sage-500">2.07명</h3>
+                    <p class="text-[10px] text-brand-600 dark:text-brand-400 font-medium mt-1">사실상 2인 가구 체제</p>
+                </div>
+                <div class="bg-white dark:bg-[#251E1A] p-5 rounded-2xl shadow-[0_12px_40px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20 hover:translate-y-[-2px] transition">
+                    <p class="text-[10px] text-brand-500 dark:text-brand-300 font-semibold uppercase tracking-wider mb-2">가구주 평균연령 (2026)</p>
+                    <h3 class="text-2xl font-serif font-bold text-ochre-500">60.7세</h3>
+                    <p class="text-[10px] text-brand-600 dark:text-brand-400 font-medium mt-1">은퇴 세대 중심 재편</p>
+                </div>
+                <div class="bg-white dark:bg-[#251E1A] p-5 rounded-2xl shadow-[0_12px_40px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20 hover:translate-y-[-2px] transition">
+                    <p class="text-[10px] text-brand-500 dark:text-brand-300 font-semibold uppercase tracking-wider mb-2">평균 소비 성향 (2026)</p>
+                    <h3 class="text-2xl font-serif font-bold text-clay-500">81.54%</h3>
+                    <p class="text-[10px] text-brand-600 dark:text-brand-400 font-medium mt-1">숨만 쉬어도 나가는 돈</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-6 py-16 space-y-24">
+
+        <!-- Section 1: Demographics -->
+        <section id="demographics" class="scroll-mt-24 space-y-8">
+            <div class="max-w-3xl">
+                <h2 class="font-serif text-2xl md:text-3xl font-bold tracking-tight mb-3 text-brand-900 dark:text-brand-50 flex items-center gap-3">
+                    <span class="p-1.5 bg-brand-100 dark:bg-brand-900/30 text-brand-500 rounded-lg"><i data-lucide="users" class="w-5 h-5"></i></span>
+                    1. 1인 가구 800만 돌파와 가구 분쇄 현상
+                </h2>
+                <p class="text-sm text-brand-600 dark:text-brand-300 leading-relaxed">
+                    2021년부터 2024년까지의 가구 수 변화를 보면, 3년 동안 전국 총가구는 **84.5만 가구** 늘었지만 1인 가구는 오히려 더 많은 **87.9만 가구**가 늘었습니다. 이는 함께 살던 전통적 가족 가구가 쪼개지고 있음을 시사합니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Trend Chart Column -->
+                <div class="lg:col-span-7 bg-white dark:bg-[#211B18] p-6 rounded-3xl shadow-[0_15px_45px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="font-serif text-base font-bold text-brand-900 dark:text-brand-100">연도별 전체 대비 1인 가구 비율</h3>
+                            <p class="text-[10px] text-brand-500">2021년 ~ 2024년 전국 기준 가구수 및 점유율 추이</p>
+                        </div>
+                        <span class="text-[9px] font-bold tracking-wider uppercase py-1 px-2.5 rounded bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-300">통계청 자료</span>
+                    </div>
+                    <div class="relative w-full h-[320px]">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Demographic Insights Grid -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Key stat box -->
+                    <div class="bg-brand-100/40 dark:bg-brand-900/10 border border-brand-100 dark:border-brand-900/30 p-6 rounded-3xl">
+                        <h4 class="text-brand-700 dark:text-brand-200 font-serif font-bold text-base mb-3 flex items-center gap-2">
+                            <i data-lucide="info" class="w-4 h-4 text-brand-500"></i> 다인 가구의 '순감소' 현상
+                        </h4>
+                        <p class="text-xs text-brand-600 dark:text-brand-300 leading-relaxed">
+                            수치상 1인 가구의 순증가분이 전체 가구 증가 수보다 **33,204가구** 더 큽니다. 이는 2인 이상 다인 가구가 실질적으로 줄어들고 있음을 뜻하는 구조적 신호입니다.
+                        </p>
+                    </div>
+
+                    <!-- Regional Hotspots Card -->
+                    <div class="bg-white dark:bg-[#211B18] p-6 rounded-3xl shadow-[0_15px_45px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20">
+                        <h3 class="font-serif text-sm font-bold mb-4 text-brand-900 dark:text-brand-100 flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-brand-500"></i> 1인 가구가 가장 밀집된 지역
+                        </h3>
+                        
+                        <div class="space-y-3">
+                            <!-- Seoul -->
+                            <div class="p-3 bg-brand-50 dark:bg-darkCard rounded-2xl flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-brand-700 dark:text-brand-200">서울특별시</h4>
+                                    <p class="text-[10px] text-brand-500">청년 1인 주거비용 급등 지역</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-serif font-bold text-brand-500">39.7%</span>
+                                    <p class="text-[8px] text-brand-400">164만 가구</p>
+                                </div>
+                            </div>
+                            <!-- Daejeon -->
+                            <div class="p-3 bg-brand-50 dark:bg-darkCard rounded-2xl flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-brand-700 dark:text-brand-200">대전광역시</h4>
+                                    <p class="text-[10px] text-brand-500">대학가 & 연구 단지 집중</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-serif font-bold text-brand-500">40.0%</span>
+                                    <p class="text-[8px] text-brand-400">26.3만 가구</p>
+                                </div>
+                            </div>
+                            <!-- Rural Myeon -->
+                            <div class="p-3 bg-brand-50 dark:bg-darkCard rounded-2xl flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-brand-700 dark:text-brand-200">전국 농촌 지역 (면부)</h4>
+                                    <p class="text-[10px] text-brand-500">독거 어르신 자연 고독 증가</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-sm font-serif font-bold text-ochre-500">40.1%</span>
+                                    <p class="text-[8px] text-brand-400">82.3만 가구</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Economics -->
+        <section id="economics" class="scroll-mt-24 space-y-8">
+            <div class="max-w-3xl">
+                <h2 class="font-serif text-2xl md:text-3xl font-bold tracking-tight mb-3 text-brand-900 dark:text-brand-50 flex items-center gap-3">
+                    <span class="p-1.5 bg-brand-100 dark:bg-brand-900/30 text-brand-500 rounded-lg"><i data-lucide="wallet" class="w-5 h-5"></i></span>
+                    2. 2026년 가계 재정: 정부 지원과 자영업에 의존하는 삶
+                </h2>
+                <p class="text-sm text-brand-600 dark:text-brand-300 leading-relaxed">
+                    가구주 평균연령이 60.7세로 정점을 찍으면서 가계가 고정 월급(근로소득)보다 은퇴 후 노인 자영업(사업소득)이나 연금·정부 보조금(이전소득)에 80% 가깝게 생계를 비정상적으로 기댄 채 살아가고 있습니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Income Composition -->
+                <div class="bg-white dark:bg-[#211B18] p-6 rounded-3xl shadow-[0_15px_45px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20">
+                    <h3 class="font-serif text-base font-bold text-brand-900 dark:text-brand-100 mb-1">가구 평균 소득 구성비 (4,086,348원)</h3>
+                    <p class="text-[10px] text-brand-500 mb-6">근로소득의 소실과 이전소득(나라 보조금/연금)의 급격한 팽창</p>
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div class="relative w-[220px] h-[220px] mx-auto">
+                            <canvas id="incomeChart"></canvas>
+                        </div>
+                        <div class="w-full md:w-1/2 space-y-3">
+                            <div class="flex items-center justify-between p-2 border-b border-brand-100/50 dark:border-brand-900/20">
+                                <span class="flex items-center gap-2 text-xs text-brand-600 dark:text-brand-300">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span> 근로소득
+                                </span>
+                                <span class="font-serif font-bold text-xs">67.1만 원 (16.4%)</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 border-b border-brand-100/50 dark:border-brand-900/20">
+                                <span class="flex items-center gap-2 text-xs text-brand-600 dark:text-brand-300">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-sage-500"></span> 사업소득
+                                </span>
+                                <span class="font-serif font-bold text-xs">195.1만 원 (47.7%)</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 border-b border-brand-100/50 dark:border-brand-900/20">
+                                <span class="flex items-center gap-2 text-xs text-brand-600 dark:text-brand-300">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-ochre-500"></span> 이전소득
+                                </span>
+                                <span class="font-serif font-bold text-xs">126.2만 원 (30.9%)</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2">
+                                <span class="flex items-center gap-2 text-xs text-brand-600 dark:text-brand-300">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-200"></span> 기타소득
+                                </span>
+                                <span class="font-serif font-bold text-xs">20.2만 원 (5.0%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spending Composition -->
+                <div class="bg-white dark:bg-[#211B18] p-6 rounded-3xl shadow-[0_15px_45px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20">
+                    <h3 class="font-serif text-base font-bold text-brand-900 dark:text-brand-100 mb-1">가구 평균 한 달 소비 내역 (2,742,445원)</h3>
+                    <p class="text-[10px] text-brand-500 mb-6">주택 고정비와 연령대 고령화로 치솟는 보건 병원비 점유율</p>
+                    <div class="relative w-full h-[280px]">
+                        <canvas id="spendingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flow analysis metric banner -->
+            <div class="bg-[#241D19] dark:bg-[#15110E] text-brand-50 rounded-3xl p-8 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-brand-900/10">
+                <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-brand-100/5 rounded-full blur-2xl"></div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                    <div class="space-y-2">
+                        <span class="text-[9px] font-bold tracking-widest text-[#B39989] uppercase">실 가용 자금</span>
+                        <h4 class="font-serif text-xl font-bold">처분가능소득</h4>
+                        <p class="text-3xl font-serif font-bold text-brand-200">3,363,133원</p>
+                        <p class="text-[10px] text-brand-400">평균 총소득에서 세금, 이자, 국민연금 등 매달 무조건 나가는 돈을 뺀 진짜 실생활 자금</p>
+                    </div>
+                    <div class="space-y-2 border-t md:border-t-0 md:border-x border-brand-900/30 md:px-8 py-4 md:py-0">
+                        <span class="text-[9px] font-bold tracking-widest text-clay-500 uppercase">가계 경직도</span>
+                        <h4 class="font-serif text-xl font-bold">평균 소비 성향</h4>
+                        <p class="text-3xl font-serif font-bold text-clay-500">81.54%</p>
+                        <p class="text-[10px] text-brand-400">남은 가용 자금 중 무려 81.5%를 식비, 방값, 약값 등 기초 필수 비용으로 다 쓰고 있다는 슬픈 지표</p>
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-[9px] font-bold tracking-widest text-sage-500 uppercase">여유도</span>
+                        <h4 class="font-serif text-xl font-bold">월 저축/흑자 여유 자금</h4>
+                        <p class="text-3xl font-serif font-bold text-sage-500">620,688원</p>
+                        <p class="text-[10px] text-brand-400">한 달 동안 모든 지출을 메우고 최종적으로 손에 쥐는 저축 한계액. 노후 자금 마련에 크게 턱없이 부족함</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Simulator -->
+        <section id="simulator" class="scroll-mt-24 bg-brand-100/30 dark:bg-brand-900/10 p-8 rounded-3xl border border-brand-200/40 dark:border-brand-900/20 space-y-8">
+            <div class="max-w-2xl">
+                <h2 class="font-serif text-2xl md:text-3xl font-bold tracking-tight mb-3 text-brand-900 dark:text-brand-50 flex items-center gap-3">
+                    <span class="p-1.5 bg-brand-500 text-white rounded-lg"><i data-lucide="calculator" class="w-5 h-5"></i></span>
+                    3. 내 용돈/월급으로 보는 '우리집 가계 건전성'
+                </h2>
+                <p class="text-xs text-brand-600 dark:text-brand-300">
+                    스스로 벌고 있는 월 소득과 한 달 소비 지출액을 가볍게 채워 넣어, 과연 우리나라 평균 생활 수준(평균소비성향 81.54%)과 어떻게 차이가 나는지 바로 진단하고 비교해 보세요.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Input Panel -->
+                <div class="lg:col-span-5 bg-white dark:bg-[#211B18] p-6 rounded-3xl shadow-[0_15px_45px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20 space-y-6">
+                    <h3 class="font-serif font-bold text-base text-brand-900 dark:text-brand-100 border-b border-brand-100 dark:border-brand-900/20 pb-3">데이터 채우기</h3>
+                    
+                    <!-- Alert UI instead of direct alert() window -->
+                    <div id="calcError" class="hidden p-3 text-xs bg-clay-100 dark:bg-[#3d2424] text-brand-900 dark:text-brand-100 border border-clay-500/20 rounded-xl flex items-center gap-2">
+                        <i data-lucide="alert-circle" class="w-4 h-4 text-clay-500 shrink-0"></i>
+                        <span id="calcErrorText">소득을 올바르게 채워 주세요.</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-brand-500 dark:text-brand-300 mb-1.5">월 소득 총액</label>
+                            <div class="relative">
+                                <input type="number" id="userIncome" value="3500000" class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-brand-100 dark:border-brand-900/30 bg-brand-50 dark:bg-darkCard focus:ring-1 focus:ring-brand-500 focus:outline-none font-bold text-xs">
+                                <span class="absolute right-3 top-3 text-[10px] text-brand-400 font-bold">원</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-brand-500 dark:text-brand-300 mb-1.5">월 고정 지출 <span class="font-normal text-[8px] text-brand-400">(세금, 적금 외 보험, 이자 등)</span></label>
+                            <div class="relative">
+                                <input type="number" id="userTax" value="500000" class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-brand-100 dark:border-brand-900/30 bg-brand-50 dark:bg-darkCard focus:ring-1 focus:ring-brand-500 focus:outline-none font-bold text-xs">
+                                <span class="absolute right-3 top-3 text-[10px] text-brand-400 font-bold">원</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-brand-500 dark:text-brand-300 mb-1.5">월 실제 소비지출 <span class="font-normal text-[8px] text-brand-400">(식비, 월세, 핸드폰 요금 등)</span></label>
+                            <div class="relative">
+                                <input type="number" id="userSpending" value="2200000" class="w-full pl-3 pr-10 py-2.5 rounded-xl border border-brand-100 dark:border-brand-900/30 bg-brand-50 dark:bg-darkCard focus:ring-1 focus:ring-brand-500 focus:outline-none font-bold text-xs">
+                                <span class="absolute right-3 top-3 text-[10px] text-brand-400 font-bold">원</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="calcBtn" class="w-full py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold text-xs tracking-wider transition shadow-lg shadow-brand-500/10">
+                        우리집 수지 진단하기
+                    </button>
+                </div>
+
+                <!-- Analysis Panel -->
+                <div class="lg:col-span-7 bg-white dark:bg-[#211B18] p-6 rounded-3xl shadow-[0_15px_45px_rgba(140,98,78,0.03)] border border-brand-100/40 dark:border-brand-900/20 space-y-6">
+                    <h3 class="font-serif font-bold text-base text-brand-900 dark:text-brand-100 border-b border-brand-100 dark:border-brand-900/20 pb-3">진단 결과</h3>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-brand-50 dark:bg-darkCard rounded-2xl">
+                            <span class="text-[8px] font-bold text-brand-500 uppercase tracking-wider block mb-1">나의 처분가능소득</span>
+                            <span id="resDispIncome" class="font-serif text-lg font-bold text-brand-900 dark:text-brand-100">3,000,000원</span>
+                        </div>
+                        <div class="p-4 bg-brand-50 dark:bg-darkCard rounded-2xl">
+                            <span class="text-[8px] font-bold text-brand-500 uppercase tracking-wider block mb-1">나의 평균 소비 성향</span>
+                            <span id="resSpendingRatio" class="font-serif text-lg font-bold text-brand-500">73.33%</span>
+                        </div>
+                    </div>
+
+                    <!-- Comparison visual bar -->
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-[10px] font-bold mb-1">
+                                <span class="text-brand-500">대한민국 평균 소비 성향</span>
+                                <span class="text-brand-700 dark:text-brand-300">81.54%</span>
+                            </div>
+                            <div class="w-full bg-brand-100 dark:bg-brand-900/30 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-brand-500 h-full" style="width: 81.54%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[10px] font-bold mb-1">
+                                <span class="text-brand-500">나의 현재 소비 성향</span>
+                                <span id="resRatioPercentText" class="text-brand-500">73.33%</span>
+                            </div>
+                            <div class="w-full bg-brand-100 dark:bg-brand-900/30 h-1.5 rounded-full overflow-hidden">
+                                <div id="userRatioBar" class="bg-brand-500 h-full" style="width: 73.33%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Written analysis advice -->
+                    <div id="adviceBox" class="p-5 rounded-2xl bg-brand-50 dark:bg-brand-900/10 border border-brand-100 dark:border-brand-900/30 text-xs leading-relaxed">
+                        <h4 class="font-serif font-bold text-brand-700 dark:text-brand-200 mb-2 flex items-center gap-1.5">
+                            <i data-lucide="award" class="w-4 h-4 text-brand-500"></i> 가계 경제 분석 조언
+                        </h4>
+                        <p id="adviceText" class="text-brand-600 dark:text-brand-300">
+                            나의 소비성향은 73.33%로 2026년 평균치인 81.54% 대비 양호한 편입니다. 다만, 전월세 고정지출 변동 추이에 흔들리지 않도록 예산 흐름을 주기적으로 짚어볼 필요가 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: News Article Section -->
+        <section id="news-article" class="scroll-mt-24 border-t border-brand-100 dark:border-brand-900/20 pt-20 space-y-10">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="inline-block py-1 px-3.5 bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-200 text-[10px] font-bold tracking-widest uppercase rounded-full">
+                    Special Editorial Feature
+                </span>
+                <h2 class="font-serif text-3xl font-black tracking-tight text-brand-900 dark:text-brand-50">
+                    기획 보도 신문 기사
+                </h2>
+                <p class="text-xs text-brand-500">
+                    데이터 포털과 가계 동향 기록이 비춰주는 대한민국 경제 가계의 실제 단면을 기사 형식으로 배포합니다.
+                </p>
+            </div>
+
+            <div class="bg-[#FDFBF7] dark:bg-[#1E1916] border border-brand-100 dark:border-brand-900/30 rounded-3xl p-8 md:p-12 shadow-sm space-y-8 max-w-4xl mx-auto text-brand-900 dark:text-brand-100">
+                <div class="border-b-2 border-brand-900/10 dark:border-brand-100/10 pb-6 text-center">
+                    <h1 class="font-serif text-2xl md:text-4xl font-black tracking-tight leading-snug mb-4">
+                        [기획보도] ‘나 혼자 산다’ 넘어 ‘둘만 산다’… 1인 가구 800만 돌파가 바꾼 가계 경제의 그늘
+                    </h1>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-2 md:gap-6 text-[11px] text-brand-600 dark:text-brand-300 font-medium">
+                        <span><strong>작성:</strong> 경제신문 기획취재팀</span>
+                        <span class="hidden md:inline">|</span>
+                        <span><strong>배포처:</strong> KOSIS 공공데이터처 정밀 분석 지면</span>
+                        <span class="hidden md:inline">|</span>
+                        <span><strong>기준 시점:</strong> 2026년 1/4분기 가동조사 데이터 기준</span>
+                    </div>
+                </div>
+
+                <div class="space-y-6 text-xs md:text-sm leading-relaxed font-serif text-brand-800 dark:text-brand-200">
+                    <p class="font-bold text-sm text-brand-900 dark:text-brand-50">
+                        - 3년간 전체 가구 증가액보다 1인 가구 증가가 더 많아… 다인 가구는 사실상 '순감소'<br>
+                        - 서울·대전·농촌 지역 '1인 가구 40%' 육박… 청년 유입과 고령 독거의 '이중주'<br>
+                        - 2026년 1분기 가계부의 경고: 평균 가구원수 2.07명, 가구주 연령 60.7세… 가계 10곳 중 3곳은 정부 지원금 의존
+                    </p>
+
+                    <p>
+                        <strong>[서울=경제신문]</strong> 대한민국이 빠르게 ‘소형 가구’와 ‘고령화’의 늪으로 빨려 들어가고 있다. 홀로 사는 1인 가구가 사상 처음으로 800만 가구를 돌파하며 전체 가구의 36%를 넘어선 가운데, 가계의 평균 가구원 수는 2명 선 붕괴 직전인 2.07명까지 추락했다. 
+                    </p>
+                    <p>
+                        특히 최근 3년간 늘어난 가구 수보다 1인 가구의 증가 폭이 더 큰 것으로 나타나, 대한민국 사회의 기본 단위였던 ‘대가족’ 혹은 ‘4인 가구’ 모델이 완전히 붕괴했음을 보여준다. 이로 인해 근로소득 대신 이전소득(정부 보조금 및 연금 등)과 사업소득에 의존하는 가구가 급증하면서 가계 경제의 기초 체력도 급격히 약화하고 있다.
+                    </p>
+
+                    <h3 class="font-serif font-bold text-base text-brand-900 dark:text-brand-50 pt-4 border-b border-brand-100 pb-1">
+                        1. 인구 구조의 격변: 1인 가구 800만 시대의 실상
+                    </h3>
+                    <p>
+                        최근 수년간 대한민국의 가구 분화 속도는 상상을 초월한다. 지난 2021년 전국 가구 수는 21,448,463가구에서 2024년 22,294,419가구로 3년간 총 <strong>845,956가구(3.94% 증가)</strong> 늘어나는 데 그쳤다. 그러나 같은 기간 1인 가구는 7,165,788가구에서 8,044,948가구로 무려 <strong>879,160가구(12.27% 증가)</strong> 폭증했다. 
+                    </p>
+                    <p>
+                        즉, 1인 가구의 증가량이 전체 가구 증가량보다 약 3.3만 가구 더 많다. 이는 2인 이상 다인 가구의 절대적인 수가 오히려 감소했음을 뜻한다. 이로 인해 전체 가구 중 1인 가구가 차지하는 비중은 2021년 $33.41\%$에서 2024년 $36.08\%$로 3년 만에 $2.67\%\text{p}$ 급상승했다.
+                    </p>
+
+                    <h3 class="font-serif font-bold text-base text-brand-900 dark:text-brand-50 pt-4 border-b border-brand-100 pb-1">
+                        2. 2026년 가계부로 본 소형·고령 가구의 팍팍한 살림살이
+                    </h3>
+                    <p>
+                        가구 소형화의 물결은 2026년 1/4분기 가계동향조사 결과에 그대로 투영됐다. 표본 가구의 평균 가구원 수는 <strong>2.07명</strong>에 불과해 사실상 2인 가구가 주류가 되었음을 보여준다. 가구주 평균 연령 역시 <strong>60.7세</strong>로 초고령 사회의 단면을 고스란히 드러냈다.
+                    </p>
+
+                    <div class="overflow-x-auto my-4 bg-brand-50 dark:bg-darkCard p-4 rounded-2xl">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="border-b border-brand-200 dark:border-brand-800 text-brand-900 dark:text-brand-50 font-bold">
+                                    <th class="py-2">가계 수지 항목</th>
+                                    <th class="py-2">2026년 1/4분기 금액 (원)</th>
+                                    <th class="py-2">비중 (%)</th>
+                                    <th class="py-2">분석 및 특징</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-brand-100/50 dark:border-brand-900/10">
+                                    <td class="py-2 font-bold">가구당 평균 소득</td>
+                                    <td class="py-2">4,086,348</td>
+                                    <td class="py-2">100.0%</td>
+                                    <td class="py-2">가구원 수 감소로 전반적인 소득 규모 정체</td>
+                                </tr>
+                                <tr class="border-b border-brand-100/50 dark:border-brand-900/10">
+                                    <td class="py-2">　근로소득</td>
+                                    <td class="py-2">671,455</td>
+                                    <td class="py-2">16.4%</td>
+                                    <td class="py-2">가구주 고령화로 임금 노동 소득 최하 수준</td>
+                                </tr>
+                                <tr class="border-b border-brand-100/50 dark:border-brand-900/10">
+                                    <td class="py-2">　사업소득</td>
+                                    <td class="py-2">1,950,714</td>
+                                    <td class="py-2">47.7%</td>
+                                    <td class="py-2">농업·자영업 등 은퇴 후 독자 사업 비중 압도적</td>
+                                </tr>
+                                <tr class="border-b border-brand-100/50 dark:border-brand-900/10">
+                                    <td class="py-2">　이전소득</td>
+                                    <td class="py-2">1,262,093</td>
+                                    <td class="py-2">30.9%</td>
+                                    <td class="py-2">공적·사적 연금 및 정부 지원금 의존도 심각</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 font-bold">소비 지출</td>
+                                    <td class="py-2">2,742,445</td>
+                                    <td class="py-2">-</td>
+                                    <td class="py-2">식비, 주거비, 의료비가 전체 소비의 절반 육박</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        가장 심각한 대목은 가계 소득의 원천이다. 가구주의 평균 연령이 60.7세로 치솟으면서 안정적인 <strong>근로소득(671,455원)의 비중은 전체 소득의 $16.4\%$</strong>에 불과했다. 반면 농업이나 개인 자영업을 뜻하는 <strong>사업소득이 1,950,714원($47.7\%$)</strong>으로 가장 큰 부분을 차지했고, 기초연금·국민연금이나 정부 보조금, 자녀가 보내주는 생활비 등을 포함한 <strong>이전소득이 1,262,093원($30.9\%$)</strong>에 달했다. 가계가 벌어들이는 돈 10원 중 3원은 정부나 타인이 주는 지원금이라는 뜻이다.
+                    </p>
+
+                    <h3 class="font-serif font-bold text-base text-brand-900 dark:text-brand-50 pt-4 border-b border-brand-100 pb-1">
+                        3. 전문가 진단: "주거·복지·산업 구조 전면 재설계해야"
+                    </h3>
+                    <p>
+                        민간 경제연구소의 한 선임연구원은 본지와의 인터뷰에서 "지난 3년간의 가구 분화 데이터는 다인 가구 중심의 대한민국 사회가 완전히 해체되었음을 선언하는 지표"라며 "2026년 1분기 가계지출 지표가 보여주듯, 근로소득이 붕괴하고 정부 보조금과 영세 자영업 소득으로 연명하는 고령·소형 가구의 급증은 국가 성장 잠재력을 갉아먹는 가장 큰 위기 요인"이라고 분석했다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Deep Welfare Analysis Report Section -->
+        <section id="deep-analysis" class="scroll-mt-24 border-t border-brand-100 dark:border-brand-900/20 pt-20 space-y-10">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="inline-block py-1 px-3.5 bg-sage-100 dark:bg-sage-500/10 text-sage-600 dark:text-sage-500 text-[10px] font-bold tracking-widest uppercase rounded-full">
+                    Sociological Deep Dive
+                </span>
+                <h2 class="font-serif text-3xl font-black tracking-tight text-brand-900 dark:text-brand-50">
+                    사회복지 관점 심층 분석 보고서
+                </h2>
+                <p class="text-xs text-brand-500">
+                    가족의 부양 및 돌봄 기능이 무너진 소형화 시대의 구조적 위기를 사회보장 관점에서 집중 파해칩니다.
+                </p>
+            </div>
+
+            <div class="bg-white dark:bg-[#211B18] border border-brand-100/60 dark:border-brand-900/20 rounded-3xl p-8 md:p-12 shadow-sm max-w-4xl mx-auto space-y-10">
+                <!-- Academic Report Header -->
+                <div class="space-y-2 border-b border-brand-200/60 pb-6">
+                    <h3 class="font-serif text-xl font-bold text-brand-900 dark:text-brand-50">대한민국 가구 구조 변동 추이와 가계 경제의 구조적 위기 진단</h3>
+                    <p class="text-[10px] text-brand-500">원천 데이터: 전국 가구수 추이 (2021~2024), 가계수지 데이터 (2026 1Q) 기반</p>
+                </div>
+
+                <!-- Report Section 1 -->
+                <div class="space-y-4">
+                    <h4 class="font-serif font-bold text-base text-brand-700 dark:text-brand-200">
+                        Ⅰ. 가구 구조 변동에서 발견한 3대 특징과 문제점
+                    </h4>
+                    
+                    <div class="space-y-3 text-xs md:text-sm leading-relaxed">
+                        <h5 class="font-bold text-brand-900 dark:text-brand-100">1. 다인(多人) 가구의 '순감소'와 공동체 해체 현상</h5>
+                        <p>
+                            데이터 분석 결과, 대한민국의 가구 증가 현상은 정상적인 인구 성장에 의한 것이 아니라 <strong>가구의 '분쇄(Fragmentation)'</strong>에 의해 주도되고 있음이 확인되었습니다. 2021년부터 2024년까지 전국 총가구 수는 845,956가구 증가했습니다. 그러나 같은 기간 1인 가구는 879,160가구 증가했습니다. 1인 가구 증가량이 전체 가구 증가량보다 33,204가구 더 많으며, 이는 2인 이상 다인 가구의 절대수 사멸을 증명합니다.
+                        </p>
+
+                        <h5 class="font-bold text-brand-900 dark:text-brand-100">2. 청년층 밀집 vs 노년층 고립의 '극단적 양극화'</h5>
+                        <p>
+                            대도시는 높은 주거비와 불완전 고용으로 인한 '청년 빈곤형 1인 가구'가 양산되는 반면, 지방 농촌(면부)은 배우자 사별 등으로 홀로 남겨진 '초고령 독거 가구'가 지배적입니다. 대전(40.0%)과 서울(39.7%)은 고용 밀집형 청년 쏠림이 뚜렷하며, 면부 농촌(40.1%)은 복지 사각지대 고립 위험이 극에 달해 있습니다.
+                        </p>
+
+                        <h5 class="font-bold text-brand-900 dark:text-brand-100">3. 수도권 외곽 배후지의 가구 소형화 가속도 (인천 사례)</h5>
+                        <p>
+                            인천광역시는 3년간 1인 가구 수 증가율이 <strong>+17.86%</strong>에 달하며 전국에서 가장 빠른 가구 분화 속도를 보였습니다. 이는 서울의 주거 비용을 버티지 못한 1인 가구가 배후지인 인천 등으로 밀려나고 있음을 증명합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Report Section 2 -->
+                <div class="space-y-4 border-t border-brand-100/50 pt-8">
+                    <h4 class="font-serif font-bold text-base text-brand-700 dark:text-brand-200">
+                        Ⅱ. 2026년 1분기 가계 수지에서 발견한 재정적 구조 위기
+                    </h4>
+                    
+                    <div class="space-y-3 text-xs md:text-sm leading-relaxed">
+                        <h5 class="font-bold text-brand-900 dark:text-brand-100">1. 근로소득의 소멸과 국가/사적 '이전소득' 의존증</h5>
+                        <p>
+                            가구 평균 소득(4,086,348원) 중 근로소득은 단 $16.4\%$에 불과합니다. 반면 공적·사적 연금 및 지원금인 이전소득이 $30.9\%$에 달해, 가계가 가치 노동보다 사회적 부양비에 생존을 기탁하는 모래성 구조를 가졌습니다.
+                        </p>
+
+                        <h5 class="font-bold text-brand-900 dark:text-brand-100">2. 은퇴자들의 마지막 탈출구, '영세 자영업(사업소득)'의 불안정성</h5>
+                        <p>
+                            가계 소득의 절반에 육박하는 $47.7\%$가 사업소득으로 구성되어 있어, 고금리·고물가 경기 변동에 극도로 취약한 자영업에 가계가 전면 노출되어 있습니다.
+                        </p>
+
+                        <h5 class="font-bold text-brand-900 dark:text-brand-100">3. 처분가능소득을 옥죄는 '초경직성 생계형 소비' (소비성향 81.54%)</h5>
+                        <p>
+                            평균소비성향이 81.54%에 달하며, 식료품($16.87\%$), 주거비($14.77\%$), 보건의료비($9.68\%$) 등 3대 필수 생계비 비중이 절반에 달해 지출의 탄력성이 실종되었습니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Report Section 3 -->
+                <div class="space-y-4 border-t border-brand-100/50 pt-8">
+                    <h4 class="font-serif font-bold text-base text-brand-700 dark:text-brand-200">
+                        Ⅲ. 종합 결론 및 경고
+                    </h4>
+                    <p class="text-xs md:text-sm leading-relaxed">
+                        "가족의 분쇄는 사회적 고립을 낳고, 재정의 경직성은 장기 불황을 고착화한다." 데이터가 대한민국에 던지는 마지막 경고입니다. 기존 4인 가구 기준 정상 정책 패러다임에서 전면 탈피해야 합니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: 생성형 AI 협업 보고서 (Cozy Notion / Pinterest Blog Style) -->
+        <section id="ai-report" class="scroll-mt-24 border-t border-brand-100 dark:border-brand-900/20 pt-20 space-y-12">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="inline-block py-1 px-3.5 bg-sage-100 dark:bg-sage-500/10 text-sage-600 dark:text-sage-500 text-[10px] font-bold uppercase tracking-widest rounded-full">
+                    Behind the Scenes
+                </span>
+                <h2 class="font-serif text-3xl font-bold tracking-tight text-brand-900 dark:text-brand-50">
+                    생성형 AI 활용 과제 보고서
+                </h2>
+                <p class="text-xs text-brand-500 dark:text-brand-400">
+                    사회복지학과 1학년 새내기가 AI 보조 도구와 함께 고민하며 공공데이터를 짚어본 생생한 관찰 기록입니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Sticky Diary Card -->
+                <div class="lg:col-span-4 lg:sticky lg:top-28 space-y-6">
+                    <!-- 1. 과제 프로필 카드 (주제 및 선정 이유) -->
+                    <div class="bg-white dark:bg-[#211B18] p-6 rounded-3xl border border-brand-100/40 dark:border-brand-900/20 shadow-[0_15px_45px_rgba(140,98,78,0.02)] space-y-6">
+                        <div class="flex items-center gap-3 border-b border-brand-100 dark:border-brand-900/20 pb-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center text-brand-500">
+                                <i data-lucide="book-open" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif font-bold text-xs text-brand-900 dark:text-brand-50">과제 프로필</h4>
+                                <p class="text-[9px] text-brand-400">사회복지개론 가계 실태 조사 과제</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4 text-xs">
+                            <div>
+                                <span class="text-brand-500 block text-[10px] font-bold mb-1 uppercase tracking-wider">선정한 분석 주제</span>
+                                <span class="font-bold text-brand-700 dark:text-brand-200 block text-xs leading-relaxed">
+                                    초고령 가구 분화에 따른 가족 복지 안전망의 해체와 생계형 경직 지출 실태 분석
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-brand-500 block text-[10px] font-bold mb-1 uppercase tracking-wider">주제 선정 이유</span>
+                                <span class="text-brand-600 dark:text-brand-300 block text-[11px] leading-relaxed font-sans">
+                                    사회복지학개론 수업을 들으며 인간다운 생활을 보장하는 기초 사회망 중 하나인 '가족의 부양 및 돌봄 기능'이 소형 가구화로 인해 급격히 무너지고 있음을 배웠습니다. 특히 단순히 뉴스로만 접하던 '1인 가구 800만 돌파'와 '노후 빈곤'이 우리 이웃들의 실제 가계부 데이터 속에서 구체적으로 어떤 통계값(월별 흑자 한계액 등)으로 아프게 나타나고 있는지 내 손으로 직접 전처리하고 실증해 보며, 미래 사회복지 보장책을 고민해 보고 싶어 이 주제를 선정했습니다.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. 공공데이터 공식 출처 카드 -->
+                    <div class="bg-white dark:bg-[#211B18] p-6 rounded-3xl border border-brand-100/40 dark:border-brand-900/20 shadow-[0_15px_45px_rgba(140,98,78,0.02)] space-y-4">
+                        <h4 class="font-serif font-bold text-xs text-brand-900 dark:text-brand-50 flex items-center gap-2 border-b border-brand-100 dark:border-brand-900/20 pb-3">
+                            <i data-lucide="database" class="w-4 h-4 text-brand-500"></i> 분석에 활용한 공공데이터 출처
+                        </h4>
+
+                        <div class="space-y-3 text-[11px]">
+                            <!-- 자료 1 -->
+                            <div class="p-3 bg-brand-50 dark:bg-[#1A1512]/50 rounded-2xl border border-brand-100/50 dark:border-brand-900/10 space-y-1">
+                                <span class="inline-block px-2 py-0.5 bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-200 text-[8px] font-black rounded">자료 ① 가구 수 변동 추이</span>
+                                <p class="text-brand-600 dark:text-brand-300 leading-relaxed pt-1 font-sans">
+                                    <strong class="text-brand-800 dark:text-brand-100">· 통계표명:</strong> 가구원수별 가구 - 읍면동<br>
+                                    <strong class="text-brand-800 dark:text-brand-100">· 조사명(출처):</strong> 인구총조사<br>
+                                    <strong class="text-brand-800 dark:text-brand-100">· 기관명:</strong> 통계청 (KOSIS 국가통계포털)<br>
+                                    <strong class="text-brand-800 dark:text-brand-100">· 파일 내 표기:</strong> 국가데이터처<br>
+                                    <strong class="text-brand-800 dark:text-brand-100">· 기준연도/기간:</strong> 2021년 ~ 2024년 (연간 데이터)
+                                </p>
+                            </div>
+
+                            <!-- 자료 2 -->
+                            <div class="p-3 bg-brand-50 dark:bg-[#1A1512]/50 rounded-2xl border border-brand-100/50 dark:border-brand-900/10 space-y-1">
+                                <span class="inline-block px-2 py-0.5 bg-sage-100 dark:bg-sage-500/15 text-sage-600 dark:text-sage-400 text-[8px] font-black rounded">자료 ② 소비 트렌드 및 가계부</span>
+                                <p class="text-brand-600 dark:text-brand-300 leading-relaxed pt-1 font-sans">
+                                    <strong class="text-brand-800 dark:text-brand-100">· 통계표명:</strong> 가구원수별 가구당 월평균 가계수지 (전국, 1인이상)<br>
+                                    <strong class="text-brand-800 dark:text-brand-100">· 조사명(출처):</strong> 가계동향조사<br>
+                                    <strong class="text-brand-800 dark:text-brand-100">· 기관명:</strong> 통계청 (KOSIS 국가통계포털)<br>
+                                    <strong class="text-brand-800 dark:text-brand-100">· 파일 내 표기:</strong> 국가데이터처<br>
+                                    <strong class="text-brand-800 dark:text-brand-100">· 기준연도/기간:</strong> 연간(2022년~2025년), 분기(2025년 3/4분기~2026년 1/4분기)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Detailed Diary Timeline -->
+                <div class="lg:col-span-8 space-y-8">
+                    
+                    <!-- Box 1 -->
+                    <div class="bg-white dark:bg-[#211B18] p-8 rounded-3xl border border-brand-100/40 dark:border-brand-900/20 shadow-[0_15px_45px_rgba(140,98,78,0.02)] space-y-4">
+                        <span class="text-[9px] font-bold tracking-widest text-brand-400 uppercase">Chapter 1</span>
+                        <h3 class="font-serif text-lg font-bold text-brand-700 dark:text-brand-100">생성형 AI와 일 나누기 (역할 분담)</h3>
+                        <p class="text-xs text-brand-600 dark:text-brand-300 leading-relaxed">
+                            데이터 전반의 커다란 방향성을 정하고 최종 검수를 하는 <strong class="text-brand-700 dark:text-brand-200">대장 역할</strong>은 제가 직접 주도하여 책임졌고, 글을 다듬고 계산 비율을 계산하거나 세련된 인터넷 화면을 구성해 주는 <strong class="text-[#D4A373]">일꾼 비서 역할</strong>은 생성형 AI에게 위임해 과제를 설계했습니다.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div class="p-4 bg-[#FAF5F0] dark:bg-[#1C1613] rounded-2xl border border-brand-100 dark:border-brand-900/20">
+                                <h5 class="font-bold text-[11px] text-brand-700 dark:text-brand-200 mb-1.5 flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5"></i> 작성자 본인의 역할</h5>
+                                <ul class="list-disc list-inside text-[10px] text-brand-500 dark:text-brand-400 space-y-1">
+                                    <li>구글 코랩 환경에서 불필요한 원천 데이터 행/열 제거</li>
+                                    <li>'1인 가구 급증이 가계 수지에 주는 영향' 주제 구상</li>
+                                    <li>AI 연산 결과 검증 및 지나치게 전문적인 단어 지우기</li>
+                                </ul>
+                            </div>
+                            <div class="p-4 bg-[#FAF5F0] dark:bg-[#1C1613] rounded-2xl border border-brand-100 dark:border-brand-900/20">
+                                <h5 class="font-bold text-[11px] text-brand-500 dark:text-brand-300 mb-1.5 flex items-center gap-1.5"><i data-lucide="cpu" class="w-3.5 h-3.5"></i> 생성형 AI의 비서 역할</h5>
+                                <ul class="list-disc list-inside text-[10px] text-brand-500 dark:text-brand-400 space-y-1">
+                                    <li>제시된 데이터의 총합 요약 및 백분율 환산 연산</li>
+                                    <li>소제목을 적절히 매칭한 신문 기사 형태로 뼈대 구성</li>
+                                    <li>내 가계부와 비교 가능한 인터랙티브 시뮬레이터 구성</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Box 2 -->
+                    <div class="bg-white dark:bg-[#211B18] p-8 rounded-3xl border border-brand-100/40 dark:border-brand-900/20 shadow-[0_15px_45px_rgba(140,98,78,0.02)] space-y-6">
+                        <span class="text-[9px] font-bold tracking-widest text-brand-400 uppercase">Chapter 2</span>
+                        <h3 class="font-serif text-lg font-bold text-brand-700 dark:text-brand-100">단계별로 AI와 소통하며 화면 만들기</h3>
+                        
+                        <div class="space-y-4 text-xs">
+                            <div class="border-l-2 border-brand-200 dark:border-brand-900 pl-4 py-1 space-y-1">
+                                <h5 class="font-bold text-brand-700 dark:text-brand-200">1단계: 가구 수 변화 데이터 스캔 및 가치 발굴</h5>
+                                <p class="text-brand-500 italic">"코랩으로 가공해 둔 두 데이터를 보여줄 테니, 1인 가구가 우리 가계 경제에 어떤 심각한 압박을 주는지 숨겨진 큰 흐름을 짚어내 줘."</p>
+                                <p class="text-brand-400 text-[10px]">결과: 전체 가구 증가량보다 1인 가구 증가량이 더 많다는 '다인 가구 순감소' 현상과 60세가 넘는 고령 세대 자영업 의존증 흐름을 발견해 냈습니다.</p>
+                            </div>
+                            
+                            <div class="border-l-2 border-[#D4A373] pl-4 py-1 space-y-1">
+                                <h5 class="font-bold text-[#D4A373]">2단계: 경각심을 주는 기획 뉴스 기사화</h5>
+                                <p class="text-brand-500 italic">"분석한 내용(가계 재정 취약성)을 바탕으로 신문 지면에 실릴 기사 형식으로 다듬어줘. 제목도 대중적이게 예능 이름을 패러디해 줘."</p>
+                                <p class="text-brand-400 text-[10px]">결과: '나 혼자 산다'를 뛰어넘은 '둘만 산다' 타이틀과 함께 세금 떼고 쓸 수 있는 한 달 흑자가 62만 원에 불과하다는 정밀 기획 기사가 빌드되었습니다.</p>
+                            </div>
+
+                            <div class="border-l-2 border-sage-500 pl-4 py-1 space-y-1">
+                                <h5 class="font-bold text-sage-500">3단계: 내 생활비 비교 가상 계산기 대시보드 제작</h5>
+                                <p class="text-brand-500 italic">"인터넷에서 바로 켜지는 예쁜 화면에 마우스를 올리면 보이는 다이내믹 그래프와 우리 집 소비 성향을 비교 분석하는 계산기 칸을 빌드해 줘."</p>
+                                <p class="text-brand-400 text-[10px]">결과: 핀터레스트 특유의 포근한 감성 노션 템플릿 색채를 담은 실시간 수지 진단 화면이 매끄럽게 탄생했습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Box 3 -->
+                    <div class="bg-white dark:bg-[#211B18] p-8 rounded-3xl border border-brand-100/40 dark:border-brand-900/20 shadow-[0_15px_45px_rgba(140,98,78,0.02)] space-y-6">
+                        <span class="text-[9px] font-bold tracking-widest text-brand-400 uppercase">Chapter 3</span>
+                        <h3 class="font-serif text-lg font-bold text-brand-700 dark:text-brand-100">초안에서 내가 직접 수정한 사실들</h3>
+                        <p class="text-xs text-brand-600 dark:text-brand-300 leading-relaxed">
+                            AI가 처음에 뚝딱 짜준 것들은 다시 확인해 보니 계산이 안 맞거나 작동이 이상한 부분이 꽤 있었습니다. <strong>컴퓨터를 잘 모르는 제가 봐도 이상했던 점들을 찾아내 직접 피드백을 주고 고쳐나갔습니다.</strong>
+                        </p>
+
+                        <div class="space-y-4">
+                            <!-- Bullet 1 -->
+                            <div class="flex gap-3">
+                                <span class="text-clay-500 font-bold text-xs shrink-0 mt-0.5">01</span>
+                                <div>
+                                    <h4 class="font-bold text-xs text-brand-900 dark:text-brand-100">소득 칸을 안 비우면 멈추던 오류 고치기</h4>
+                                    <p class="text-[10px] text-brand-500 dark:text-brand-400 leading-relaxed mt-1">
+                                        계산기 칸에 숫자를 아무것도 안 적고 '진단하기'를 누르면 화면 전체가 완전히 하얗게 먹통이 되는 현상이 있었습니다. 그래서 AI한테 "빈칸으로 버튼을 눌렀을 때 화면이 멈추지 말고, 밑에 빨간 글씨로 값을 채워달라는 경고문이 나오게 해달라"고 적어서 말했더니 화면이 안 멈추게 잘 고쳐줬습니다.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Bullet 2 -->
+                            <div class="flex gap-3">
+                                <span class="text-clay-500 font-bold text-xs shrink-0 mt-0.5">02</span>
+                                <div>
+                                    <h4 class="font-bold text-xs text-brand-900 dark:text-brand-100">합계 비율 100%가 안 맞던 연산 오차 바로잡기</h4>
+                                    <p class="text-[10px] text-brand-500 dark:text-brand-400 leading-relaxed mt-1">
+                                        소득의 세부 비중 퍼센트를 모두 더해 보았는데 100%로 맞아떨어지지 않는 문제가 있었습니다. 제가 원본 데이터를 확인해 보니 AI가 '비경상소득'을 계산에서 아예 누락했더라고요. 이 부분을 지적하고 비율을 다시 계산해달라고 시켜서 오차를 고쳤습니다.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Bullet 3 -->
+                            <div class="flex gap-3">
+                                <span class="text-clay-500 font-bold text-xs shrink-0 mt-0.5">03</span>
+                                <div>
+                                    <h4 class="font-bold text-xs text-brand-900 dark:text-brand-100">지나치게 딱딱하고 긴 기사 문구 쉽게 다듬기</h4>
+                                    <p class="text-[10px] text-brand-500 dark:text-brand-400 leading-relaxed mt-1">
+                                        처음 초안의 말투가 지나치게 딱딱하고 논문 같아서 읽기가 지루했습니다. 가독성을 높이기 위해 제목을 유행어와 섞어서 '나 혼자 산다를 넘어 둘만 산다'로 바꿨고, 기사의 소제목도 이해하기 쉬운 단어들로 부드럽게 다듬었습니다.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Bullet 4 -->
+                            <div class="flex gap-3">
+                                <span class="text-clay-500 font-bold text-xs shrink-0 mt-0.5">04</span>
+                                <div>
+                                    <h4 class="font-bold text-xs text-brand-900 dark:text-brand-100">막대그래프 위에 선그래프를 합쳐서 겹치게 그리기</h4>
+                                    <p class="text-[10px] text-brand-500 dark:text-brand-400 leading-relaxed mt-1">
+                                        처음에는 그냥 연도별 1인 가구 수만 덩그러니 막대로 그려놨길래, 비율이 늘어나는 걸 같이 보여주는 게 좋겠다 싶었어요. 그래서 "막대그래프 위에 비율 변화를 나타내는 선그래프를 같이 겹쳐서 한 번에 볼 수 있게 합쳐달라"고 지시해서 지금의 복합 그래프로 바꿨습니다.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Box 4 -->
+                    <div class="bg-white dark:bg-[#211B18] p-8 rounded-3xl border border-brand-100/40 dark:border-brand-900/20 shadow-[0_15px_45px_rgba(140,98,78,0.02)] space-y-4">
+                        <span class="text-[9px] font-bold tracking-widest text-brand-400 uppercase">Chapter 4</span>
+                        <h3 class="font-serif text-lg font-bold text-brand-700 dark:text-brand-100">과제를 마치며 느낀 솔직한 생각</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] leading-relaxed text-brand-600 dark:text-brand-300 mt-2">
+                            <div class="space-y-2">
+                                <h5 class="font-serif font-bold text-brand-900 dark:text-brand-100 border-b border-brand-100 dark:border-brand-900/30 pb-2 flex items-center gap-1.5 text-xs"><i data-lucide="heart" class="w-4 h-4 text-clay-500"></i> 숫자 뒤의 쓸쓸함을 느끼며</h5>
+                                <p>
+                                    그동안 뉴스로만 접하던 독거노인이나 1인 가구 통계를 엑셀 데이터로 직접 파악해 본 경험은 씁쓸한 울림을 주었습니다. 가계 평균 나이가 60.7세에 달하고 한 달에 고작 62만 원의 흑자 한계액을 남기는 팍팍한 수치를 계산해 보면서, 차가운 숫자 속에 우리 이웃들의 힘겨운 현실이 담겨 있음을 배웠습니다.
+                                </p>
+                            </div>
+                            <div class="space-y-2">
+                                <h5 class="font-serif font-bold text-brand-900 dark:text-brand-100 border-b border-brand-100 dark:border-brand-900/30 pb-2 flex items-center gap-1.5 text-xs"><i data-lucide="shield-check" class="w-4 h-4 text-sage-500"></i> 가이드를 주는 사람의 주체성이 진짜 힘</h5>
+                                <p>
+                                    처음엔 AI가 다 알아서 해줄 줄 알았는데, 제가 코랩으로 원천 데이터를 먼저 정리해 주지 않고 세세한 디자인 방향을 말해주지 않으면 AI도 엉뚱한 수치를 보여주거나 먹통 화면을 던져준다는 것을 깨달았습니다. 결국 내가 정확하게 방향을 짚어가며 기획하고 가이드를 주어야만 AI도 쓸모 있는 도구가 된다는 점을 배웠습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Policy & Future -->
+        <section class="border-t border-brand-100 dark:border-brand-900/20 pt-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-brand-500 text-[10px] font-bold uppercase tracking-widest block mb-3">미래 정책 제안</span>
+                    <h2 class="font-serif text-2xl md:text-3xl font-bold tracking-tight mb-5 text-brand-900 dark:text-brand-50">
+                        이제 국가 전체의 복지 틀을 <br>
+                        전면 재설계할 타이밍입니다
+                    </h2>
+                    <p class="text-xs text-brand-600 dark:text-brand-300 leading-relaxed mb-6">
+                        이전소득(정부지원)에 생계를 거의 의존하는 쓸쓸한 고령 1인 가구와 도시 밀집형 청년 1인 가구의 팽창은 대한민국의 노동 시장 구조에 악영향을 주어 전반적인 활력을 떨어뜨리고 있습니다. 기존의 '4인 가구 기준 정상 정책' 패러다임은 한계에 직면했습니다.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="p-1 bg-brand-100 dark:bg-brand-900/20 text-brand-500 rounded-lg mt-1"><i data-lucide="check" class="w-3.5 h-3.5"></i></span>
+                            <div>
+                                <h4 class="text-xs font-bold text-brand-900 dark:text-brand-100">도심 초밀착형 미니 주택 대규모 확대</h4>
+                                <p class="text-[10px] text-brand-500">감당하기 힘든 1인 고정 주거 비용 완화를 위한 소형 공공 안심 주택 시설 확충</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="p-1 bg-sage-100 dark:bg-brand-900/20 text-sage-500 rounded-lg mt-1"><i data-lucide="check" class="w-3.5 h-3.5"></i></span>
+                            <div>
+                                <h4 class="text-xs font-bold text-brand-900 dark:text-brand-100">어르신 일자리 및 가구별 헬스 케어</h4>
+                                <p class="text-[10px] text-brand-500">공적인 보건 복지 강화를 통해 어르신들의 경직성 의료 병원비 가계 압박 해소</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-200 to-brand-500 blur opacity-10"></div>
+                    <div class="relative bg-white dark:bg-[#211B18] p-8 rounded-3xl border border-brand-100/40 dark:border-brand-900/20 space-y-6">
+                        <h3 class="font-serif text-sm font-bold flex items-center gap-2 text-brand-900 dark:text-brand-50">
+                            <i data-lucide="edit-3" class="w-4 h-4 text-brand-500"></i> 기자의 취재 일지 (Note)
+                        </h3>
+                        <blockquote class="text-xs text-brand-500 italic leading-relaxed">
+                            "통계청 데이터 분석 과정 전체에서 절절히 느껴진 가장 가슴 아픈 부분은 '가정의 고립'과 '재정의 경직성'이었습니다. 가계 소득의 30%를 공적 복지에 기댈 수밖에 없는 독거 가구의 급팽창은 우리 사회 복지 체제 전반에 비상벨을 울리고 있습니다. 현명하게 여력을 다잡고 내 자산 지지선을 공고히 해야 할 시점입니다."
+                        </blockquote>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-serif font-black text-[10px]">
+                                EH
+                            </div>
+                            <div>
+                                <h5 class="text-[10px] font-bold text-brand-900 dark:text-brand-100">경제부 기획 취재팀</h5>
+                                <p class="text-[8px] text-brand-400">인포그래픽 담당 기자 & 분석 연구진</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-brand-100/60 dark:border-brand-900/30 bg-brand-100/20 dark:bg-[#130F0D] py-12 px-6 text-center text-[10px] text-brand-500 space-y-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>© 2026 ECONOMY INSIGHT. All rights reserved. 가구 구조 및 가계 수지 분석 프로젝트 과제.</p>
+            <div class="flex space-x-4">
+                <span class="hover:underline cursor-pointer">이용약관</span>
+                <span class="hover:underline cursor-pointer">개인정보처리방침</span>
+                <span class="hover:underline cursor-pointer">데이터 출처: 통계청</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            // Init Lucide Icons
+            lucide.createIcons();
+
+            // Theme Toggle Logic
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            // Load initial theme
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeIcon.setAttribute('data-lucide', 'moon');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.setAttribute('data-lucide', 'sun');
+            }
+            lucide.createIcons();
+
+            themeToggle.addEventListener('click', () => {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.theme = 'light';
+                    themeIcon.setAttribute('data-lucide', 'sun');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.theme = 'dark';
+                    themeIcon.setAttribute('data-lucide', 'moon');
+                }
+                lucide.createIcons();
+            });
+
+            // Numeric Counter Animation
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 1200; // ms
+                const step = Math.ceil(target / (duration / 20));
+                let current = 0;
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.innerText = target.toLocaleString('ko-KR');
+                        clearInterval(timer);
+                    } else {
+                        counter.innerText = current.toLocaleString('ko-KR');
+                    }
+                }, 20);
+            });
+
+            // Chart 1: Demographics Trend (Line / Area Combined in Neutral Theme)
+            const ctxTrend = document.getElementById('trendChart').getContext('2d');
+            new Chart(ctxTrend, {
+                type: 'bar',
+                data: {
+                    labels: ['2021년', '2022년', '2023년', '2024년'],
+                    datasets: [
+                        {
+                            label: '1인 가구수 (가구)',
+                            data: [7165788, 7502350, 7829035, 8044948],
+                            backgroundColor: 'rgba(212, 163, 115, 0.45)', // Caramel Warm Sand
+                            borderColor: '#8C624E', // Mocha Brown
+                            borderWidth: 1.5,
+                            borderRadius: 6,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: '1인 가구 비율 (%)',
+                            data: [33.41, 34.46, 35.47, 36.08],
+                            type: 'line',
+                            borderColor: '#8FA882', // Soft Sage Green
+                            backgroundColor: '#8FA882',
+                            borderWidth: 2.5,
+                            pointBackgroundColor: '#8FA882',
+                            tension: 0.2,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { family: 'Noto Sans KR', size: 10 },
+                                color: document.documentElement.classList.contains('dark') ? '#FAF5F0' : '#4A3F35'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: { display: true, text: '가구 수', font: { size: 9 } },
+                            grid: { color: 'rgba(140, 98, 78, 0.08)' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            title: { display: true, text: '비율 (%)', font: { size: 9 } },
+                            min: 30,
+                            max: 40,
+                            grid: { drawOnChartArea: false }
+                        },
+                        x: {
+                            grid: { color: 'rgba(140, 98, 78, 0.08)' }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Income Composition (Doughnut Chart in Cozy Palette)
+            const ctxIncome = document.getElementById('incomeChart').getContext('2d');
+            new Chart(ctxIncome, {
+                type: 'doughnut',
+                data: {
+                    labels: ['근로소득', '사업소득', '이전소득', '재산소득', '비경상소득'],
+                    datasets: [{
+                        data: [671455, 1950714, 1262093, 106456, 95631],
+                        backgroundColor: [
+                            '#8C624E', // Mocha Brown
+                            '#8FA882', // Sage Green
+                            '#D4A373', // Caramel Sand
+                            '#C38B8B', // Dusty Rose
+                            '#E6CCB2'  // Warm Oatmeal Sand
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    cutout: '72%'
+                }
+            });
+
+            // Chart 3: Consumption Spending (Horizontal Bar with Soft Accents)
+            const ctxSpending = document.getElementById('spendingChart').getContext('2d');
+            new Chart(ctxSpending, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        '식료품 · 음료',
+                        '주거 · 수도 · 광열',
+                        '교통 · 운송',
+                        '보건 · 의료 (병원비)',
+                        '통신',
+                        '의류 · 신발',
+                        '가정용품',
+                        '주류 · 담배'
+                    ],
+                    datasets: [{
+                        label: '지출 금액 (원)',
+                        data: [462684, 405063, 309322, 265596, 124317, 104878, 98535, 29769],
+                        backgroundColor: [
+                            '#8C624E', // Warm Mocha (1위 강조)
+                            '#A57C65', // Mocha Light
+                            '#D4A373', // Caramel Ochre
+                            '#8FA882', // Sage Green (보건 강조)
+                            '#E6CCB2',
+                            '#E6CCB2',
+                            '#E6CCB2',
+                            '#E6CCB2'
+                        ],
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(140, 98, 78, 0.08)' }
+                        },
+                        y: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Budget Calculator Logic
+            const calcBtn = document.getElementById('calcBtn');
+            const calcError = document.getElementById('calcError');
+            const calcErrorText = document.getElementById('calcErrorText');
+
+            calcBtn.addEventListener('click', () => {
+                const income = parseFloat(document.getElementById('userIncome').value) || 0;
+                const nonConsume = parseFloat(document.getElementById('userTax').value) || 0;
+                const spending = parseFloat(document.getElementById('userSpending').value) || 0;
+
+                // Simple form checks instead of alert()
+                if (income <= 0) {
+                    calcErrorText.innerText = '한 달 소득을 정확히 적어 주세요 (0원 이상).';
+                    calcError.classList.remove('hidden');
+                    return;
+                }
+                if (spending < 0 || nonConsume < 0) {
+                    calcErrorText.innerText = '마이너스 지출액은 입력할 수 없어요.';
+                    calcError.classList.remove('hidden');
+                    return;
+                }
+
+                calcError.classList.add('hidden');
+
+                const dispIncome = income - nonConsume;
+                const userRatio = dispIncome > 0 ? (spending / dispIncome) * 100 : 0;
+                
+                // Format results
+                document.getElementById('resDispIncome').innerText = dispIncome.toLocaleString('ko-KR') + '원';
+                document.getElementById('resSpendingRatio').innerText = userRatio.toFixed(2) + '%';
+                document.getElementById('resRatioPercentText').innerText = userRatio.toFixed(2) + '%';
+                
+                // Set bar size
+                const safeRatioWidth = Math.min(Math.max(userRatio, 0), 100);
+                document.getElementById('userRatioBar').style.width = safeRatioWidth + '%';
+
+                // Change bar color according to warm tone logic
+                const barElement = document.getElementById('userRatioBar');
+                if (userRatio > 81.54) {
+                    barElement.className = 'bg-clay-500 h-full rounded-full transition-all duration-500'; // Dusty rose (Overspend)
+                } else if (userRatio > 65) {
+                    barElement.className = 'bg-ochre-500 h-full rounded-full transition-all duration-500'; // Caramel Sand (Moderate)
+                } else {
+                    barElement.className = 'bg-sage-500 h-full rounded-full transition-all duration-500'; // Sage green (Healthy)
+                }
+
+                // Friendly advice text
+                let advice = "";
+                if (userRatio > 81.54) {
+                    advice = `나의 소비 성향은 <strong>${userRatio.toFixed(2)}%</strong>로, 현재 2026년 가계 평균치(81.54%)보다 높게 구성되어 있습니다. 고정비로 새어나가는 방값이나 숨은 지출이 더 없는지 짚어보시는 편이 좋습니다.`;
+                } else if (userRatio > 60) {
+                    advice = `나의 소비 성향은 <strong>${userRatio.toFixed(2)}%</strong>로, 평균 수준과 비슷하거나 약간 낮은 선에서 유연하게 지출을 방어하고 계십니다. 주거 난방비나 주기적인 생활비 누수가 없다면 훌륭한 상태입니다.`;
+                } else {
+                    advice = `나의 소비 성향은 <strong>${userRatio.toFixed(2)}%</strong>로, 대단히 지출 조절을 잘하며 저축 잠재력이 탄탄하게 채워진 가계 구조입니다. 1인 고령화 시대 평균치보다 지출 통제력이 탁월하고 견고합니다.`;
+                }
+                document.getElementById('adviceText').innerHTML = advice;
+            });
+        });
+    </script>
+</body>
+</html>
